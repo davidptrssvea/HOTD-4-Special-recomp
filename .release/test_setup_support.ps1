@@ -42,3 +42,6 @@ Assert-Throws {Test-BuilderPreflight $root $dump $out (Join-Path $dump 'bad-tool
 Assert-Throws {Test-BuilderPreflight $root $dump (Join-Path $test 'bad;path') $tools} 'semicolon'
 if(!(Get-BuilderToolProblems (Join-Path $test 'empty-cache'))){throw 'Missing toolchain was accepted'}
 Write-Host 'PASS: pinned fallback/retries, offline reuse, cache preservation, locks, stderr/exit status, writable accented paths, protected folders and missing tools.'
+# GitHub's PowerShell wrapper forwards LASTEXITCODE from the deliberately
+# failing native-command fixture unless the successful test exits explicitly.
+exit 0
