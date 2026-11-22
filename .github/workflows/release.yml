@@ -1,0 +1,51 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: hotd4sp-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@v4
+      - name: Test release publishing
+        run: python3 .release/test_publish.py -v
+      - name: Test isolated Python dependency setup
+        run: python3 .release/test_python_deps.py -v
+      - name: Test mouse shake gestures
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_mouse_shake.c -o /tmp/hotd4-mouse-shake-test
+          /tmp/hotd4-mouse-shake-test
+      - name: Test mixed co-op mouse isolation
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_coop_mouse.c -lm -o /tmp/hotd4-coop-mouse-test
+          /tmp/hotd4-coop-mouse-test
+      - name: Test arcade high score record decoding
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_high_scores.c -o /tmp/hotd4-high-score-test
+          /tmp/hotd4-high-score-test
+      - name: Test opt-in OpenXR diagnostic capture
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_xr_capture.c source/lindberghrecomp/src/runtime/xr_controls.c -o /tmp/hotd4-xr-capture-test
+          /tmp/hotd4-xr-capture-test
+      - name: Test interruption-safe cabinet saves
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_atomic_file.c -o /tmp/hotd4-atomic-save-test
+          /tmp/hotd4-atomic-save-test /tmp/hotd4-atomic-cabinet.bin
+      - name: Test off-screen reload and gameplay settings
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -Wno-array-parameter .release/test_gameplay.c source/lindberghrecomp/src/runtime/gameplay_options.c source/lindberghrecomp/src/runtime/xr_controls.c source/lindberghrecomp/src/runtime/xr_settings.c source/lindberghrecomp/src/runtime/xr_panel.c source/lindberghrecomp/src/runtime/xr_menu.c source/lindberghrecomp/src/runtime/stereo_projection.c -lm -o /tmp/hotd4-gameplay-test
+          mkdir -p /tmp/hotd4-gameplay-profiles
+          cd /tmp/hotd4-gameplay-profiles && /tmp/hotd4-gameplay-test
+      - name: Verify package and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .release/publish.py

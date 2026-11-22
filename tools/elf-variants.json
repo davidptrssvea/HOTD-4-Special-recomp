@@ -1,0 +1,10 @@
+{
+  "stock_sha256": "b84c70d9940d5f5fa7d287fd8c6b050444fdcbc2fd742d3afc74a1099bbec5fe",
+  "prepared_sha256": "b84c70d9940d5f5fa7d287fd8c6b050444fdcbc2fd742d3afc74a1099bbec5fe",
+  "layouts": [
+    {
+      "elf": "elf/hod4M.elf",
+      "fs": "fs"
+    }
+  ]
+}

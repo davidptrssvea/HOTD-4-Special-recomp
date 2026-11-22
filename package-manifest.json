@@ -1,0 +1,1485 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "path": "BUILD-VERIFICATION.md",
+      "sha256": "2003b610236c156b21270a87ec462e3d19fb98af4de4e71c1f129402872c7f6f"
+    },
+    {
+      "path": "README.md",
+      "sha256": "f7f70ce498c7dc423352cdffdcc5578d8aab797c6cd58ae54d9e6efebb070e91"
+    },
+    {
+      "path": "RELEASE-NOTES.md",
+      "sha256": "bf324e2bfceb9c56363e7c0d7eaed68f2cd2e4fb27b1d5a4d4cf596decd46659"
+    },
+    {
+      "path": "Setup.cmd",
+      "sha256": "59570f95065917e75941b1123f9e12c3b4fad9d9be44575dc28f979b19e06de6"
+    },
+    {
+      "path": "setup.ps1",
+      "sha256": "7c0d4a5298b838d63e59520845e0211609b48e4cfd494ee8517f7cbfb3829f71"
+    },
+    {
+      "path": "source/CMakeLists.txt",
+      "sha256": "aa1e5604b81aa46e1deb0212f7848caca3768d52660cac08df4fa8a6f9aa4182"
+    },
+    {
+      "path": "source/games/hotd4sp/game.conf",
+      "sha256": "5cc260d1cbe99f1490db03fa00de9528ef1b35309031dcd187a6a912a67f368b"
+    },
+    {
+      "path": "source/games/hotd4sp/names.txt",
+      "sha256": "3660365eab1b8959a6d93b2e07e30e0d2d744b0caf3a95b95031faa5f67a2605"
+    },
+    {
+      "path": "source/games/hotd4sp/src/host.c",
+      "sha256": "860af0b2f484696c06c1ff7bb8052a50c32a09caffe00878ad888b58641f204e"
+    },
+    {
+      "path": "source/LICENSE",
+      "sha256": "969c26f4e5da359fea84127dfecd3057729cfed75211fb324bdb42af6c087614"
+    },
+    {
+      "path": "source/lindberghrecomp/CMakeLists.txt",
+      "sha256": "83e3e6c22e4c6df6fd93ae63e6941ae35862dd080d06c68e11f72f7a8d4863c3"
+    },
+    {
+      "path": "source/lindberghrecomp/LICENSE",
+      "sha256": "969c26f4e5da359fea84127dfecd3057729cfed75211fb324bdb42af6c087614"
+    },
+    {
+      "path": "source/lindberghrecomp/pcrecomp/LICENSE",
+      "sha256": "a03f354a044f9acea7de6044746edb9f4d2c811c185adcc74f985348a36268c9"
+    },
+    {
+      "path": "source/lindberghrecomp/pcrecomp/runtime/recomp32_cpu/cpu.h",
+      "sha256": "a7234398f4996287904debe4f161fa03278fe6df5d6d19115dd257c62f3ef8ac"
+    },
+    {
+      "path": "source/lindberghrecomp/pcrecomp/tools/disasm/disasm32.py",
+      "sha256": "af593439c8c95350e3cf5abc6c9a25d2aa60bac10e9389e61bbf05ce7a171044"
+    },
+    {
+      "path": "source/lindberghrecomp/pcrecomp/tools/lift/lift32_cpu.py",
+      "sha256": "87329474c19b0693fba3b1469479bbf830b484fa898716b94d142d5a8545c61c"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/achievement_runtime.h",
+      "sha256": "16ea23b235450c63d12158494381276acc0b2dedbfbe27eb03a258f4e4bf6e70"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/arbprog.c",
+      "sha256": "b8cefeda0c3d0f8a289a1ce2d5596f24c2f34bac6b5e002f510e91d26173e4e8"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/arbprog.h",
+      "sha256": "75f44b24ccc3157d2002ad9eff13bb3d9ffc2d98a73dbf5e1bce4d1326aefad7"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/atomic_file.h",
+      "sha256": "1ea08000fcd8df7ff82ac15c97da8e75f316c8801964c76a699cf702562832ec"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/cabinet_buttons.h",
+      "sha256": "e4c9c80853f89894b97cf9dbacd958de41fc20dc03783bb6952c4969433cb223"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/controls_menu.h",
+      "sha256": "72558e0dadb9f10af45bf567f3b2dba460624499511cf0f1ec479f3fd83bbe17"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/coop_mouse.h",
+      "sha256": "c829496e7e5be4dc21d78ccec5e8408e7e60c30c1fde8a562db5bef181c2fe3e"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/crash_report.c",
+      "sha256": "93d4f7b1fd2608e0db191e9cbd458188bd87ff646785c2b94d41d72da4c261e4"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/dispatch.c",
+      "sha256": "565db8b4f382c1b04ccc188b9a0737ee09951732a7a8bd2b25519c053a428430"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/display_cadence.c",
+      "sha256": "1c6b3b20a0d920fa0b7922c573fb18c0c768575979a0dcd0fd381316ce643f83"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/display_cadence.h",
+      "sha256": "54edd49f13cc61a51555bb130758d34195714828d49f921ee5d01af7e4a90f8d"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/frame_timing.c",
+      "sha256": "d105f85f4c468012455d382844a452e110553455f946d00eac0ac56a1040eb1b"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/frame_timing.h",
+      "sha256": "37d5b4ac2ccac461f9fffeeb724bc09b1e73f185bcff794b715dc12eb6e5caab"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/game_profile.c",
+      "sha256": "54c906a6dfb4036493b02bdff9754dd83cd65f5c586f18819194e8d8400549b0"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/game_profile.h",
+      "sha256": "0ce834c5c8b07b38ad008994843995d856d4307fc237acf5532d1972970ffd48"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/game_states.h",
+      "sha256": "caa9cf344da1d0f04c004d8a4feaa9e92722f64eda6976c4c6518ecde2b10e86"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/gameplay_options.c",
+      "sha256": "7e31a1d088965e186523d18ae6d826868cf9ded0ceeff64190967084306e5d73"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/gameplay_options.h",
+      "sha256": "34a17c2733c4388d7ff4efa93a0944ccb278f1d1062bd069f26f2c738940c178"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/gl_posix.h",
+      "sha256": "ea81d20eb4d275fb831686f6554d5deaf7b0d243ff32a70b570d58a810e9a424"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/gl_thread.c",
+      "sha256": "008b7e95e135b604da33346b16baeeae8d3eecaca9f1165daafd93e74afdfd4c"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/glsl_compat.c",
+      "sha256": "de0db4a20ce5244e563f6af533d8f30fd2555329b61f9040f5f3f4bb12aaf2ba"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/glsl_compat.h",
+      "sha256": "08301bd183f8e688e292c4ce50ec383f8231c8e38e4dfc1e5db4b232bdd0c7e2"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/glsl_pp.c",
+      "sha256": "ab3a7d614a26c943bce235d43704e140f69805d6fe8698dc17c783bc39c86056"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/glsl_pp.h",
+      "sha256": "ac72adb3705659f696c392a82989f1809aaa3d63cc3d948d0550142debc43493"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/guest.c",
+      "sha256": "c52ff132d85461b5456e606a44976ab9f57915c325ac1a8e7a0f1fdd8be776e1"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/guest_mem.c",
+      "sha256": "923ff4d4c095489368f847249eeaf25735a37b8d504e7f7083600777435d16df"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/high_scores.h",
+      "sha256": "c772816dbf2e1914dd92c3f88ca9571979c3923d85ce630b220de1f3f04372f0"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/high_scores_ui.h",
+      "sha256": "fe5d3621d28d68373a1849baacafdfe5bf8b7d63385b3c93c40ed9853102cc7d"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle.c",
+      "sha256": "79b1ab707d3be65ec834f7af83d0603b669cefc1789bd5af6a5d4c88c3662bb2"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_alsa.c",
+      "sha256": "fceef8ce7732c90d25e82d854e38ad9ce94e92a314936732c68507136f68721b"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_cg.c",
+      "sha256": "9e8a63243d62e4f12121b348dcbc21c0f15d921a081ebdcea6defd918f7ad1bb"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_cxx.c",
+      "sha256": "31cbe70c56e64481c6d824d1791fa56ca57140ae7b4192a9e38971e966086bcf"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_gl.c",
+      "sha256": "bce32579bdeab3747dedc934519b2c36de1b4d57e08236187e57de5e7c6070a1"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_gl_posix.c",
+      "sha256": "e7458991042e81c3fd99fbec2780fa4c9fb99abb92b7d1979530c71ada0bb39e"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_glut.c",
+      "sha256": "cfb19e8afeb5f46dd9ef1378ef732a6dbf69dfb4fe141749eb60ea5a9fa0daff"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_glx_posix.c",
+      "sha256": "5c1dcca0e5a98940729778516fa14e2c2cf2f79549314ddbcb2d2d70459f59af"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_libc.c",
+      "sha256": "614558bd0972419c3ca323e7ca4bcba4508a72db6ecd23176894f44b9201b04b"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_matrix.c",
+      "sha256": "2ea66b5631ce2e7abb751b153856e8ceaadbbe8d3df73571617e74d69e676bc5"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_openal.c",
+      "sha256": "5d8962b2094a1d054873dd3a88defecd2b774b01745291cdef71369e24e0aa6b"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_pthread.c",
+      "sha256": "70b205862bbf80138d1f491a07a58d21235431dbea9d5a3d58eb4ba5d8e5a478"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_rideboard.c",
+      "sha256": "2d48b1243bac15a44a19c1143fac61a4b11d320d63a3a3730e2c90cfe7e51685"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_sega.c",
+      "sha256": "1554af5519c062d45a9350b86afe2e17d91b6945fa69b6bc6e0e0bdb0701a4ee"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_segaapi.c",
+      "sha256": "26b26239f415232353ec571904dd9c3ccb327217f39af99f4432effeedf14a53"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_vidmode.c",
+      "sha256": "0cdb77c3538aba7bd98c5d6c0f022b4749ff2e28a9a97be1be9a1baadc72e388"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_window.c",
+      "sha256": "6cd14eb1a74c15f1fce9d25e0a448df7f69ba456894ef5bb75a59bdb6ce92e94"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hle_zlib.c",
+      "sha256": "4699ef6b880da9ce60c6e1db5928f30fd2eda97c9f39718b31b01d1d47c35a83"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_menu_mac.m",
+      "sha256": "f090023acf2c381a421e6111e0157739df30590428e068ba6585b80e180186f3"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_sdl.c",
+      "sha256": "c783a1e6c5c8a6831a5d701385a2c3036860b2bd40cfd19359fc6f206ba8773c"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_settings.c",
+      "sha256": "336c7da6073876e28abba11539f313e474a6be3e011cda4f1acd5aa2ef76e431"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_settings.h",
+      "sha256": "293272104ab54434669d249bf9800e0033b042dbf29f0b76b751972d28058929"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_stats.c",
+      "sha256": "3fb38f6112593d2f3b3ef28eaa05257010c8ff27e18cc0e3b027bc9d8478ccf9"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_stats.h",
+      "sha256": "f1ad3a98e721eb57735213733a4dd5dd9aa4d73a705dd65feb30ace9db423193"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/host_xr.c",
+      "sha256": "628d5129977257b88829c3eb4a7dc564b965bf0b96d426d0ff499e4dae7b7c72"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hotd4_controls.h",
+      "sha256": "06b74788f4cac5dacec90413bc408c531894a7d2c5e5c0985a61ad72af877b76"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/hud_widen.c",
+      "sha256": "950a231e0bfc2a68c02f69c64886a49e5e176b7566004d239937a756255a5d3a"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/input_options.h",
+      "sha256": "8d2ae0c947146310557558e3ac87ca386f15d80c01a280d4d0596216e1672c11"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/lindbergh_rt.h",
+      "sha256": "6ca503efd8202cc0000f32b3bc51030475b55e8034e09e2c652052fc6de30057"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/mouse_shake.h",
+      "sha256": "30047f678eaffc3e3b4c5c859dcf3a4ecb86e51acafdc5f9fdac008fac8b6508"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/native_crosshair.h",
+      "sha256": "62b79f346b225896d72652f97f5016a7384e6d3bdfa716347219060fd1d16510"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/nn_culling.c",
+      "sha256": "5ba449725a37b093659d5d3d2a2c0e006e9f6951ceebdfc74fbed4cec877f380"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/nn_culling.h",
+      "sha256": "8659ee3971683880137f5fd1d26a56a48833e526f6ffa6770ef2ffea6701e4fc"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/overrides.c",
+      "sha256": "4ebb1987ac5ca2880b624358fc63d7bd8ebc441e89bd16b4477fbc30bc17ae17"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/photo_camera.h",
+      "sha256": "8adc220ea6f8817f95daaade3f89c4229dba48f9646f5397f491b230eb9842e2"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/photo_filters.h",
+      "sha256": "919939cbcbfff73a14592bd3f330ef9d21648a927330c504f88e0f1f31fb0115"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/photo_mode.h",
+      "sha256": "1dab80af0dc162d9a6b83fe18d6ff169b07b3d08bdfb90c829b4d42ead741bee"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/posix_compat.h",
+      "sha256": "788fb8d8516c24a4e63929716836ae62eb4991c8f7ce52f7c818dfef9103c24f"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/render_queue.h",
+      "sha256": "39c9c369b044d942674bdc13141b32edc0837106bfd1114121e7146e5fcdc9bf"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/sinden_border.h",
+      "sha256": "5d6905f2e551b03dc7ef33d3ce237479f60865da0b5a57a9d8ed978a2bae9616"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/solib.c",
+      "sha256": "3d808e4ade66dafdc7bddef0ab89813f148e9c990a1a67d9c86502247592db5d"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/solib.h",
+      "sha256": "8a413ce3fb2ff16ff98a4c120a2e1b620d37fac6801e0e947af4dc0d01e061aa"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/stereo.c",
+      "sha256": "c3f9e10148fa971ccbb4ca5aae767db0c101e7329b24963b8af4e7d62d701bbf"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/stereo.h",
+      "sha256": "728c4cefbcdfcf907b481f9f27184bc1a02e25d747f65a010d49d7f2225d481c"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/stereo_projection.c",
+      "sha256": "8d33dc5845fc64c3ce1df8f117266f0843f59ad086b78620d94981f0b78a0ae0"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/stereo_projection.h",
+      "sha256": "284ace482cf09ba409b75bfabd81291aef3416215bea84cc75da752a3797f197"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/syscall.c",
+      "sha256": "90296878bd4122c5fec3d49769ff4bfbf7a78289a4083eb083f4554985dbe860"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/trophy_gallery.h",
+      "sha256": "a796d8dce84bf8a6b0c3752ed6687d4e36e16b9bbbb9436050c146e1a9e8bd21"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/vulkan_host.h",
+      "sha256": "efd93097cb0082ba2f865e961753243c837a51949efdb3fc362c7a1aac6e71ee"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_actions.c",
+      "sha256": "a98cd0a2c7b2d50bc53d50d1ae9b0a69982746e7938a950e5834b6339e8622ce"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_actions.h",
+      "sha256": "315b10b1c55e51fb790b2c643e16e76f35f5c645b25c1d885bc33e2e3c83d0be"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_controls.c",
+      "sha256": "a7d92752b5f8239f76a6e9829c2403f49c331e4c95480a8228643fcfbe438cfb"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_controls.h",
+      "sha256": "a8d0f8ac4c7536a0da3ee3124a92a402aa42fe901e7e01f2bebdc6ed9c5b95f6"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_font.h",
+      "sha256": "5b7250910a587a8e13e922bc408c5a9abf3a5d4834bc8e69370c723186191397"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_gun_gs.h",
+      "sha256": "676ea6a4f799e0e2b261638662ba67c639c5456d3c62e997f773d86a9067ce5f"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_gun_model.h",
+      "sha256": "bf2ed34c3691cfdbe0ea439672e4fe6642e976e5586839507946a8e826d0ffce"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_gun_tp9.h",
+      "sha256": "62fd606bf12d5fc89a0ce2f1706dd7d8b449e7a38a4ee07ca5cadd1776889d6c"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_menu.c",
+      "sha256": "cf3e75f3a2ff8230e982f33b53630fe27f41c3d6a2d06b143bfee59851e465e2"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_menu.h",
+      "sha256": "5ece6ffc5a0e19f208a7f2d5bad49aad56437e6863b45065c6916d60249012ad"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_overlay.c",
+      "sha256": "cee12549308e2514b28126e9d6a30cb280fe7b982361a85891b3a58cfb763b38"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_overlay.h",
+      "sha256": "34f46d45ed4e7b31821247ff1fdc3ca2cdf2921532f9efca024fd6b60683fc6c"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_overlay_geometry.c",
+      "sha256": "0e9755902a8efd4ea108e7e5ab650a62fe932fcb69f32bd9f1fbb5f31a1cde3e"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_overlay_geometry.h",
+      "sha256": "3a05276b8105693fd5f314c79898539aa2a9ad00fe223efce735f74a8e6f5b8e"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_panel.c",
+      "sha256": "9803eaf47cd112e492e857560201305fb0ef6c702a82c7239a07efcddf3e1bf1"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_panel.h",
+      "sha256": "e8af668ffe1ee9dc33d58b0895e15a243347f7e9026c7ea01614f15db74b08ef"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_settings.c",
+      "sha256": "7aa6bc327fcbd6d86d20f1be93253f46851ba7d1484c88119fb152eeeb10014e"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_settings.h",
+      "sha256": "d70a6c9bc3923d51275c5392a5f776361743420139843a55c88bbb8b715f4f9e"
+    },
+    {
+      "path": "source/lindberghrecomp/src/runtime/xr_sight.h",
+      "sha256": "dac08733326888d59976673a2aa2fae783b1d5c3beb1de3fe2e5b0e16a672dae"
+    },
+    {
+      "path": "source/lindberghrecomp/third_party/dlmalloc/malloc.c",
+      "sha256": "1b34a5b1ef797ab2ec49d362f2956e03fdce6e50b47b6e7f53b14e0a2ec7e4ae"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/__init__.py",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/__main__.py",
+      "sha256": "0eb3f8bc2192491ddba4720d453b5c7b87283083fff7de264438be50b16b0a78"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/disc/__init__.py",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/disc/carve.py",
+      "sha256": "c31c9b8835dec83d5096e21d31a3b33a61091870a3c1f365a48571a0bf1c7c38"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/disc/test_carve.py",
+      "sha256": "29af297bdf8a27e86e9899aa00dd9db5a6109a7308e195803dbd6bc93c026f2e"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/elf/__init__.py",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/elf/elf32.py",
+      "sha256": "447618a96264b810decf09ee0b84df381f2a5c6359c000a29516c92f6db25e85"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/elf/test_elf32.py",
+      "sha256": "53ae369bec24287cef0e417fd13d955f52b16a983ced8c0bb1fd9cefa87cf34c"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/gen_gl_thunks.py",
+      "sha256": "4bb4aa3f0e760f86ac4f284c5eb8f611f24ad66a18c666bce13b16d50bc2ce23"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/__init__.py",
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/bounds.py",
+      "sha256": "be423f1461cd1122768212127323a8a7675ccb3059e8ea8924ef09ae5835076f"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/driver.py",
+      "sha256": "4b2ba39e23c5d49831966f75903582a0d0bc01f27ac1746cb7bc615d14bc02cc"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/flags.py",
+      "sha256": "175093cf7aeaf5cc81d265376400a0e20b1b7848a05ed8b47c2b7dbeca5cea54"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/regcache.py",
+      "sha256": "d749116b948cc4cdbb864e6bace49313530e9e83e46e85176028bbd346ccd074"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/solib.py",
+      "sha256": "f617ba95991b7cd23f2aa8483292be417df714146beca0dfdf273104ae975ff1"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/recomp/test_driver.py",
+      "sha256": "6f3a05eaa93321aad9617fb80e827439bf1c1e438b9dd4ebfd1949196fa7f9e5"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/build_fixed.py",
+      "sha256": "0ed817b6c67c6b3775fc43d48db210966c0d7bbbe1472eaf5a865b5c0754407f"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/compile_shaders.py",
+      "sha256": "34051e04cd024bf62bc2f07e83818252c991e46e2a55737d4144adccd8e69565"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/frame_timings.py",
+      "sha256": "7f5fbe7f216c8ea43692d8c615320f12e4c6ca53a81c489b9833ab26936d6dc0"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/gen_abi.py",
+      "sha256": "ecf712cdc036c47d369b3bf7e8eb06dfc4c9cc78a3e53a3997bd9c9aeb6cb6df"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/pack_shaders.py",
+      "sha256": "f088c53eaac42b89187b946d736c90ff32cc9c72b213f57bf461da56884f34c9"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/submission_timings.py",
+      "sha256": "669a88d0e57e3be7f8f5e037659482edffab4fb9cac884a2c8d7a91a1527b23d"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/test_android_emulator.py",
+      "sha256": "8104b65a1d8b63e651b3353b155b14d8912d819654ca2eb3da9ef1bb31a2a5cd"
+    },
+    {
+      "path": "source/lindberghrecomp/tools/vulkan/test_quest_probe.py",
+      "sha256": "1944330deb673cbff6e2c1a5b83cf3def0eec3bdf610da9e7b35f140270ff404"
+    },
+    {
+      "path": "tools/build.py",
+      "sha256": "4ee3ea1953e59800db2546da4a986cd0db58d29ea87d68dc470187d2f1609eb0"
+    },
+    {
+      "path": "tools/elf-variants.json",
+      "sha256": "df346fa2be989dfcc3876667a7b6a4f2464ff92f9f1e80809187f93a733cab19"
+    },
+    {
+      "path": "tools/gl-enhancements.h",
+      "sha256": "e24a04ca7e795eb9556f948ce3708539ec27534d9b69eaaacdfc4a7999637e48"
+    },
+    {
+      "path": "tools/gl-overrides.json",
+      "sha256": "202002a1a3a3a8d2da271d2b06e46652f41926feff8f84cfc108447b6f48077f"
+    },
+    {
+      "path": "tools/menu_background.py",
+      "sha256": "68d35fc49f4254f690f87b71b7a719c8c584ff016c6844d64aece8920ad4e3ef"
+    },
+    {
+      "path": "tools/python_deps.py",
+      "sha256": "8bacd0037f5f310467c69ff75adb04da24a3de35d935844ea11a0a8203f1f3c2"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-0.png",
+      "sha256": "35b1b3d8baf7d419721d60dc7e04200f51a729700c49844732c6dc8e006215c2"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-1.png",
+      "sha256": "35b1b3d8baf7d419721d60dc7e04200f51a729700c49844732c6dc8e006215c2"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-2.png",
+      "sha256": "f0485baf869135c46facf34e448a84e37b13ed09f9840d33b439690cfbec0689"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-3.png",
+      "sha256": "18de28f5bba0267dfff203990e61f722bc6471296503bd1a31b0a9cc0fdbb03b"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-4.png",
+      "sha256": "fc67b03ab7c03acbb6c497799651a4c94d63554f8268561b676b7321d8286109"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-5.png",
+      "sha256": "dd85fd4c41a32afd29d79dd71c15ceaacfcd2e569bd55d863bbf701fce7d47fa"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-6.png",
+      "sha256": "304748857bf5086ab533ba2dc195c7cb57bee6627a67920463a1c61528407b3e"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-7.png",
+      "sha256": "3bd1970b62cfca6d2c10b213dea569063b67993148ad197876b1d650ef1b51ea"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100-8.png",
+      "sha256": "d5da2417973bff17a934bfa9eabe1112adfa8077dfeca9f2f52613fd11a7c8fc"
+    },
+    {
+      "path": "ui/crosshair-previews/0-100.png",
+      "sha256": "35b1b3d8baf7d419721d60dc7e04200f51a729700c49844732c6dc8e006215c2"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-0.png",
+      "sha256": "36280fb1c58d9a089309840ee076f482e6470ed19b2e858c1a50f8c707a63c38"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-1.png",
+      "sha256": "36280fb1c58d9a089309840ee076f482e6470ed19b2e858c1a50f8c707a63c38"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-2.png",
+      "sha256": "f9af81a92927bfad735528a95dbfdb610207570b5029a0c6ef2b8797e69cede3"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-3.png",
+      "sha256": "4ed9876cdf2c2fc30fd92083197811d849ea6a148dcb68c6209e6263b06c47b6"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-4.png",
+      "sha256": "acf9f7c257aa8516ea055d34a278281e24595de17b85a42d561e5a822d9f7463"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-5.png",
+      "sha256": "0db97e231a8d63a700347e0be2bb9443ceff576e8ede9fc7938d3ea4583460db"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-6.png",
+      "sha256": "53ead0f37bdf42d51290e850392c144f3a2bab8d0b6df173e7644fe755633870"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-7.png",
+      "sha256": "42ca3fd67b1fbd23d28b9fb4ab383335bf4c85b706dd87ee1582ac42a0815d6a"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125-8.png",
+      "sha256": "bcf1bdf8b2cbe85a36c680a84d418498bbb61aa915eb8fa0c0626352093976e4"
+    },
+    {
+      "path": "ui/crosshair-previews/0-125.png",
+      "sha256": "36280fb1c58d9a089309840ee076f482e6470ed19b2e858c1a50f8c707a63c38"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-0.png",
+      "sha256": "cba12312a333ccd7387b669931d62d12cd92b3c2c95fccdc0b0115d8850d70ab"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-1.png",
+      "sha256": "cba12312a333ccd7387b669931d62d12cd92b3c2c95fccdc0b0115d8850d70ab"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-2.png",
+      "sha256": "a91bbab5d030d1a905742af8681f91eb47af8de192f5e4fdebaba82d426abcb5"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-3.png",
+      "sha256": "3a9487a8fd6a069291a539461cc4a6f6a9c653b760bd639f9121d6421e9d1ab6"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-4.png",
+      "sha256": "b0884ee3b152845a2d9613110638cffd2eff34444e9e58869717c6e95d227944"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-5.png",
+      "sha256": "f04f5a0df891fe8d396179498433cd1f8b051f4ab2386df42e011704a1e3190a"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-6.png",
+      "sha256": "c94e4c1a68d436b330daf2f828aad8482a866dc25b752b15fd8feb9bb89cb3db"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-7.png",
+      "sha256": "50e119c8a762dd2e5f56076e108cef36941ff320d2fa7175820efd177cfdb98e"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150-8.png",
+      "sha256": "e6069455c91e1ef548bfda9d8de8b9ee6dfd53474d520aa325b1a8a944b845cd"
+    },
+    {
+      "path": "ui/crosshair-previews/0-150.png",
+      "sha256": "cba12312a333ccd7387b669931d62d12cd92b3c2c95fccdc0b0115d8850d70ab"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-0.png",
+      "sha256": "22dfbafed7ede29c508eae8ce86dfe89fe7416eed5037a876d549162550c740d"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-1.png",
+      "sha256": "22dfbafed7ede29c508eae8ce86dfe89fe7416eed5037a876d549162550c740d"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-2.png",
+      "sha256": "2725b501b846de818acb6b28cc37dcaeae8c107a7c63a0d0609a8de542bba1be"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-3.png",
+      "sha256": "2db7b9f32a8af032bc3693f8a44c6f380abdfca31282aee901205edf8b903130"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-4.png",
+      "sha256": "aaeeac07c1aa6f0fa4e5b5b60f4c78187379a9798ac7916b6a7d3e63dfd213fc"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-5.png",
+      "sha256": "6cff589cbe9572aa1762c16c79ba3a27acaff4d528d4d93e5c641c9804b2bf5d"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-6.png",
+      "sha256": "af9386cc2d4d82a67abda7bd1f5d3eb406abcd889270e95505ebbe5f8aa455e1"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-7.png",
+      "sha256": "23b9b53d20fbd3751bcb78a97edcb7d6936208d49ebde3794d89c8122f505a44"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175-8.png",
+      "sha256": "b07634df2b34d7b2a9e6a9aac9b824bdc9d33f34ea1b56a17484baa469e9cd8c"
+    },
+    {
+      "path": "ui/crosshair-previews/0-175.png",
+      "sha256": "22dfbafed7ede29c508eae8ce86dfe89fe7416eed5037a876d549162550c740d"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-0.png",
+      "sha256": "cbbf55c81905e941699c31ac6d79057f214969d64a5cf2a1980efb51b7065f76"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-1.png",
+      "sha256": "cbbf55c81905e941699c31ac6d79057f214969d64a5cf2a1980efb51b7065f76"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-2.png",
+      "sha256": "95f8b40778b054ac78fdc846d7b6c8c6371249079c7307c6044f79c8054bb030"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-3.png",
+      "sha256": "0997cbae1da7148a9dece58a06a732c01813c3bad5c47ddb84e2ffdfe36ec421"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-4.png",
+      "sha256": "fc6651b3bcc3a6028222111c88fd8165ebea78d64221feef993b9252f275f585"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-5.png",
+      "sha256": "43a0f028f9a75526cc3c6e81049a989dfb5cc45ff582ba4498f5aa3729ebbc1e"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-6.png",
+      "sha256": "6096d3623b72e248c6928ad3a7edbd30498ae04ee1311bc875c7d208b2881cb4"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-7.png",
+      "sha256": "afd75b23a85f2a02fe2a35b1dc9c9417eb223b6ec26385408adcc623666ff2aa"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200-8.png",
+      "sha256": "467913ce21dea29a365388fa2eff3cb3641afecd0f0f391d375612ecdd58cd4e"
+    },
+    {
+      "path": "ui/crosshair-previews/0-200.png",
+      "sha256": "cbbf55c81905e941699c31ac6d79057f214969d64a5cf2a1980efb51b7065f76"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-0.png",
+      "sha256": "f09f4936b1558c93531bd790ea2ae5d0ed27cf9d44320d2e1c1a2a5a62992465"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-1.png",
+      "sha256": "f09f4936b1558c93531bd790ea2ae5d0ed27cf9d44320d2e1c1a2a5a62992465"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-2.png",
+      "sha256": "8d199484450657cc62795483a5f1b9626756847d8f8f5df3ac6db9266b906a3a"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-3.png",
+      "sha256": "74f82700e0a3d44adedb64e29b9a260ce8b0ba1f7d88a7f8d18e7722b8229bad"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-4.png",
+      "sha256": "8fc39006e07f567f78075694bb2f324101405a27d0d215b7c11f7ebbed67fbb3"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-5.png",
+      "sha256": "b785631b9a871eec8b9bda6d69b3304a4231961d3b979b227aa0e085de034d1f"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-6.png",
+      "sha256": "9824e85f5ef8b4a4eea7cca5b5d42ac3714ff4376baaed380330943bb84a5614"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-7.png",
+      "sha256": "83ac40b4a464285bf85582428fadb0baa8b44cc4ddc88eeccf00bb0a646e7e93"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50-8.png",
+      "sha256": "a5ccf7017c28c81dc6087620bf314ff57747e5c0ea0051f642374d101643f47a"
+    },
+    {
+      "path": "ui/crosshair-previews/0-50.png",
+      "sha256": "f09f4936b1558c93531bd790ea2ae5d0ed27cf9d44320d2e1c1a2a5a62992465"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-0.png",
+      "sha256": "7a2e1b6b9423c9bef22e96353962fad91f9e6fcb588fa1a8f4332f4d14bf03ff"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-1.png",
+      "sha256": "7a2e1b6b9423c9bef22e96353962fad91f9e6fcb588fa1a8f4332f4d14bf03ff"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-2.png",
+      "sha256": "657ba52cab6895618af881d132d8206609a9c153719f7793fa85cf4fe6923db9"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-3.png",
+      "sha256": "4b7d1e4d30abe111d99127a1eb8014ca5d38406da4aaf0bf846f145f89c6db27"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-4.png",
+      "sha256": "497dde55b2385109e4db031f24237a4eb8e30fbc15b3b35bb828be2ce126c5b7"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-5.png",
+      "sha256": "685d46af281cadfa418f7edf2d7996d5bca4277429bc85e8175c8538a8455724"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-6.png",
+      "sha256": "ce0b8cf23823ab499409baf7a1ab9c34bb13d053b00c0fc20b415d1af5099543"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-7.png",
+      "sha256": "52dce8f2f8e511e5a41720ceefec5ffff4d12d1971ebc5899729e129017d9265"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75-8.png",
+      "sha256": "913f0eb68d237e15296985eb500ace7ae23a0564c4a1a27b6520c100e53b8919"
+    },
+    {
+      "path": "ui/crosshair-previews/0-75.png",
+      "sha256": "7a2e1b6b9423c9bef22e96353962fad91f9e6fcb588fa1a8f4332f4d14bf03ff"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-0.png",
+      "sha256": "874ec4aef9085e21e56abd25ed2848ec454178a66fc6da67ecbdb6345730e196"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-1.png",
+      "sha256": "761b68b99eb6faf93d625a4c426fe316043e4032bbffd24b103e13ef4e2641a5"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-2.png",
+      "sha256": "9b9f8dc80bba6eee1acbb72b614540c7a7c25a2f84253fb7f541a36ac3e84f7d"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-3.png",
+      "sha256": "6d1cb5bd008bcecc66052f63b8b0aeafa4e6fcf141b9cf1207220c3511b7d32a"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-4.png",
+      "sha256": "8b66d08307601684bb02652ef054d2876ddd450e686e39de286bf466c0784420"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-5.png",
+      "sha256": "f7715bb4bed357fbcadc67f42321142c30105be95909fec9a901146fec3b6712"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-6.png",
+      "sha256": "e2d9ce77712fab10abcdd66ef0b12b2aedb99d6dc884a521adcd8a9e1bb081f3"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-7.png",
+      "sha256": "329ff3ba344e82d4c2ef79450fba6065e96fd77c143cf80582cd0c64cdae048d"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100-8.png",
+      "sha256": "46eecadf2006c859e1a5094bb710113b1c85d8ea820b6e5fba97d669ceb4d950"
+    },
+    {
+      "path": "ui/crosshair-previews/1-100.png",
+      "sha256": "874ec4aef9085e21e56abd25ed2848ec454178a66fc6da67ecbdb6345730e196"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-0.png",
+      "sha256": "d62adb462367481a99d91dddf4e16d8ac05fbca93802b7863c180fd36fae8469"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-1.png",
+      "sha256": "277a56ef7e273015e2a0a3c415a3342d8bef441e66bc7623894bc761ff0e8a5d"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-2.png",
+      "sha256": "18b3723922746f1f9d256d307f01f634b4d0e2b75b9285c08517c39b4f793ed8"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-3.png",
+      "sha256": "ed33c3ecc9f8e3219f1b06a01f9d1ead27dff8fa281972c3dbcaaaa1bbd93423"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-4.png",
+      "sha256": "3308a281c722eb6a1f5a7960eedcaa84f2749f931186427f2fd43a64d74f5b68"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-5.png",
+      "sha256": "3280454673def3d838b95147d6383d154907cd2de8736722a4191c16014c0cf1"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-6.png",
+      "sha256": "28a189b7277bb58e6d79c7a63eab2adb78addbc6af89f546ee29cf356b10340a"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-7.png",
+      "sha256": "36983e0167fc476bb931eb0cc6279f600a2273948afcd18b774fb6db5ee16c6a"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125-8.png",
+      "sha256": "26f08efcb5c95cfa540533431a472526860ed54ea26e0737bc3175064295691e"
+    },
+    {
+      "path": "ui/crosshair-previews/1-125.png",
+      "sha256": "d62adb462367481a99d91dddf4e16d8ac05fbca93802b7863c180fd36fae8469"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-0.png",
+      "sha256": "d342d9ec77eb03344410f09850c8aa7fad443573aac57d0e0cc6cd46787e0c16"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-1.png",
+      "sha256": "ef42839173895b7f374a71510cc58a5aa623d3f556c0173d45863d2a62d497ab"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-2.png",
+      "sha256": "24e39a6806455f394ff9e88aeb02a0ae9a523758748b70c7dbb0509daba1f58e"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-3.png",
+      "sha256": "9dd62f9fc79c4f32c27a34162da3f1a821c9a4b36933ac7ec5e43b43d30fee16"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-4.png",
+      "sha256": "7e017d3b2564ab4b0144f08dbc1cdef4b9b8b3b6344d2c710de3bdbc1cbdbfe8"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-5.png",
+      "sha256": "836748590186e88d12c4cb0186d6f4385c141b7f2c462f5397da97865a5f7edf"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-6.png",
+      "sha256": "3f9c2eeb02f8710384483ff134efeb5d52f56e065096b465be2bb2a645dbe403"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-7.png",
+      "sha256": "bcd96bb561b6feb8ecf3660187ec4daba6c77de39e571554ce037d78d23d1ec4"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150-8.png",
+      "sha256": "d758495ad746eec6776d00fb7eca7abdf9e8ef643afed29ccde93c65e2815bab"
+    },
+    {
+      "path": "ui/crosshair-previews/1-150.png",
+      "sha256": "d342d9ec77eb03344410f09850c8aa7fad443573aac57d0e0cc6cd46787e0c16"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-0.png",
+      "sha256": "81c8bc5c14d2d0a933b1c844a2709de5eb9b2cad4a8c77eb0446adb54a38af0c"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-1.png",
+      "sha256": "4a15ba0fbdf1b4022c99b7203bd3e94c43e69713bdda8b27a259cdbabced3621"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-2.png",
+      "sha256": "e238cbf30ff78f1419050fe9d74b117317c520215c4d6f129b0e7c33663a6b2b"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-3.png",
+      "sha256": "6c0294762b4eda1570e1a357bc00a59f26fe869bf7125ccf1fb91569f81288d1"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-4.png",
+      "sha256": "799dd5914bbf79c98f8c8ce1a13ac40c93b196998676e9539a013a3e169fd21b"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-5.png",
+      "sha256": "3b4c2ddee42d9de55ae4ff762893548adf4c42cc1b3309c5f08543453e53e6a8"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-6.png",
+      "sha256": "78b31a81c0b9b244179573cf0754fe1e62556351eb5cd61f15066555d8ef5d4e"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-7.png",
+      "sha256": "014a8250f428b7475d1e8f09f302e62168c5d3abfbc12e884393008adca5e675"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175-8.png",
+      "sha256": "ea17991c016d1fe41fc0ad91616525006745df9f843af15d260a9c135d0875d3"
+    },
+    {
+      "path": "ui/crosshair-previews/1-175.png",
+      "sha256": "81c8bc5c14d2d0a933b1c844a2709de5eb9b2cad4a8c77eb0446adb54a38af0c"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-0.png",
+      "sha256": "5f3b2a5cba38bde73d6853943b7921ef282356e66a5989f080bb8ab1c1acd274"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-1.png",
+      "sha256": "d4635bcf1701cb0d0ca11a5280a48e2c8664be0e0550aa3f2ccc84fd0f1bf4f8"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-2.png",
+      "sha256": "ed6fff3f2d5b224ecd61121c27ceecefe039e5d81f70e674d2f0e446b2b1427e"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-3.png",
+      "sha256": "4fd82cf16765857e54468aa10174cc16b8030aeb0312a0a2eb3ade33f23e449c"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-4.png",
+      "sha256": "086a727e325225393d3c0b1a92e5df526215eef19227e9a33c40f58f8cbcf668"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-5.png",
+      "sha256": "3c05059826ed175fc20db8d340c0763bcd65b9e67399959342a3ab85fb067c74"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-6.png",
+      "sha256": "ceeea0f6d3ce9820a7789f807881a93dd07ba4504f32727fae0d9a68a7405cd9"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-7.png",
+      "sha256": "662328de2c653f55d11644bf8e19d2c6ecdb4f06a4e302a4e2f3802cf4bcac90"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200-8.png",
+      "sha256": "52531ede64622ed32ec61d1d118593cc1cea7f61c24c5c2e384f118c9923f869"
+    },
+    {
+      "path": "ui/crosshair-previews/1-200.png",
+      "sha256": "5f3b2a5cba38bde73d6853943b7921ef282356e66a5989f080bb8ab1c1acd274"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-0.png",
+      "sha256": "1f1da853dec74d168df3f263c5d4d19161d33d86f8ba54eef4208356671abf08"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-1.png",
+      "sha256": "e4e6adf2e40909ec99b5597f8546ed0374f26d76622b833f29c7049e37cc5714"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-2.png",
+      "sha256": "b2a59cac4ca0761c0c2cbda1c81b7a7fa2a1ccdd41c4f3cd991570102ad30caf"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-3.png",
+      "sha256": "2ff30959fa92df26fe4232fb15c0109a2c6f4bb951c6b408c01199f019942bda"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-4.png",
+      "sha256": "c32ba18389db68baff1110925c25caa96b145f78c23de7db27f82985dd3dca50"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-5.png",
+      "sha256": "52271c6a91f3938c372c548d95e4991b75e24bd382f9a105e4a563766cb13aeb"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-6.png",
+      "sha256": "ee58a25362915f17c709326b7a619ef6da1427d3df65618f83cc3fd070754dfd"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-7.png",
+      "sha256": "9b9e8ecae7a76b577667aafb099403a2f3bfe795f79ce753b5d16e16dfc043d9"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50-8.png",
+      "sha256": "4ad6f757a44d030e602f7de0ad03552a79435d798f85aa8fe50f5c70493ea844"
+    },
+    {
+      "path": "ui/crosshair-previews/1-50.png",
+      "sha256": "1f1da853dec74d168df3f263c5d4d19161d33d86f8ba54eef4208356671abf08"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-0.png",
+      "sha256": "ed723b85f4f120d012929e1e58abb3e304b58f6df953c7ebeacef1a83c0895d2"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-1.png",
+      "sha256": "258e3fe85749c01f173f691b1bb30f2f0794f5c4cc03583a3566f18c26baa593"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-2.png",
+      "sha256": "8805a44d020ca720b64c687ab6a364372b7996170f8cb2e4394f2b59486a35d9"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-3.png",
+      "sha256": "b235f0a6991461bfc91826c4e15300ede728711a4bcb9099712cf2ee878d6f87"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-4.png",
+      "sha256": "720a8e868427320956363d55b795b65c2823c80b83ff1ce21afa96b5b233e1e9"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-5.png",
+      "sha256": "59910a4c60927977ef0b946a481a3c92a0bb7a3e0c29d8c58bf2b67ddea9d8fc"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-6.png",
+      "sha256": "3d1c9eab685e6159143c6c0459beac072d37441e7f1d66010c5e9958b4a13872"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-7.png",
+      "sha256": "f8143916548b2dd931e72ef2b19fea6fdc2951b36a0ce2934fe2a4f6f353fcba"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75-8.png",
+      "sha256": "7bb5e9143c47af408b0f1304ea4ce4a6221d24651dfdc275afd012f0b21ba494"
+    },
+    {
+      "path": "ui/crosshair-previews/1-75.png",
+      "sha256": "ed723b85f4f120d012929e1e58abb3e304b58f6df953c7ebeacef1a83c0895d2"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-0.png",
+      "sha256": "29bb92e3452b775f016589568283597fec0613443339fcc2fd0ff0a3e15bcb4b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-1.png",
+      "sha256": "cc29e7f70815a192f9ba1f74011504abb36d6cd69d9787bc5cc5f5793efc84ee"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-2.png",
+      "sha256": "7eff3e8bf5aaec1834fca90aef76e99a49f8a93479682469ebbfd1fc4f032401"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-3.png",
+      "sha256": "5599229670af76959d608c252ed775a79a205fc4887466b18c8d0128f5980e47"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-4.png",
+      "sha256": "93fca6c1905ba6087bb7246367b8f986ad1731894330d9a1e694ad0647d715b0"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-5.png",
+      "sha256": "2ca24bd416fa29c636f596fbd111efa9d02275340b7c7b8bb49465b99f0277b6"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-6.png",
+      "sha256": "ebb57a94afe8d6b6fd20acd3a84f45d1d33c0a96a686b6f7f25c81c0fd58326d"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-7.png",
+      "sha256": "54727859456b19f197ee3a08a9af265c631bd06008da3b4d5c3dbe6aa63b1c57"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100-8.png",
+      "sha256": "8d287f0dc41d76b58756beebdb5b2244aef3702e9ac257131e02ede2b1611257"
+    },
+    {
+      "path": "ui/crosshair-previews/2-100.png",
+      "sha256": "29bb92e3452b775f016589568283597fec0613443339fcc2fd0ff0a3e15bcb4b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-0.png",
+      "sha256": "9adb5f28f51a65fe78fc7a850c60758b865f0d593249a634b43a02d8690d3632"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-1.png",
+      "sha256": "e4d547a60ce9cd6fb5499b80ee7ff39d389b111ab7f38c6bc3e1d6c6d7732e52"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-2.png",
+      "sha256": "9b7573af79be3d3d24245155e213fdb9f33206255abe3b84506fe2c4fe6f3392"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-3.png",
+      "sha256": "07958b91b3425677cfe4c148fe5be69526aa7186e29b91476559526a8f243d2b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-4.png",
+      "sha256": "a5e67b03143708e0ba66b6d38ef0a9fb5bb28f508be4ba9c3ebfb971699c4b70"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-5.png",
+      "sha256": "ca6f49989deb96050b0b7305054fc5277ea238a0768121cef2eafd686a7c638b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-6.png",
+      "sha256": "c16ee38e70ed1e25f163f112f06d14af6941669a913198a22e9a229516c952a3"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-7.png",
+      "sha256": "8fd360756ac96d2b037d0cb318adae4a70c90273add6fba11306c7cbba96b728"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125-8.png",
+      "sha256": "b2bc145605b4a32ea910f087457049ec94a8e045c4f82fbb83c3df4fd33c4474"
+    },
+    {
+      "path": "ui/crosshair-previews/2-125.png",
+      "sha256": "9adb5f28f51a65fe78fc7a850c60758b865f0d593249a634b43a02d8690d3632"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-0.png",
+      "sha256": "041915565e02b4aa77db7f99f55c6561097179722ab10cda58c00d5fe756aea4"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-1.png",
+      "sha256": "eba3e69cc2e610424dc93218492049fcaec40df14783ddff25ab373240ed4d1b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-2.png",
+      "sha256": "a6a9f16e4e018ea1738fbe0e6aec7414a931f245a13be1ee1f72f3fbf161219a"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-3.png",
+      "sha256": "0a412cfc58941ef7bb284608f2ad318ceba7510aadc39d3d6864c912fb4fa035"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-4.png",
+      "sha256": "62b46baef3b5a12b1d49b551cd7482800ef6b99bb6b8e32ac41f44c602e6bd01"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-5.png",
+      "sha256": "df1b182cc0ac6af6c7baf4d634bb7efaa2e503324421f93681113f428b57fa3b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-6.png",
+      "sha256": "8c2165e7cce57558e36677b3ed3b237038227dfa10d5c92f27f8493bab96a134"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-7.png",
+      "sha256": "40f2ec0e91d116997ad3323d6b841c661cf21cbc3df530a362fdbece474aed04"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150-8.png",
+      "sha256": "a7713df8ac1ad72324c3aff1f91f935ec9ad6c82187fdd97477dd26d66bd6697"
+    },
+    {
+      "path": "ui/crosshair-previews/2-150.png",
+      "sha256": "041915565e02b4aa77db7f99f55c6561097179722ab10cda58c00d5fe756aea4"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-0.png",
+      "sha256": "1a30ed53574515b2f4e1a4e73d72774b07a5cae97c06aeb9b928c7b2e033f9dc"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-1.png",
+      "sha256": "3e6d9954c114852159e55d1b585dfbab0d1520021737e1317f32f0695112e0c3"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-2.png",
+      "sha256": "69ad84de3266f925b7ac47332fe44ab785b8aebd44a376230cb4676e1262e93c"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-3.png",
+      "sha256": "ab5f4e3a18f8945cbab314b91c667fc42c3da31796b93a4191032434d3025365"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-4.png",
+      "sha256": "e9f3824cbc10a659dfb84dd1684b8ac52074abe1bc078b0ead4162208542517e"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-5.png",
+      "sha256": "411b350e1876619cc1b3ae71edda64bd9bcf27ab9c0f25ea9d6bae57ad1e895d"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-6.png",
+      "sha256": "b5aef93616c4d07be3c0b4ae1aed7dec45bd4832852eaf221a589b2537303130"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-7.png",
+      "sha256": "021dd94547870d3adb7d9a61e701aa792fe4b7fd3c02f1d7e45805018ada0df5"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175-8.png",
+      "sha256": "e2a5a4492707661a0238db015455c0a446bc29cf5a82f2b5f0ac3307a8401b05"
+    },
+    {
+      "path": "ui/crosshair-previews/2-175.png",
+      "sha256": "1a30ed53574515b2f4e1a4e73d72774b07a5cae97c06aeb9b928c7b2e033f9dc"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-0.png",
+      "sha256": "2b5b0f4b5106c4b2fdff710507fb065e39a2caaa627bf3222db5d5c1714a3d15"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-1.png",
+      "sha256": "abbaa15021f34c46535a19ede6c9317325110ad468b58408dd2db60070db9742"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-2.png",
+      "sha256": "b2d8dda1adf3a4646040ea3285854acabf44b69832c5d7ae45e993815aa870b1"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-3.png",
+      "sha256": "174c17c25e7dfc1681b5678e1deeddf38edbec3c31d3a93e8985d9f09219cf9f"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-4.png",
+      "sha256": "a0427de62b511ac6f099ad4520b80edca88ce3c2224f023bfe5a86ec762aedfb"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-5.png",
+      "sha256": "4823f4c1c43a153d276c60bc093cbca7ea46e0411b70fc6bccf65f865b1b9ad4"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-6.png",
+      "sha256": "da7f932b5575c9c45fdf9a258a98a03c4f7030dc8bb1f1431a345bfe93c5a226"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-7.png",
+      "sha256": "51294cbb279a7f16167e71132ef0d37b044aebdc45f1f3c9279a66606f97d131"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200-8.png",
+      "sha256": "5caa0cc277d966cf1eba0a9784a900c4a1356e52a7f735139afb66cae1901d72"
+    },
+    {
+      "path": "ui/crosshair-previews/2-200.png",
+      "sha256": "2b5b0f4b5106c4b2fdff710507fb065e39a2caaa627bf3222db5d5c1714a3d15"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-0.png",
+      "sha256": "46aa382dbb2a52f0bf7bc71d414d82fe481717b6ffbc474863a8171e425d819b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-1.png",
+      "sha256": "f155c203b65905fa6a70e63bf09770babd7655d5adffeb2ad971456c0e4f8df2"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-2.png",
+      "sha256": "aa83ec783d3a1771ef42228c99931fda8f3f8f7dd29c8a22d557994bdb21e144"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-3.png",
+      "sha256": "2811eef34221d9eb1576ba28cf29d8a2893ea605280840360024d2f056183b3d"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-4.png",
+      "sha256": "94093c9bfec90af1830e8f53a59033f2a30b78b0311433922602b0ee14c72664"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-5.png",
+      "sha256": "0cef63cf1803a9be0a7363426c8526f33b7a1109361599d19a2cba520736a348"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-6.png",
+      "sha256": "0e48ba587089e07e11ca3c87fc0ba888b5a564bdc08c22c3270c51c3d085f4e9"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-7.png",
+      "sha256": "9ee66a56d36e1416cf48684fa9139caa4855fd45bf051cb80366aeddb39832e7"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50-8.png",
+      "sha256": "151081ff3457300f810ea9e189b9c1d30b3bdcb2c5c0b94ffa866f6ee62a060b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-50.png",
+      "sha256": "46aa382dbb2a52f0bf7bc71d414d82fe481717b6ffbc474863a8171e425d819b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-0.png",
+      "sha256": "9b250942ff775adc75a907dcc6a63ba7958c6640f85c8a0f453f31bcb7bd246a"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-1.png",
+      "sha256": "9d4b2876db18ed92b0382a8992b7ef41b8a80a420240a4968cac1c4793747f73"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-2.png",
+      "sha256": "c5ee41b6debaf5aaeb3e748486af920b07796a1e9205883eb563f35d687b2e60"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-3.png",
+      "sha256": "d1c60edc5ba0917ca6cd0cc1f2d3f41f4527a1f6c44966d4b9d2d5e9aa315b40"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-4.png",
+      "sha256": "b41e3a8b2c7dd98dda5ba82f965a429491a512503f14d931eb4fae853ac0de77"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-5.png",
+      "sha256": "9fd5d129c3c69db5ccda4021261457853e2a9ba0643d95fd2fa63e01b2313a8d"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-6.png",
+      "sha256": "feb951bf39ab57c6ae85e093b34c61b7b826cadaa66025059b5e33c1c9ea56a4"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-7.png",
+      "sha256": "c18b816e16fc1323f24273ffe90999866c33f8aebf948e56114a00da0928df7b"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75-8.png",
+      "sha256": "86fdc4bb15d3eca0ddfe4e7ed414d226f0985a3074be1603adc3201747bb00e8"
+    },
+    {
+      "path": "ui/crosshair-previews/2-75.png",
+      "sha256": "9b250942ff775adc75a907dcc6a63ba7958c6640f85c8a0f453f31bcb7bd246a"
+    },
+    {
+      "path": "ui/hotd4-controls.ps1",
+      "sha256": "44c5f2b9753d128e09d25341fd016a67a94e6df69948d2832424cf9d5277c22f"
+    },
+    {
+      "path": "ui/hotd4-display.ps1",
+      "sha256": "40638b83b99a8eca0526170b3172b97495a6bc051ae940066cb308f326216e10"
+    },
+    {
+      "path": "ui/hotd4-native-crosshair.cs",
+      "sha256": "238f0c5f4eecf3f3aeef0f90c902b062ec8120be2f775925827caf79c0703d22"
+    },
+    {
+      "path": "ui/hotd4-native-crosshair.ps1",
+      "sha256": "e07c64dda71af17e9bb53a7c4196bcef65c55ab0caf621f3da74241ded60987f"
+    },
+    {
+      "path": "ui/hotd4sp-config.ps1",
+      "sha256": "83a6490e37abc60dc6f5f2f78fe3fb9cd5e9d65de7eec9b9a93555892b002323"
+    },
+    {
+      "path": "ui/hotd4sp-launcher.ps1",
+      "sha256": "b33155079b4a44de7eb8ec13d6a71c3765a2481a00882dd5fe26c40dfafe3805"
+    },
+    {
+      "path": "ui/hotd4sp-startmenu.ps1",
+      "sha256": "cd9b809daf40235e2a9d1bb01f207b49f19cbefc7afc7a7205e48aff820f187d"
+    },
+    {
+      "path": "ui/launch_hotd4sp.ps1",
+      "sha256": "8b4e6dfe433a42e73a5387bc9c1d23d987050a11ca9882faf845f02ad8a795e8"
+    },
+    {
+      "path": "ui/Launcher.cs",
+      "sha256": "d037e23cbce1c573957b7e9d07c57c11f41f125d110f9639d7fcd5a3aa61dc68"
+    },
+    {
+      "path": "ui/Play HOTD4 Special (VR OpenXR).cmd",
+      "sha256": "ca789652ca2c50948401e8ecc5a09e4256d45397443eff36a529463af88c51ae"
+    },
+    {
+      "path": "ui/Play HOTD4 Special with Frame Logging.cmd",
+      "sha256": "1935ccb80204d7e50cd2f0cc90a2c9601e0ab068c0046afff499087ef8b38c91"
+    },
+    {
+      "path": "ui/Play HOTD4 Special.cmd",
+      "sha256": "769ebbac1279a439441ef3f414ead7e76e18f3b7a33766524cf1ebe98efcf179"
+    },
+    {
+      "path": "ui/raw-input-devices.ps1",
+      "sha256": "d2908dfab3508ec0faef7b5347a0bcc73eee719042168e13845637078a7d9172"
+    },
+    {
+      "path": "ui/README.md",
+      "sha256": "a856b57259a67d14f6e30388a13c1b58a9d2eca3566981cfade0f14f87a42228"
+    },
+    {
+      "path": "ui/Settings.bat",
+      "sha256": "f890d2a1ae8cc134dcf0637e8e372c4800e37d67026e0cdd4f8dc6e801a8099c"
+    },
+    {
+      "path": "ui/Spela HOTD4SP (Skrivbord).bat",
+      "sha256": "ce01f0f22743734a750f3f33df7d6624c0504e04e194c39d755aba971beb0692"
+    },
+    {
+      "path": "ui/Spela HOTD4SP (VR OpenXR).bat",
+      "sha256": "ca789652ca2c50948401e8ecc5a09e4256d45397443eff36a529463af88c51ae"
+    }
+  ]
+}
