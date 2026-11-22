@@ -40,6 +40,10 @@ jobs:
         run: |
           cc -std=c11 -Wall -Wextra -Werror .release/test_mouse_shake.c -o /tmp/hotd4-mouse-shake-test
           /tmp/hotd4-mouse-shake-test
+      - name: Test solo input seat mapping
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_solo_player.c -o /tmp/hotd-solo-test
+          /tmp/hotd-solo-test
       - name: Test mixed co-op mouse isolation
         run: |
           cc -std=c11 -Wall -Wextra -Werror .release/test_coop_mouse.c -lm -o /tmp/hotd4-coop-mouse-test

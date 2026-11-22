@@ -286,6 +286,7 @@ unsigned   host_cabinet_buttons(void);
 void       host_cabinet_button_filter(unsigned (*filter)(unsigned));
 /* 0/1 mouse shake pulse while active; -1 preserves physical lightgun inputs. */
 int        host_mouse_shake(int active);
+int        host_solo_player(void); /* logical seat of the primary desktop gun */
 void       host_cabinet_switches_read(void);
 void       host_audio_toggle_mute(void);
 void       host_audio_pause_devices(int pause);

@@ -1,6 +1,6 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.0.1.zip** from the [v1.0.1 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.0.1), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.0.2.zip** from the [v1.0.2 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.0.2), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 
@@ -14,6 +14,7 @@ Normal HOTD4 ELF files are not interchangeable with Special. The source dump is 
 
 ## Included
 
+- Solo gun-seat selection: **G (P1)** or **Kate (P2)** under **Settings > Gameplay > Solo Player**. Your primary mouse/lightgun, crosshair, shooting, reload/shake and grenade controls follow the chosen seat.
 - English launcher and settings, arcade/practice chapters and frame-time CSV logging.
 - 16:9 scene presentation, HUD/ammo anchoring, restored path previews and fixes for unwanted wipe rectangles. Special's own cutscene/ending and Start-skip logic is retained.
 - Mouse shaking to escape grabs, including Justice's first grab before firing a shot. Native resistance, timing and success/failure behavior are preserved.
@@ -54,3 +55,9 @@ Each run writes a diagnostic log under `%LOCALAPPDATA%\HOTD4-Builder\Logs`. If S
 ## Switch between HOTD4 and HOTD4 Special
 
 Both start menus include **HOTD4** and **HOTD4 SPECIAL** buttons. Select the other installed game to open its menu, with its own chapters, settings and saved progress. The current menu closes during the handoff. Setup registers each installation in your Windows user profile; nearby installations are also detected automatically. If the games are elsewhere, choose **Locate other game...** once and select the other installed game folder. A missing game stays disabled until located. Install each game separately using its own supported arcade dump; linking the menus does not copy any game assets between installations.
+
+## Solo player choice
+
+In **Settings > Gameplay > Solo Player**, choose **G (P1)** (default) or **Kate (P2)** and **Save**, then start Arcade normally. The same selector is available under **Pause > Settings > Gameplay**; restart Arcade/Chapter to apply a change made during play. It supports absolute mouse, Raw Relative mouse and Raw Input lightguns. Your primary gun device remains the same physical device.
+
+Special uses **G**, not James. Unlike normal HOTD4, its original ride uses a shared Start/credit flow and shared life bar, and creates both native player objects. These native rules are preserved: the selector changes which seat your primary controls operate; it does not add an AI companion or change the story. Default **5/C** still adds credits and **1/Enter** still starts the ride/skips supported cutscenes. The other seat receives no shooting input unless a second gun is enabled. Dedicated mixed co-op/Parsec modes keep their normal assignments and disable the solo override. This setting applies to desktop; experimental OpenXR keeps its existing controller/dual-wield mapping.

@@ -249,11 +249,14 @@ function Show-Hotd4SPStartMenu {
                     </StackPanel>
                     <StackPanel Name="GameplayPage" Visibility="Collapsed">
                         <TextBlock Text="Gameplay" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                        <Label Content="Solo Player" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
+                        <ComboBox Name="SoloPlayer" Height="36" Margin="0,4,0,6"/>
+                        <TextBlock Name="SoloPlayerHint" Text="Primary mouse / gun follows your character. Start and credits remain shared. Restart the game to apply." TextWrapping="Wrap" FontSize="13" Foreground="#ADB4C2" Margin="0,0,0,6"/>
                         <Label Content="Lightgun Off-Screen Reload" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
                         <ComboBox Height="36" Margin="0,4,0,8" Name="OffscreenReload"/>
                         <TextBlock Text="Point outside the play area and pull the trigger to reload. Applies to both lightguns. Your gun software can also map its off-screen trigger to the Reload button." TextWrapping="Wrap" Foreground="#D0C7C2" FontSize="14" Margin="0,0,0,18"/>
                         <Label Content="Blood Splatter" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
-                        <ComboBox Height="36" Margin="0,4,0,18" Name="BloodSplatter"/>
+                        <ComboBox Height="36" Margin="0,4,0,8" Name="BloodSplatter"/>
                         <Button Name="SaveGameplay" Height="38" Margin="0,0,0,6" Content="Save"/>
                         <Button Name="GameplayBack" Height="38" Content="Back"/>
                     </StackPanel>
@@ -262,7 +265,7 @@ function Show-Hotd4SPStartMenu {
                         <ScrollViewer MaxHeight="350" VerticalScrollBarVisibility="Auto"><StackPanel>
                         <Label Content="Input Mode" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=InputMode}"/>
                         <ComboBox Height="36" Margin="0,4,0,6" Name="InputMode"/>
-                        <Label Content="Player 1 Device" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Gun1}"/>
+                        <Label Name="Gun1Label" Content="Player 1 Device" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Gun1}"/>
                         <ComboBox Height="36" Margin="0,4,0,6" Name="Gun1"/>
                         <Label Name="Gun2Label" Content="Player 2 Device" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Gun2}"/>
                         <ComboBox Height="36" Margin="0,4,0,6" Name="Gun2"/>
@@ -343,7 +346,7 @@ function Show-Hotd4SPStartMenu {
 
     $controls = @{}
     foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList',
-            'GameplayPage','GameplayOpen','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
+            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
         $controls[$name] = $window.FindName($name)
     }
 
@@ -503,7 +506,11 @@ function Show-Hotd4SPStartMenu {
         $mode=if($controls.InputMode.SelectedItem){[string]$controls.InputMode.SelectedItem.Tag}else{'1'}
         $controls.Gun1.IsEnabled=$mode -in '2','3','4';$controls.Gun2.IsEnabled=$mode -eq '2'
         $controls.Gun2.Visibility=if($mode -in '3','4'){'Collapsed'}else{'Visible'}
-        $controls.Gun2Label.Content=if($mode -in '3','4'){'Player 2: Parsec / remote mouse (automatic)'}else{'Player 2 Device'}
+        $kate=$mode -notin '3','4' -and $controls.SoloPlayer.SelectedItem -and $controls.SoloPlayer.SelectedItem.Tag -eq '1'
+        $controls.Gun1Label.Content=if($kate){'Primary Device: Kate (P2)'}else{'Player 1 Device'}
+        $controls.Gun2Label.Content=if($mode -in '3','4'){'Player 2: Parsec / remote mouse (automatic)'}elseif($kate){'Second Device: G (P1)'}else{'Player 2 Device'}
+        $controls.SoloPlayer.IsEnabled=$mode -notin '3','4'
+        $controls.SoloPlayerHint.Text=if($mode -in '3','4'){'Co-op modes use their normal P1/P2 assignments.'}else{'Primary mouse / gun follows your character. Start and credits remain shared. Restart the game to apply.'}
         $controls.MouseSpeed.IsEnabled=$mode -in '1','4';$controls.MouseSmoothing.IsEnabled=$mode -in '1','4'
     }
     $controls.InputMode.Add_SelectionChanged({ & $updateDeviceFields })
@@ -654,6 +661,12 @@ function Show-Hotd4SPStartMenu {
     $controls.PlayLogged.Add_Click({$state.Mode='0';$state.LogFrames=$true;$window.Close()})
     $controls.Chapters.Add_Click( { & $showPage 'ChapterPage' } )
     $controls.Options.Add_Click( { & $showPage 'OptionsPage' } )
+    $soloPath=Join-Path $RecompDir 'solo-player.txt'
+    foreach($pair in @(@('0','G (P1)'),@('1','Kate (P2)'))){$entry=[Windows.Controls.ComboBoxItem]::new();$entry.Tag=$pair[0];$entry.Content=$pair[1];[void]$controls.SoloPlayer.Items.Add($entry)}
+    $soloValue=if([IO.File]::Exists($soloPath) -and [IO.File]::ReadAllText($soloPath).Trim() -eq '1'){1}else{0}
+    $controls.SoloPlayer.SelectedIndex=$soloValue
+    $controls.SoloPlayer.Add_SelectionChanged({ & $updateDeviceFields })
+    & $updateDeviceFields
     $gameplayPaths=@{OffscreenReload=(Join-Path $RecompDir 'offscreen-reload.txt');BloodSplatter=(Join-Path $RecompDir 'blood-effects.txt')}
     foreach($field in 'OffscreenReload','BloodSplatter'){
         $value=if($field -eq 'OffscreenReload'){'1'}else{'0'}
@@ -664,7 +677,7 @@ function Show-Hotd4SPStartMenu {
     }
     $controls.GameplayOpen.Add_Click({& $showPage 'GameplayPage'})
     $controls.GameplayBack.Add_Click({& $showPage 'OptionsPage'})
-    $controls.SaveGameplay.Add_Click({foreach($field in 'OffscreenReload','BloodSplatter'){[IO.File]::WriteAllText($gameplayPaths[$field],[string]$controls[$field].SelectedItem.Tag)};& $showPage 'OptionsPage'})
+    $controls.SaveGameplay.Add_Click({if($controls.SoloPlayer.IsEnabled){[IO.File]::WriteAllText($soloPath,[string]$controls.SoloPlayer.SelectedItem.Tag)};foreach($field in 'OffscreenReload','BloodSplatter'){[IO.File]::WriteAllText($gameplayPaths[$field],[string]$controls[$field].SelectedItem.Tag)};& $showPage 'OptionsPage'})
     $controls.InputOptions.Add_Click({ & $showPage 'InputPage' })
     $controls.InputBack.Add_Click({ & $showPage 'OptionsPage' })
     $controls.SaveInput.Add_Click({

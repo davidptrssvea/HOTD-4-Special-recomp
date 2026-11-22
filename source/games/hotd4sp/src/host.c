@@ -142,8 +142,10 @@ static unsigned mouse_grab_buttons(unsigned buttons)
     int caught = mgr && (rd32(mgr + 0x68) || rd32(mgr + 0x88) || rd32(mgr + 0x90));
     int shake = host_mouse_shake(caught);
     if (caught && shake >= 0) {
-        buttons &= ~(CAB_P1_RELOAD | CAB_P1_FIREMODE);
-        if (shake) buttons |= CAB_P1_RELOAD;
+        unsigned reload=host_solo_player()?CAB_P2_RELOAD:CAB_P1_RELOAD;
+        unsigned firemode=host_solo_player()?CAB_P2_FIREMODE:CAB_P1_FIREMODE;
+        buttons &= ~(reload|firemode);
+        if (shake) buttons |= reload;
     }
     return buttons;
 }
@@ -338,7 +340,7 @@ static void h_reload(CPU *c)
 {
     uint32_t self=c->eax,pl=rd8(self+0x34),manager=rd32(0x0a69f934u),trigger=0,saved=0;
     int mx,my,w,h;host_mouse_state(&mx,&my,NULL);
-    if(pl==1 && !host_gun2_state(&mx,&my))mx=my=-100000;
+    if((pl^host_solo_player())==1 && !host_gun2_state(&mx,&my))mx=my=-100000;
     lindbergh_window_size(&w,&h);
     if(pl<2 && manager && (mx<0 || my<0 || mx>=w || my>=h)){
         trigger=manager+0x3c+pl*36;saved=rd32(trigger);wr32(trigger,1);
@@ -397,7 +399,7 @@ static void h_gun_pos(CPU *c)
      * wielding) answers from the second pointer, not the first */
     uint32_t player = rd32(c->esp + 20);
     int mx, my, w, h;
-    if (player == 1) { if (!host_gun2_state(&mx, &my)) mx = my = -100000; }
+    if ((player ^ host_solo_player()) == 1) { if (!host_gun2_state(&mx, &my)) mx = my = -100000; }
     else host_mouse_state(&mx, &my, NULL);
     lindbergh_window_size(&w, &h);
     int on = mx >= 0 && my >= 0 && mx < w && my < h;
@@ -517,6 +519,7 @@ static const LgGameProfile k_profile = {
     .width = 1360, .height = 768,
 #endif
     .aim = { 1, 0, 1, 0 },
+    .solo_characters = 2, /* shared ride Start/credits; selectable gun seat */
     /* the seats: turned, shaken and blown at by a board on the first serial port */
     .ride_board = "/dev/ttyS0",
     /* its language follows the region in the EEPROM's system data */

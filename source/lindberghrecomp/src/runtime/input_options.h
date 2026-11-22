@@ -4,6 +4,7 @@
 #include <SDL_syswm.h>
 #include "coop_mouse.h"
 static int input_pref_mode, input_active_mode, input_pref_aa, input_prefs_loaded;
+static int input_pref_solo,input_active_solo;
 static int raw_suspended;
 static float input_mouse_speed;
 static int input_mouse_smoothing;
@@ -75,6 +76,8 @@ static void input_options_load(void)
     if(!*input_guns[0])strcpy(input_guns[0],"auto");
     if(!*input_guns[1])strcpy(input_guns[1],"disabled");
     memcpy(raw_active_guns,input_guns,sizeof raw_active_guns);
+    if(input_read("solo-player.txt",value,sizeof value) && !strcmp(value,"1"))input_pref_solo=1;
+    input_active_solo=input_pref_solo;
     input_active_mode=input_pref_mode;
     settings()->raw_mouse=input_active_mode==1;
     if(input_active_mode>=2)settings()->mouse_grab=0;
@@ -123,12 +126,13 @@ static void input_option_cycle(int row, int delta)
 }
 static void input_gun_label(int pl, wchar_t *out, size_t cap)
 {
+    int logical=pl ^ solo_player_enabled(game_profile()->solo_characters,input_pref_solo,input_pref_mode);
     if(pl==1 && input_pref_mode>=3){swprintf(out,cap,L"P2 Device  < Parsec / injected mouse >");return;}
-    if(!_stricmp(input_guns[pl],"auto")){swprintf(out,cap,L"P%d Device  < Auto: absolute gun >",pl+1);return;}
-    if(!_stricmp(input_guns[pl],"disabled")){swprintf(out,cap,L"P%d Device  < Disabled >",pl+1);return;}
+    if(!_stricmp(input_guns[pl],"auto")){swprintf(out,cap,L"P%d Device  < Auto: absolute gun >",logical+1);return;}
+    if(!_stricmp(input_guns[pl],"disabled")){swprintf(out,cap,L"P%d Device  < Disabled >",logical+1);return;}
     /* VID/PID and interface identify the same device in both menus. */
     const char *id=strstr(input_guns[pl],"VID_"); if(!id)id=input_guns[pl];
-    swprintf(out,cap,L"P%d Device  < %.32hs >",pl+1,id);
+    swprintf(out,cap,L"P%d Device  < %.32hs >",logical+1,id);
 }
 static int raw_select_player(HANDLE device, const char *path, int absolute)
 {

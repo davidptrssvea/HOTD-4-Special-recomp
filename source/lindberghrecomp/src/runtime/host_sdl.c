@@ -41,6 +41,7 @@ static void mac_activate(void)
 #include <windows.h>
 #endif
 #include "lindbergh_rt.h"
+#include "solo_player.h"
 #include "gl_posix.h"
 #include "host_settings.h"
 #include "game_profile.h"
@@ -302,6 +303,14 @@ int host_hotd4_start_binding(void){return hc_get(ACT_START1);}
 #define raw_held 0u
 #define remote_held 0u
 #endif
+int host_solo_player(void)
+{
+#if defined(HOTD4_DESKTOP_PAUSE) && !defined(LINDBERGH_OPENXR)
+    return solo_player_enabled(game_profile()->solo_characters,input_active_solo,input_active_mode);
+#else
+    return 0;
+#endif
+}
 
 static pthread_mutex_t g_mouse_shake_mutex = PTHREAD_MUTEX_INITIALIZER;
 static MouseShake g_mouse_shake;
@@ -738,18 +747,24 @@ void host_cabinet_input(CabinetInput *out)
     cabinet_p2_test();
     g_cab.gun2 = g_gun2_on;
     if (g_gun2_on) gun_reading(g_gun2_px, g_gun2_py, w, h, &g_cab.gun2_x, &g_cab.gun2_y);
-#if !defined(LINDBERGH_OPENXR)
-    if (stereo_wide(NULL, NULL, NULL) || stereo_enabled()) {      /* the HUD keeps clear of them */
-        stereo_set_gun(g_cab.gun_x, g_cab.gun_y);
-        stereo_set_gun2(g_gun2_on ? g_cab.gun2_x : -100000, g_gun2_on ? g_cab.gun2_y : -100000);
-    }
-#endif
     g_cab.screen_w = (int)w;
     g_cab.screen_h = (int)h;
     g_cab.buttons = g_auto | (g_scripted ? 0 : g_held | g_pad_held | raw_held | remote_held);
     *out = g_cab;
     if (!g_scripted) out->buttons |= g_cab_latch;
     if(!game_profile()->joystick)out->buttons=gameplay_offscreen_buttons(out->buttons,gameplay_offscreen_reload(),g_mouse_x,g_mouse_y,g_gun2_on,g_gun2_px,g_gun2_py,g_win.w,g_win.h);
+    if(host_solo_player()){
+        out->buttons=solo_player_game_buttons(out->buttons,1,game_profile()->solo_characters==2);
+        if(game_profile()->solo_characters!=2){unsigned coin=out->coins[0];out->coins[0]=out->coins[1];out->coins[1]=coin;}
+        out->gun_x=g_gun2_on?g_cab.gun2_x:-100000;out->gun_y=g_gun2_on?g_cab.gun2_y:-100000;
+        out->gun2_x=g_cab.gun_x;out->gun2_y=g_cab.gun_y;out->gun2=1;
+    }
+#if !defined(LINDBERGH_OPENXR)
+    if(stereo_wide(NULL,NULL,NULL) || stereo_enabled()){
+        stereo_set_gun(out->gun_x,out->gun_y);
+        stereo_set_gun2(out->gun2?out->gun2_x:-100000,out->gun2?out->gun2_y:-100000);
+    }
+#endif
     if (g_cab_button_filter) out->buttons = g_cab_button_filter(out->buttons);
     {   /* What the board reports, whenever it changes - and the gun, at most
          * once a second - so a report of "nothing registers" can be checked
@@ -772,6 +787,7 @@ unsigned host_cabinet_buttons(void)
 {
     unsigned buttons = g_auto | (g_scripted ? 0 : g_held | g_pad_held | raw_held | remote_held | g_cab_latch);
     if(!game_profile()->joystick)buttons=gameplay_offscreen_buttons(buttons,gameplay_offscreen_reload(),g_mouse_x,g_mouse_y,g_gun2_on,g_gun2_px,g_gun2_py,g_win.w,g_win.h);
+    buttons=solo_player_game_buttons(buttons,host_solo_player(),game_profile()->solo_characters==2);
     return g_cab_button_filter ? g_cab_button_filter(buttons) : buttons;
 }
 
@@ -1636,7 +1652,8 @@ static void red_crosshair(float cx, float cy, float scale)
 static void draw_player_crosshair(int win_w, int win_h, int player)
 {
     if (!settings()->crosshair || win_w <= 0 || win_h <= 0 || g_win.w <= 0 || g_win.h <= 0) return;
-    int mx=player?g_gun2_px:g_mouse_x, my=player?g_gun2_py:g_mouse_y;
+    int physical=player^host_solo_player();
+    int mx=physical?g_gun2_px:g_mouse_x, my=physical?g_gun2_py:g_mouse_y;
     if (mx < 0 || my < 0 || mx >= g_win.w || my >= g_win.h) return;
     crosshair_drawing_player=player;
 
@@ -1799,8 +1816,8 @@ restore_crosshair_state:
 
 static void draw_crosshair_overlay(int win_w, int win_h)
 {
-    draw_player_crosshair(win_w,win_h,0);
-    if (g_gun2_on) draw_player_crosshair(win_w,win_h,1);
+    draw_player_crosshair(win_w,win_h,host_solo_player());
+    if (g_gun2_on) draw_player_crosshair(win_w,win_h,host_solo_player()^1);
     crosshair_drawing_player=0;
 }
 
@@ -1843,7 +1860,7 @@ static const wchar_t *achievement_descriptions[12];
 static GLuint achievement_star_texture(int metal);
 static int achievement_is_unlocked(int id);
 static int achievement_count(void);
-static int menu_row_count(const PauseMenu *menu) { return menu->settings_page==6?3:menu->settings_page==1?(hotd4_special_menu()?9:10):menu->settings_page==2?9:hotd4_special_menu()?4:7; }
+static int menu_row_count(const PauseMenu *menu) { return menu->settings_page==6?(game_profile()->solo_characters?4:3):menu->settings_page==1?(hotd4_special_menu()?9:10):menu->settings_page==2?9:hotd4_special_menu()?4:7; }
 
 static int menu_step(const PauseMenu *menu){return menu->settings_page==2?42:menu->settings_page==1?38:menu->settings_page==6?42:ROW_STEP;}
 static int menu_height(const PauseMenu *menu){return menu->settings_page==2?36:menu->settings_page==1?32:menu->settings_page==6?36:ROW_HEIGHT;}
@@ -1982,7 +1999,8 @@ static int pause_panel(PauseMenu *menu)
             wchar_t offscreen[96],blood[96];
             swprintf(offscreen,96,L"Lightgun Off-Screen Reload  < %ls >",gameplay_offscreen_reload()?L"On":L"Off");
             swprintf(blood,96,L"Blood Splatter  < %ls >",gameplay_blood_splatter()?L"Enhanced":L"Original");
-            const wchar_t *gameplay_items[]={offscreen,blood,L"Back"};
+            wchar_t solo[100];swprintf(solo,100,L"Solo Player  < %ls >",input_pref_mode>=3?L"Co-op assignments":input_pref_solo?L"Kate (P2)":L"G (P1)");
+            const wchar_t *gameplay_items[]={offscreen,blood,game_profile()->solo_characters?solo:L"Back",L"Back"};
             const wchar_t *special_gameplay[]={offscreen,L"Back"};
             const wchar_t **items=menu->settings_page==6?gameplay_items:menu->settings_page==2?input_items:menu->settings_page?(hotd4_special_menu()?special_settings:settings_items):(hotd4_special_menu()?special_items:main_items);
             for (int i = 0; i < menu_row_count(menu); ++i) {
@@ -1994,6 +2012,7 @@ static int pause_panel(PauseMenu *menu)
                 int available = menu->settings_page != 2 ||
                     (i==1 ? input_pref_mode>=2 : i==2 ? input_pref_mode==2 :
                      (i==4 || i==5) ? (input_pref_mode==1 || input_pref_mode==4) : 1);
+                if(menu->settings_page==6 && i==2 && game_profile()->solo_characters && input_pref_mode>=3)available=0;
                 SelectObject(dc,item);
                 SetTextColor(dc,available ? white : muted);
                 RECT text_box={49,y,PANEL_W-45,y+menu_height(menu)};
@@ -2001,7 +2020,8 @@ static int pause_panel(PauseMenu *menu)
             }
             pause_text(dc, hint, 32, 515, menu->settings_page == 2 ?
                        input_pref_mode>=3 ? L"P1: gun buttons. P2: mouse / shooting keys. Restart to apply." :
-                       L"Mouse tuning is live. Restart to apply input mode or MSAA." : menu->settings_page ?
+                       L"Mouse tuning is live. Restart to apply input mode or MSAA." : menu->settings_page==6 && game_profile()->solo_characters?
+                       L"Restart Arcade / Chapter to apply Solo Player. Co-op keeps its normal seats." : menu->settings_page ?
                        L"Arrow keys to adjust     Enter to select     Esc to go back" :
                        L"Arrow keys or mouse     Enter to select     Esc to resume", muted);
         }
@@ -2522,6 +2542,8 @@ static int hotd4_pause_loop(int w, int h)
                     int off=gameplay_offscreen_reload(),blood=gameplay_blood_splatter();
                     gameplay_options_set(menu.selected==0?!off:off,menu.selected==1?!blood:blood);
                     gameplay_options_save();redraw=1;
+                }else if((activate || delta) && menu.selected==2 && game_profile()->solo_characters){
+                    if(input_pref_mode<3){input_pref_solo=!input_pref_solo;input_write("solo-player.txt",input_pref_solo?"1":"0");redraw=1;}
                 }else if(activate){menu.settings_page=1;menu.selected=hotd4_special_menu()?7:8;redraw=1;}
             } else if (menu.settings_page == 2) {
                 if ((activate || delta) && menu.selected < 6) {
