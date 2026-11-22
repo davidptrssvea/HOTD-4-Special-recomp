@@ -27,3 +27,7 @@ native-crosshair-source.txt
 /build-openxr/
 /build-desktop/
 hotd4sp-menu.jpg
+
+/.hotd4-setup.lock
+/cache/
+/Setup Logs/

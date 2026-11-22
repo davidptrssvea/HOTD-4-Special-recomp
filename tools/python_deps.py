@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import sys
+import time
 import urllib.request
 import zipfile
 
@@ -42,10 +43,19 @@ def ensure(cache, no_download=False):
         if no_download:
             raise RuntimeError('Verified pyelftools cache is missing or damaged. Run Setup once without -NoDownload to repair it.')
         print('Downloading the pinned pyelftools dependency from PyPI...', flush=True)
-        with urllib.request.urlopen(URL, timeout=60) as response:
-            data = response.read(8 * 1024 * 1024)
-        if digest(data) != SHA256:
-            raise RuntimeError('pyelftools download failed SHA-256 verification; no Python modules were installed.')
+        for attempt in range(3):
+            try:
+                url = URL if attempt < 2 else URL + '?hotd4_retry=' + str(time.time_ns())
+                with urllib.request.urlopen(url, timeout=60) as response:
+                    data = response.read(8 * 1024 * 1024)
+                if digest(data) != SHA256:
+                    raise RuntimeError('pyelftools download failed SHA-256 verification (received ' + digest(data) + ').')
+                break
+            except (OSError, RuntimeError) as error:
+                print(f'Python dependency attempt {attempt+1}/3 failed: {error}', flush=True)
+                if attempt == 2:
+                    raise RuntimeError('pyelftools download failed after 3 attempts; no Python modules were installed. ' + str(error)) from error
+                time.sleep(2 * (attempt + 1))
         cache.mkdir(parents=True, exist_ok=True)
         pending = cache / (WHEEL + '.partial')
         pending.write_bytes(data)

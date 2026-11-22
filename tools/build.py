@@ -10,6 +10,7 @@ import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+from build_support import run, build_jobs
 EXPECTED = json.loads((ROOT / 'tools/elf-variants.json').read_text())['prepared_sha256']
 
 
@@ -32,20 +33,17 @@ def find_dump(path):
     raise ValueError('Select the extracted HOTD4 Special folder containing elf/hod4M.elf and fs.')
 
 
-def run(args, cwd=None, stdout=None):
-    print('+ ' + ' '.join(map(str, args)), flush=True)
-    subprocess.run(list(map(str, args)), cwd=cwd, stdout=stdout, check=True)
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dump', required=True)
     ap.add_argument('--output', required=True)
     ap.add_argument('--toolchain', required=True)
-    ap.add_argument('--jobs', type=int, default=4)
+    ap.add_argument('--jobs', type=int, default=0)
     ap.add_argument('--openxr', action='store_true')
     ap.add_argument('--validate-only', action='store_true')
     a = ap.parse_args()
+    a.jobs = build_jobs(a.jobs)
+    print(f'Compiler workers: {a.jobs} (use -Jobs N in Setup to override).', flush=True)
     os.environ['PYTHONUNBUFFERED'] = '1'
     dump = find_dump(Path(a.dump))
     print('Verified HOTD4 Special arcade dump:', dump, flush=True)
@@ -141,6 +139,11 @@ def main():
          '/out:' + str(app / 'Play HOTD4 Special.exe').replace('/', '\\'),
          str(ROOT / 'ui/Launcher.cs').replace('/', '\\')])
     (out / 'Play HOTD4 Special.cmd').write_text('@echo off\r\nstart "" "%~dp0HOTD4SP_Recomp\\Play HOTD4 Special.exe"\r\n', newline='')
+    try:
+        run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', app / 'hotd4-game-library.ps1',
+             '-RegisterOnly', '-LibraryRecompDir', app, '-LibraryGame', 'Special'])
+    except subprocess.CalledProcessError:
+        print('The game was installed, but automatic library registration failed. Use Locate other game in the start menu.', flush=True)
     licenses = app / 'licenses'
     licenses.mkdir(exist_ok=True)
     for label, file in [('ports', source / 'LICENSE'), ('lindberghrecomp', source / 'lindberghrecomp/LICENSE'), ('pcrecomp', source / 'lindberghrecomp/pcrecomp/LICENSE')]:

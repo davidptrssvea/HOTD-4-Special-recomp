@@ -1,4 +1,5 @@
-﻿function Show-Hotd4SPStartMenu {
+﻿. (Join-Path $PSScriptRoot 'hotd4-game-library.ps1')
+function Show-Hotd4SPStartMenu {
     param(
         [Parameter(Mandatory)] [string] $RecompDir,
         [Parameter(Mandatory)] [int] $DesktopWidth,
@@ -738,6 +739,7 @@
             }
         }
     } )
+    Add-Hotd4GameSwitcher -Window $window -MainPage $controls.MainPage -RecompDir $RecompDir -CurrentGame Special
     [void] $window.ShowDialog()
     if ($null -ne $state.Mode) { return $state }
 }

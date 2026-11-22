@@ -37,9 +37,12 @@ class DependencyTests(unittest.TestCase):
         self.data = fixture()
         self.pin = patch.object(deps, 'SHA256', hashlib.sha256(self.data).hexdigest())
         self.pin.start()
+        self.sleep = patch.object(deps.time, 'sleep')
+        self.sleep.start()
 
     def tearDown(self):
         self.pin.stop()
+        self.sleep.stop()
         for name in list(sys.modules):
             if name == 'elftools' or name.startswith('elftools.'):
                 del sys.modules[name]
@@ -75,10 +78,17 @@ class DependencyTests(unittest.TestCase):
         self.assertFalse((self.target / 'elftools').exists())
 
     def test_bad_download_cannot_install(self):
-        with patch.object(deps.urllib.request, 'urlopen', return_value=io.BytesIO(b'not the pinned wheel')):
+        with patch.object(deps.urllib.request, 'urlopen', side_effect=lambda *a,**k: io.BytesIO(b'not the pinned wheel')) as download:
             with self.assertRaisesRegex(RuntimeError, 'SHA-256'):
                 self.ensure()
+        self.assertEqual(download.call_count, 3)
         self.assertFalse((self.target / 'elftools').exists())
+
+    def test_partial_download_recovers(self):
+        with patch.object(deps.urllib.request, 'urlopen', side_effect=[OSError('connection reset'),io.BytesIO(b'truncated'),io.BytesIO(self.data)]) as download:
+            self.ensure()
+        self.assertEqual(download.call_count, 3)
+        self.assertTrue(deps.existing_reader())
 
     def test_existing_legacy_cache_needs_no_network(self):
         self.target.rmdir()

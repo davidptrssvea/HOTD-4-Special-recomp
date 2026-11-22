@@ -1,5 +1,5 @@
 ﻿[CmdletBinding()]
-param([string]$DumpPath,[string]$InstallDir,[string]$ToolchainPath,[int]$Jobs=4,[switch]$ValidateOnly,[switch]$NoDownload,[switch]$OpenXR)
+param([string]$DumpPath,[string]$InstallDir,[string]$ToolchainPath,[int]$Jobs=0,[switch]$ValidateOnly,[switch]$NoDownload,[switch]$OpenXR,[switch]$RepairTools)
 $ErrorActionPreference='Stop'
 $ProgressPreference='SilentlyContinue'
 [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
@@ -7,19 +7,27 @@ function Get-Sha256([string]$Path) {
     $stream=[IO.File]::OpenRead($Path);$sha=[Security.Cryptography.SHA256]::Create()
     try{return [BitConverter]::ToString($sha.ComputeHash($stream)).Replace('-','')}finally{$stream.Dispose();$sha.Dispose()}
 }
-function Invoke-Checked([string]$Exe,[string[]]$Arguments) {
-    & $Exe @Arguments
-    if($LASTEXITCODE -ne 0){throw "Command failed ($LASTEXITCODE): $Exe"}
-}
+$setupPhase='Package and dump validation'
+$setupLocks=@();$setupLog=$null;$transcribing=$false
+try {
+    $logDir=Join-Path $env:LOCALAPPDATA 'HOTD4-Builder\Logs'
+    [void][IO.Directory]::CreateDirectory($logDir)
+    $setupLog=Join-Path $logDir ('Setup-'+[DateTime]::Now.ToString('yyyyMMdd-HHmmss')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,8)+'.log')
+    Start-Transcript -LiteralPath $setupLog -Force | Out-Null;$transcribing=$true
+    Write-Host "Setup log: $setupLog"
+} catch { Write-Host "Setup logging could not start: $($_.Exception.Message)" }
 try {
     $manifest=Get-Content -LiteralPath "$PSScriptRoot\package-manifest.json" -Raw -Encoding UTF8 | ConvertFrom-Json
     foreach($file in $manifest.files){
         $path=Join-Path $PSScriptRoot $file.path
         if(!(Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Sha256 $path) -ne $file.sha256){throw "Package integrity check failed: $($file.path). Extract a fresh copy."}
     }
+    . (Join-Path $PSScriptRoot 'tools\setup_support.ps1')
+    Set-BuilderPhase '1/6 Package and dump verification'
     $interactive = !$DumpPath
     if($interactive){
         Add-Type -AssemblyName System.Windows.Forms
+        Write-Host 'Waiting for your dump selection in the folder dialog...'
         $picker=New-Object Windows.Forms.FolderBrowserDialog
         $picker.Description='Select your extracted HOTD4 Special arcade dump (containing elf and fs)'
         if($picker.ShowDialog() -ne [Windows.Forms.DialogResult]::OK){Write-Host 'Setup cancelled.';exit 0}
@@ -54,6 +62,25 @@ try {
     if(!$InstallDir){$InstallDir=Join-Path $PSScriptRoot 'HOTD4SP-PC'}
     if(!$ToolchainPath){$ToolchainPath=Join-Path $env:LOCALAPPDATA 'HOTD4-Builder\msys64'}
     $ToolchainPath=[IO.Path]::GetFullPath($ToolchainPath)
+    $InstallDir=[IO.Path]::GetFullPath($InstallDir)
+    Set-BuilderPhase '2/6 Host, paths and writable folders'
+    Test-BuilderPreflight $PSScriptRoot $dump $InstallDir $ToolchainPath
+    if($RepairTools -and $NoDownload){throw '-RepairTools needs downloads. Run without -NoDownload.'}
+    $parent=Split-Path $ToolchainPath -Parent
+    $setupLocks+=Enter-BuilderLock (Join-Path $PSScriptRoot '.hotd4-setup.lock')
+    $setupLocks+=Enter-BuilderLock (Join-Path $parent ('.hotd4-'+(Split-Path $ToolchainPath -Leaf)+'.lock'))
+    $setupLocks+=Enter-BuilderLock (Join-Path $InstallDir '.hotd4-setup.lock')
+    foreach($key in @('PYTHONHOME','PYTHONPATH','CC','CXX','CFLAGS','CXXFLAGS','LDFLAGS','LIBRARY_PATH','CPATH','C_INCLUDE_PATH','CPLUS_INCLUDE_PATH','CMAKE_TOOLCHAIN_FILE','CMAKE_PREFIX_PATH')){
+        [Environment]::SetEnvironmentVariable($key,$null,'Process')
+    }
+    $env:PYTHONUTF8='1';$env:PYTHONUNBUFFERED='1'
+    if($RepairTools -and [IO.Directory]::Exists($ToolchainPath)){
+        if(![IO.File]::Exists((Join-Path $ToolchainPath 'etc/pacman.conf')) -and ![IO.File]::Exists((Join-Path $ToolchainPath 'usr/bin/msys-2.0.dll'))){throw 'The chosen repair folder does not look like an MSYS2 cache. Select the existing MSYS2 folder.'}
+        $backup=$ToolchainPath+'.backup-'+[Guid]::NewGuid().ToString('N')
+        [IO.Directory]::Move($ToolchainPath,$backup)
+        Write-Host "Previous tool cache preserved: $backup"
+    }
+    Set-BuilderPhase '3/6 Verified build tools'
     $bash=Join-Path $ToolchainPath 'usr\bin\bash.exe'
     if(!(Test-Path -LiteralPath $bash)){
         if($NoDownload){throw 'Build tools are missing. Run without -NoDownload to install them automatically.'}
@@ -62,14 +89,9 @@ try {
         $name='msys2-base-x86_64-20260927.sfx.exe'
         $archive=Join-Path $parent $name
         $expected='AD336CCCFDA47758B5E15CDA993FBBA421115CB0B126697DAEF1EE4DFE37209F'
-        if (!(Test-Path -LiteralPath $archive) -or (Get-Sha256 $archive) -ne $expected) {
-            Write-Host 'Downloading the isolated MSYS2 build tools...'
-            Invoke-WebRequest -UseBasicParsing -Uri "https://repo.msys2.org/distrib/x86_64/$name" -OutFile "$archive.partial"
-            if ((Get-Sha256 "$archive.partial") -ne $expected) {
-                throw 'Build-tools download failed its SHA-256 check.'
-            }
-            Move-Item -LiteralPath "$archive.partial" -Destination $archive -Force
-        }
+        Get-VerifiedBuilderArchive -Destination $archive -ExpectedHash $expected -ExpectedSize 43117824 -Urls @(
+            "https://repo.msys2.org/distrib/x86_64/$name",
+            "https://github.com/msys2/msys2-installer/releases/download/2026-09-27/$name")
 
         Write-Host 'Extracting the isolated MSYS2 build tools...'
         $stage=Join-Path $parent ('.hotd4-msys2-' + [Guid]::NewGuid().ToString('N'))
@@ -84,6 +106,7 @@ try {
         # Keep that directory recoverable and install the complete verified tree.
         $backup=$null
         if (Test-Path -LiteralPath $ToolchainPath) {
+            if((Get-ChildItem -LiteralPath $ToolchainPath -Force | Select-Object -First 1) -and ![IO.File]::Exists((Join-Path $ToolchainPath 'etc/pacman.conf')) -and ![IO.File]::Exists((Join-Path $ToolchainPath 'usr/bin/msys-2.0.dll'))){throw 'The chosen tool-cache folder is not empty and does not look like MSYS2. Choose an empty folder; existing files were left in place.'}
             $backup=Join-Path $parent ('.hotd4-msys2-incomplete-' + [Guid]::NewGuid().ToString('N'))
             [IO.Directory]::Move((Resolve-Path -LiteralPath $ToolchainPath).Path, $backup)
         }
@@ -98,36 +121,40 @@ try {
     }
     $env:MSYSTEM='MINGW64';$env:CHERE_INVOKING='1';$env:MSYS2_PATH_TYPE='minimal'
     $ready=Join-Path $ToolchainPath '.hotd4-tools-ready-v1'
-    if(!(Test-Path -LiteralPath $ready)){
-        if($NoDownload){throw 'Build dependencies are not installed. Run without -NoDownload.'}
-        Write-Host 'Updating build tools and installing compiler, Python, SDL2 and OpenAL...'
-        # A core MSYS2 update can close this first shell; always reopen and
-        # require the second complete update and dependency install to succeed.
-        & $bash '--login' '-c' 'pacman -Syu --noconfirm'
-        Invoke-Checked $bash @('--login','-c','pacman -Syu --noconfirm && pacman -S --needed --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja mingw-w64-x86_64-python mingw-w64-x86_64-python-capstone mingw-w64-x86_64-SDL2 mingw-w64-x86_64-glew mingw-w64-x86_64-openal mingw-w64-x86_64-zlib')
-        Set-Content -LiteralPath $ready -Value '1'
-    }
+    $problems=@(Get-BuilderToolProblems $ToolchainPath)
+    if($problems.Count){
+        if($NoDownload){throw ('Cached build tools need repair: '+($problems -join ', ')+'. Run Setup without -NoDownload to repair them; use -RepairTools for a fresh tool cache if needed.')}
+        Write-Host ('Installing/repairing compiler and runtime packages: '+($problems -join ', '))
+        Invoke-Checked $bash @('--login','-c','pacman -Syu --noconfirm') -AllowFailure
+        Invoke-Checked $bash @('--login','-c','pacman -Syu --noconfirm && pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-libs mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja mingw-w64-x86_64-python mingw-w64-x86_64-python-capstone mingw-w64-x86_64-SDL2 mingw-w64-x86_64-glew mingw-w64-x86_64-openal mingw-w64-x86_64-zlib') -Attempts 3
+        $problems=@(Get-BuilderToolProblems $ToolchainPath)
+        if($problems.Count){throw ('The tool cache is still incomplete: '+($problems -join ', ')+'. Run Setup -RepairTools to rebuild the cache. The old cache will be preserved.')}
+    }else{Write-Host 'Existing compiler, headers and Python import verified.'}
+    Set-Content -LiteralPath $ready -Value '1'
     if($OpenXR -and !(Test-Path -LiteralPath (Join-Path $ToolchainPath 'mingw64\lib\cmake\openxr\OpenXRConfig.cmake'))){
         if($NoDownload){throw 'OpenXR SDK is missing. Run without -NoDownload to install it automatically.'}
         Write-Host 'Installing the OpenXR build dependency...'
-        Invoke-Checked $bash @('--login','-c','pacman -S --needed --noconfirm mingw-w64-x86_64-openxr-sdk')
+        Invoke-Checked $bash @('--login','-c','pacman -S --noconfirm mingw-w64-x86_64-openxr-sdk') -Attempts 3
     }
+    Set-BuilderPhase '4/6 Isolated Python dependencies'
     $python=Join-Path $ToolchainPath 'mingw64\bin\python.exe'
     # The pure-Python ELF reader is no longer published in MINGW64. Keep a
     # hash-verified copy in this isolated toolchain instead of changing pip
     # policy or requiring a separately installed Python.
     $pythonDeps=Join-Path $ToolchainPath 'hotd4-python'
     $pythonModules=Join-Path $pythonDeps 'pyelftools-0.33'
-    $env:PYTHONPATH=if($env:PYTHONPATH){$pythonModules+[IO.Path]::PathSeparator+$env:PYTHONPATH}else{$pythonModules}
+    $env:PYTHONPATH=$pythonModules
     $dependencyArgs=@((Join-Path $PSScriptRoot 'tools\python_deps.py'),'--cache',$pythonDeps)
     if($NoDownload){$dependencyArgs+='--no-download'}
     Invoke-Checked $python $dependencyArgs
     Invoke-Checked $python @('-c','import capstone; from elftools.elf.elffile import ELFFile')
     Write-Host 'Python build dependencies verified.'
+    Set-BuilderPhase '5/6 Local generation, compilation and installation'
     Write-Host 'Generating and compiling HOTD4 Special locally. This can take several minutes...'
     $buildArgs = @((Join-Path $PSScriptRoot 'tools\build.py'),'--dump',$dump,'--output',$InstallDir,'--toolchain',$ToolchainPath,'--jobs',[string]$Jobs)
     if($OpenXR){$buildArgs += '--openxr'}
     Invoke-Checked $python $buildArgs
+    Set-BuilderPhase '6/6 Local menu image and completion'
     $installedRoot=[IO.Path]::GetFullPath($InstallDir)
     try {
         Invoke-Checked $python @((Join-Path $PSScriptRoot 'tools\menu_background.py'),'--app',(Join-Path $installedRoot 'HOTD4SP_Recomp'),'--dump',(Join-Path $installedRoot 'hotd4sp'))
@@ -137,6 +164,11 @@ try {
     if($OpenXR){Write-Host "VR launcher: $(Join-Path $InstallDir 'HOTD4SP_Recomp\Play HOTD4 Special (VR OpenXR).cmd')"}
     Write-Host "Ready. Open: $(Join-Path $InstallDir 'HOTD4SP_Recomp\Play HOTD4 Special.exe')"
 } catch {
+    [Console]::Error.WriteLine("Setup failed during: $setupPhase")
     [Console]::Error.WriteLine($_.Exception.Message)
+    if($setupLog){[Console]::Error.WriteLine("Full setup log: $setupLog")}
     exit 1
+} finally {
+    foreach($handle in $setupLocks){$handle.Dispose()}
+    if($transcribing){Stop-Transcript | Out-Null}
 }

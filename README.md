@@ -1,6 +1,6 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.0.0.zip** from the [v1.0.0 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.0.0), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.0.1.zip** from the [v1.0.1 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.0.1), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 
@@ -42,3 +42,15 @@ For future updates, extract the new builder and select the same Special dump and
 The package contains hand-maintained host/runtime source, local generation/build scripts and procedural crosshair previews. It contains **no arcade ELF, game banks, textures, movie, audio, menu screenshot, prebuilt game executable, lifted game code, native crosshair cache, saved progress or cabinet NVRAM**. All lifting and asset processing happens on the user's own computer. Local game-derived files must never be committed or redistributed with the builder.
 
 Based on lindbergh-recomp-ports, lindberghrecomp and pcrecomp by sp00nz and contributors (including the lialan ports). Their MIT license notices are retained in source and copied to the installation; dependency license notices are copied from the toolchain. This project is unofficial and is not affiliated with Sega.
+
+## Setup diagnostics and recovery
+
+Setup verifies download size and SHA-256, retries interrupted or mismatched downloads, and tries the official GitHub mirror for the same pinned MSYS2 archive. Existing compiler executables, headers and Python imports are checked before a cached toolchain is reused. No checksum check is bypassed.
+
+The default compiler worker count adapts to available RAM and CPU cores; use `-Jobs 1` to reduce memory pressure further. Long-running commands print a periodic working message. Setup checks writable/protected paths and reports available disk space before downloading; keep the free-space allowance listed in the system requirements. Concurrent installers using the same builder, destination or tool cache are blocked.
+
+Each run writes a diagnostic log under `%LOCALAPPDATA%\HOTD4-Builder\Logs`. If Setup fails, send the latest log with the error report (review local paths/usernames before sharing). Rerun Setup to reuse verified downloads and repair missing tool packages. If the tool cache remains broken, run `Setup.cmd -RepairTools`: it preserves the previous recognizable MSYS2 folder under a `.backup-...` name and installs a fresh isolated cache. This needs internet access. Your original dump, installed settings and saves are retained.
+
+## Switch between HOTD4 and HOTD4 Special
+
+Both start menus include **HOTD4** and **HOTD4 SPECIAL** buttons. Select the other installed game to open its menu, with its own chapters, settings and saved progress. The current menu closes during the handoff. Setup registers each installation in your Windows user profile; nearby installations are also detected automatically. If the games are elsewhere, choose **Locate other game...** once and select the other installed game folder. A missing game stays disabled until located. Install each game separately using its own supported arcade dump; linking the menus does not copy any game assets between installations.
