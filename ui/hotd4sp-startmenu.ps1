@@ -1,4 +1,4 @@
-﻿. (Join-Path $PSScriptRoot 'hotd4-game-library.ps1')
+﻿. (Join-Path $PSScriptRoot 'hotd-game-library.ps1')
 function Show-Hotd4SPStartMenu {
     param(
         [Parameter(Mandatory)] [string] $RecompDir,
@@ -819,7 +819,7 @@ function Show-Hotd4SPStartMenu {
             }
         }
     } )
-    Add-Hotd4GameSwitcher -Window $window -MainPage $controls.MainPage -RecompDir $RecompDir -CurrentGame Special
+    [void](Add-Hotd4GameSwitcher $window $controls.MainPage $RecompDir Special $controls.Arcade $controls.Options)
     . (Join-Path $RecompDir 'hotd-update.ps1')
     Add-HotdUpdater $window $controls.MainPage $RecompDir Special
     [void] $window.ShowDialog()

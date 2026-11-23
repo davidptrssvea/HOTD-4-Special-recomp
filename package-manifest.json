@@ -7,7 +7,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "f13a8c28b68b39510a0bd5d88d7d8e5c085c57983a8a4ebb46c8b557ccae4178"
+      "sha256": "6d8928bd43f74da2a189e705960aa3b15606e8e5c41b053bb08451c40bdd758b"
     },
     {
       "path": "RELEASE-NOTES.md",
@@ -563,7 +563,7 @@
     },
     {
       "path": "tools/build.py",
-      "sha256": "f9eb4bb00c14e717bb03ba054a6010a68456e6ce5e09364baceb4f6891ec388c"
+      "sha256": "fdb0e20414f722eda9250b1c14dd0fc39e98c1fe37f9d35c2ffdc7fc43fa6454"
     },
     {
       "path": "tools/build_support.py",
@@ -599,7 +599,7 @@
     },
     {
       "path": "ui/Launcher.cs",
-      "sha256": "d037e23cbce1c573957b7e9d07c57c11f41f125d110f9639d7fcd5a3aa61dc68"
+      "sha256": "68890a7ef73bd84d7e089b3f5ac144f49763a879ca761d29805ca6ad03ca3575"
     },
     {
       "path": "ui/Play HOTD4 Special (VR OpenXR).cmd",
@@ -1486,8 +1486,8 @@
       "sha256": "843f4e1730662181cf5dea834ca955d8be12460d6de1e3af4b057510a6ac85cb"
     },
     {
-      "path": "ui/hotd4-game-library.ps1",
-      "sha256": "25809b0b3257e509109d8e6bb6a76c3b3d45a5085113186454321fc82db51112"
+      "path": "ui/hotd-game-library.ps1",
+      "sha256": "f155a81cc7c465d5bf90b72b38642c94d936edde1eb01ab51f2c1761f6c22f31"
     },
     {
       "path": "ui/hotd4-native-crosshair.cs",
@@ -1507,7 +1507,7 @@
     },
     {
       "path": "ui/hotd4sp-startmenu.ps1",
-      "sha256": "cb0308ad8b072694ca3aa0bd7983ddd9f8f60ddb388928e0ac788b6c51ccb68b"
+      "sha256": "0ae883ee71d1dfc65f32e86004f8f8b718b387bcb17434bffbdfd8549b9c87f1"
     },
     {
       "path": "ui/launch_hotd4sp.ps1",

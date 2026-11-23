@@ -28,6 +28,7 @@ internal static class Launcher {
      foreach(string arg in args) {
       if(arg.Equals("--settings",StringComparison.OrdinalIgnoreCase))ps.AddParameter("InitialPage","OptionsPage");
       else if(arg.Equals("--log",StringComparison.OrdinalIgnoreCase))ps.AddParameter("LogFrames");
+      else if(!vr && (arg.Equals("--no-launcher",StringComparison.OrdinalIgnoreCase) || arg.Equals("--skip-launcher",StringComparison.OrdinalIgnoreCase)))ps.AddParameter("NoMenu");
      }
      ps.Invoke();
      if(ps.HadErrors)throw new Exception(ps.Streams.Error[0].ToString());

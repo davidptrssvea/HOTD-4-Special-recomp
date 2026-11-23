@@ -77,9 +77,10 @@ The default compiler worker count adapts to available RAM and CPU cores; use `-J
 
 Each run writes a diagnostic log under `%LOCALAPPDATA%\HOTD4-Builder\Logs`. If Setup fails, send the latest log with the error report (review local paths/usernames before sharing). Rerun Setup to reuse verified downloads and repair missing tool packages. If the tool cache remains broken, run `Setup.cmd -RepairTools`: it preserves the previous recognizable MSYS2 folder under a `.backup-...` name and installs a fresh isolated cache. This needs internet access. Your original dump, installed settings and saves are retained.
 
-## Switch between HOTD4 and HOTD4 Special
+## Game Library
 
-Both start menus include **HOTD4** and **HOTD4 SPECIAL** buttons. Select the other installed game to open its menu, with its own chapters, settings and saved progress. The current menu closes during the handoff. Setup registers each installation in your Windows user profile; nearby installations are also detected automatically. If the games are elsewhere, choose **Locate other game...** once and select the other installed game folder. A missing game stays disabled until located. Install each game separately using its own supported arcade dump; linking the menus does not copy any game assets between installations.
+Open **Game Library** in the main menu to choose between installed copies of HOTD4, HOTD4 Special, HOTD EX and Scarlet Dawn. **Play** starts the game using its saved settings. **Settings** opens that game's own settings, and **Menu** opens its regular launcher for features such as chapter selection. Older installations may offer **Menu** only. Setup registers each installation for your Windows account. The library also checks nearby folders and remembered Setup locations. Use **Locate installed game...** if an existing installation is missing.
+
 
 ## Solo player choice
 

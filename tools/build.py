@@ -143,10 +143,10 @@ def main():
     (out / 'Play HOTD4 Special.cmd').write_text('@echo off\r\nstart "" "%~dp0HOTD4SP_Recomp\\Play HOTD4 Special.exe"\r\n', newline='')
     if not a.stage_update:
         try:
-            run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', app / 'hotd4-game-library.ps1',
+            run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', app / 'hotd-game-library.ps1',
                  '-RegisterOnly', '-LibraryRecompDir', app, '-LibraryGame', 'Special'])
         except subprocess.CalledProcessError:
-            print('The game was installed, but automatic library registration failed. Use Locate other game in the start menu.', flush=True)
+            print('The game was installed, but automatic library registration failed. Use Locate installed game in the Game Library.', flush=True)
     licenses = app / 'licenses'
     licenses.mkdir(exist_ok=True)
     for label, file in [('ports', source / 'LICENSE'), ('lindberghrecomp', source / 'lindberghrecomp/LICENSE'), ('pcrecomp', source / 'lindberghrecomp/pcrecomp/LICENSE')]:
