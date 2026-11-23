@@ -20,6 +20,9 @@ jobs:
       - name: Test Windows game discovery and handoff settings
         shell: powershell
         run: ./.release/test_game_library.ps1
+      - name: Test keyboard player bindings and saved preferences
+        shell: powershell
+        run: ./.release/test_keyboard_controls.ps1
       - name: Test complete display menus and saved preferences
         shell: powershell
         run: ./.release/test_display_controls.ps1
@@ -42,6 +45,10 @@ jobs:
         run: python3 .release/test_python_deps.py -v
       - name: Test build progress and memory limits
         run: python3 .release/test_build_support.py -v
+      - name: Test independent keyboard aiming
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror .release/test_keyboard_aim.c -lm -o /tmp/hotd4-keyboard-test
+          /tmp/hotd4-keyboard-test
       - name: Test mouse shake gestures
         run: |
           cc -std=c11 -Wall -Wextra -Werror .release/test_mouse_shake.c -o /tmp/hotd4-mouse-shake-test

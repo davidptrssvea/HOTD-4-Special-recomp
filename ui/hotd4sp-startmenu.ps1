@@ -159,9 +159,9 @@ function Show-Hotd4SPStartMenu {
             <Grid Width="1280" Height="720" KeyboardNavigation.TabNavigation="Cycle">
                 <Border Name="InputGuide" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,120,0,0" Width="440" Background="#ED101218" BorderBrush="#575962" BorderThickness="1" Padding="24">
                     <StackPanel>
-                        <TextBlock Text="Lightgun Setup" FontSize="22" Margin="0,0,0,18"/>
-                        <TextBlock Text="To escape a grab with a mouse, shake left/right or up/down. Reload does not break grabs. For Sinden, select Lightgun (Raw Input) and enable the white border in Settings. Start the Sinden software before playing." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2" Margin="0,0,0,16"/>
-                        <TextBlock Text="For Parsec co-op, choose Gun P1 + Mouse P2 and select the host's Sinden or DolphinBar as P1. The guest's injected mouse controls P2 automatically. Disable Exclusive Input in Parsec and join with P2 Coin / Start. For two local guns, use Lightgun (Raw Input) and select both devices." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2" Margin="0,0,0,16"/>
+                        <TextBlock Text="Input Setup" FontSize="22" Margin="0,0,0,18"/>
+                        <TextBlock Name="GeneralInputHelp" Text="To escape a grab with a mouse, shake left/right or up/down. Reload does not break grabs. For Sinden, select Lightgun (Raw Input) and enable the white border in Settings. Start the Sinden software before playing." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2" Margin="0,0,0,16"/>
+                        <TextBlock Name="CoopGuide" Text="For Parsec co-op, choose Gun P1 + Mouse P2 and select the host's Sinden or DolphinBar as P1. The guest's injected mouse controls P2 automatically. Disable Exclusive Input in Parsec and join with P2 Coin / Start. For two local guns, use Lightgun (Raw Input) and select both devices." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2" Margin="0,0,0,16"/>
                         <TextBlock Name="AaGuide" Text="Restart the game to apply input, AA and V-sync changes. V-sync affects desktop output; VR uses headset timing. If the GPU cannot create the selected MSAA mode, the game falls back to Off." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2"/>
                     </StackPanel>
                 </Border>
@@ -285,6 +285,7 @@ function Show-Hotd4SPStartMenu {
                                   ToolTip="Choose the arcade view whose height stays visible. Both options extend the sides to 16:9."/>
                         <Label Content="Input Mode" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=InputMode}"/>
                         <ComboBox Height="36" Margin="0,4,0,6" Name="InputMode"/>
+                        <TextBlock Name="KeyboardHelp" Text="Keyboard mode: P1 arrows + Right Ctrl / Right Shift / Right Alt; P2 WASD + Space / Q / E. Customize movement and actions in Key Bindings. Service: F10." TextWrapping="Wrap" FontSize="13" Foreground="#E9C38A" Margin="0,0,0,10" Visibility="Collapsed"/>
                         <Label Name="Gun1Label" Content="Player 1 Device" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Gun1}"/>
                         <ComboBox Height="36" Margin="0,4,0,6" Name="Gun1"/>
                         <Label Name="Gun2Label" Content="Player 2 Device" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Gun2}"/>
@@ -328,7 +329,7 @@ function Show-Hotd4SPStartMenu {
                             <TextBlock Text="KEY BINDINGS" FontSize="32" FontWeight="Bold"/>
                             <TextBlock Text="Select an action, then press your preferred key. Save applies your changes." Foreground="#ADB4C2" FontSize="14" Margin="0,8,0,0"/>
                         </StackPanel>
-                        <UniformGrid Grid.Row="1" Name="BindingsList" Rows="8" Columns="2"/>
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"><StackPanel Name="BindingsList"/></ScrollViewer>
                         <TextBlock Grid.Row="2" Name="BindingsStatus" TextWrapping="Wrap" Foreground="#E9C38A" FontSize="13" VerticalAlignment="Center"/>
                         <Grid Grid.Row="3">
                             <StackPanel Orientation="Horizontal">
@@ -368,7 +369,7 @@ function Show-Hotd4SPStartMenu {
 
     $controls = @{}
     foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList','Performance720p',
-            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','Gun1','Gun2','AntiAliasing','VSync','Aspect','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
+            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','GeneralInputHelp','KeyboardHelp','CoopGuide','Gun1','Gun2','AntiAliasing','VSync','Aspect','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
         $controls[$name] = $window.FindName($name)
     }
 
@@ -477,7 +478,7 @@ function Show-Hotd4SPStartMenu {
     $inputState = $inputDefaults.Clone()
     $choices = @{
         Framing = [ordered]@{'0'='4:3 Expanded'; '1'='5:3 Expanded'}
-        InputMode = [ordered]@{'0'='Mouse (Absolute)'; '1'='Mouse (Raw Relative)'; '2'='Lightgun (Raw Input)';'3'='Co-op: Gun P1 + Mouse P2';'4'='Co-op: Gun P1 + Mouse P2 (Relative)'}
+        InputMode = [ordered]@{'0'='Mouse (Absolute)'; '1'='Mouse (Raw Relative)'; '2'='Lightgun (Raw Input)';'3'='Co-op: Gun P1 + Mouse P2';'4'='Co-op: Gun P1 + Mouse P2 (Relative)';'5'='Keyboard (P1 + P2)'}
         MouseSpeed = [ordered]@{}
         MouseSmoothing = [ordered]@{'0'='Off'; '1'='Low'; '2'='High'}
         Aspect = [ordered]@{'16:9'='16:9'; '4:3'='4:3'}
@@ -531,17 +532,22 @@ function Show-Hotd4SPStartMenu {
     $controls.MouseGrab.IsChecked=[int]$spIni.mouse_grab -ne 0
     $controls.LeaveReload.IsChecked=[int]$spIni.leave_reload -ne 0
     $controls.CrosshairEnabled.IsChecked=[int]$spIni.crosshair -ne 0
+    $defaultInputHelp=$controls.GeneralInputHelp.Text
     $updateDeviceFields = {
         $controls.Framing.IsEnabled=$controls.Aspect.SelectedItem.Tag -ne '4:3'
         $controls.Framing.ToolTip=if(!$controls.Framing.IsEnabled){'4:3 uses the full-height original canvas.'}else{'Choose the vertical framing for widescreen output.'}
         $mode=if($controls.InputMode.SelectedItem){[string]$controls.InputMode.SelectedItem.Tag}else{'1'}
+        $controls.KeyboardHelp.Visibility=if($mode -eq '5'){'Visible'}else{'Collapsed'}
+        $controls.CoopGuide.Visibility=if($mode -eq '5'){'Collapsed'}else{'Visible'}
+        $controls.GeneralInputHelp.Text=if($mode -eq '5'){'Use arrows for P1 and WASD for P2. P1 Shoot / Reload / Grenade: Right Ctrl / Right Shift / Right Alt. P2: Space / Q / E. Coin / Start: 5 / 1 for P1, 6 / 2 for P2. Customize all keys in Key Bindings. Restart after changing input mode.'}else{$defaultInputHelp}
         $controls.Gun1.IsEnabled=$mode -in '2','3','4';$controls.Gun2.IsEnabled=$mode -eq '2'
-        $controls.Gun2.Visibility=if($mode -in '3','4'){'Collapsed'}else{'Visible'}
-        $kate=$mode -notin '3','4' -and $controls.SoloPlayer.SelectedItem -and $controls.SoloPlayer.SelectedItem.Tag -eq '1'
+        $controls.Gun2.Visibility=if($mode -in '3','4','5'){'Collapsed'}else{'Visible'}
+        $controls.Gun1.Visibility=$controls.Gun1Label.Visibility=$controls.Gun2Label.Visibility=if($mode -eq '5'){'Collapsed'}else{'Visible'}
+        $kate=$mode -notin '3','4','5' -and $controls.SoloPlayer.SelectedItem -and $controls.SoloPlayer.SelectedItem.Tag -eq '1'
         $controls.Gun1Label.Content=if($kate){'Primary Device: Kate (P2)'}else{'Player 1 Device'}
-        $controls.Gun2Label.Content=if($mode -in '3','4'){'Player 2: Parsec / remote mouse (automatic)'}elseif($kate){'Second Device: G (P1)'}else{'Player 2 Device'}
-        $controls.SoloPlayer.IsEnabled=$mode -notin '3','4'
-        $controls.SoloPlayerHint.Text=if($mode -in '3','4'){'Co-op modes use their normal P1/P2 assignments.'}else{'Your mouse or lightgun follows your character.'}
+        $controls.Gun2Label.Content=if($mode -eq '5'){'Player 2: Keyboard'}elseif($mode -in '3','4'){'Player 2: Parsec / remote mouse (automatic)'}elseif($kate){'Second Device: G (P1)'}else{'Player 2 Device'}
+        $controls.SoloPlayer.IsEnabled=$mode -notin '3','4','5'
+        $controls.SoloPlayerHint.Text=if($mode -in '3','4','5'){'Co-op modes use their normal P1/P2 assignments.'}else{'Your mouse or lightgun follows your character.'}
         $controls.MouseSpeed.IsEnabled=$mode -in '1','4';$controls.MouseSmoothing.IsEnabled=$mode -in '1','4'
     }
     $controls.InputMode.Add_SelectionChanged({ & $updateDeviceFields })
@@ -549,36 +555,42 @@ function Show-Hotd4SPStartMenu {
     & $updateDeviceFields
 
     . (Join-Path $RecompDir 'hotd4-controls.ps1')
-    $bindingState=@{Data=(Read-Hotd4Controls $RecompDir);Working=$null;Capture=-1;Buttons=@{};Status='Co-op: select the host Sinden / DolphinBar as P1. The guest mouse and shooting keys control P2; use P2 Coin / Start to join. Disable Exclusive Input in Parsec.'}
+    $bindingState=@{Data=(Read-Hotd4Controls $RecompDir);Working=$null;Capture=-1;Buttons=@{};Status='Keyboard mode uses separate P1/P2 controls below. Shared Shoot / Reload / Grenade and Service apply to mouse/gun modes. Coin / Start and system keys are common.'}
     $catalog=@(Get-Hotd4ControlCatalog)
     $refreshBindings={
         $controls.ControlSummaryList.Children.Clear()
-        foreach($order in 0..7){foreach($offset in 0,8){$i=$order+$offset;$row=$catalog[$i]
+        $summary=if($inputState.InputMode -eq '5'){@(0,1,20,21,22,23,16,17,18,19,6,7,28,29,30,31,24,25,26,27)}else{@(0..15)}
+        $half=[int]($summary.Count/2);$controls.ControlSummaryList.Rows=$half
+        foreach($order in 0..($half-1)){foreach($offset in 0,$half){$i=$summary[$order+$offset];$row=$catalog[$i]
             $grid=[Windows.Controls.Grid]::new();$grid.Margin=[Windows.Thickness]::new(0,3,16,3)
             $label=[Windows.Controls.TextBlock]::new();$label.Text=$row[1];$label.FontSize=14;$label.Foreground=[Windows.Media.Brushes]::LightGray
             $key=[Windows.Controls.TextBlock]::new();$key.Text=Get-Hotd4ControlSummary $bindingState.Data $i;$key.FontSize=14;$key.Foreground=[Windows.Media.BrushConverter]::new().ConvertFromString('#E9C38A');$key.HorizontalAlignment='Right'
             [void]$grid.Children.Add($label);[void]$grid.Children.Add($key);[void]$controls.ControlSummaryList.Children.Add($grid)
         }}
-        foreach($i in 0..15){if($bindingState.Working){$bindingState.Buttons[$i].Content=if($bindingState.Capture -eq $i){'Press a key...'}else{Get-Hotd4BindingName $bindingState.Working[$catalog[$i][0]]}}}
+        foreach($i in 0..($catalog.Count-1)){if($bindingState.Working){$bindingState.Buttons[$i].Content=if($bindingState.Capture -eq $i){'Press a key...'}else{Get-Hotd4BindingName $bindingState.Working[$catalog[$i][0]]}}}
         $controls.BindingsStatus.Text=$bindingState.Status;$controls.CancelBinding.Visibility=if($bindingState.Capture -ge 0){'Visible'}else{'Collapsed'}
     }
     $assignBinding={param([int]$Value)
         $i=$bindingState.Capture;if($i -lt 0 -or !$Value){return}
         if($Value -lt 0 -and $i -notin 2,3,4,5){$bindingState.Status='Choose a keyboard key for this action.';& $refreshBindings;return}
-        foreach($other in 0..15){if($other -ne $i -and $bindingState.Working[$catalog[$other][0]] -eq $Value){$bindingState.Status="$(Get-Hotd4BindingName $Value) is already assigned to $($catalog[$other][1]). Choose another key.";& $refreshBindings;return}}
+        foreach($other in 0..($catalog.Count-1)){if($other -ne $i -and $bindingState.Working[$catalog[$other][0]] -eq $Value -and (Test-Hotd4BindingConflict $catalog[$i][0] $catalog[$other][0])){$bindingState.Status="$(Get-Hotd4BindingName $Value) is already assigned to $($catalog[$other][1]). Choose another key.";& $refreshBindings;return}}
         $bindingState.Working[$catalog[$i][0]]=$Value;$bindingState.Capture=-1;$bindingState.Status='Binding changed. Save to apply.';& $refreshBindings
     }
-    foreach($order in 0..7){foreach($offset in 0,8){$i=$order+$offset
+    foreach($group in 0,1){
+        $heading=[Windows.Controls.TextBlock]::new();$heading.Text=if($group){'Keyboard Players (Keyboard input mode)'}else{'Common / Mouse / Lightgun'};$heading.FontSize=18;$heading.Foreground=[Windows.Media.Brushes]::LightGoldenrodYellow;$heading.Margin=[Windows.Thickness]::new(0,8,0,8);[void]$controls.BindingsList.Children.Add($heading)
+        $groupGrid=[Windows.Controls.Primitives.UniformGrid]::new();$groupGrid.Columns=2;$groupGrid.Rows=if($group){9}else{8};[void]$controls.BindingsList.Children.Add($groupGrid)
+        $indices=if($group){@(16,24,17,25,18,26,19,27,20,28,21,29,22,30,23,31,32)}else{@(0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15)}
+        foreach($i in $indices){
         $grid=[Windows.Controls.Grid]::new();$grid.Margin=[Windows.Thickness]::new(0,0,16,7)
         $label=[Windows.Controls.TextBlock]::new();$label.Text=$catalog[$i][1];$label.FontSize=16;$label.VerticalAlignment='Center';$label.Margin=[Windows.Thickness]::new(12,0,0,0)
         $button=[Windows.Controls.Button]::new();$button.Width=205;$button.Height=38;$button.FontSize=15;$button.HorizontalAlignment='Right';$button.Tag=$i;$button.Margin=[Windows.Thickness]::new(0)
         [Windows.Automation.AutomationProperties]::SetName($button,"Bind $($catalog[$i][1])")
         $button.Add_Click({param($sender,$eventArgs) $bindingState.Capture=[int]$sender.Tag;$bindingState.Status=if($bindingState.Capture -eq 11){'Press a key. Escape binds Esc; Cancel Capture stops.'}else{'Press a key (Esc cancels). Mouse buttons can bind Shoot, Reload, Grenade or Fire Mode.'};& $refreshBindings})
-        $bindingState.Buttons[$i]=$button;[void]$grid.Children.Add($label);[void]$grid.Children.Add($button);[void]$controls.BindingsList.Children.Add($grid)
+        $bindingState.Buttons[$i]=$button;[void]$grid.Children.Add($label);[void]$grid.Children.Add($button);[void]$groupGrid.Children.Add($grid)
     }}
     $openBindings={
         $bindingState.Data=Read-Hotd4Controls $RecompDir;$bindingState.Working=[ordered]@{};foreach($row in $catalog){$bindingState.Working[$row[0]]=$bindingState.Data.Values[$row[0]]}
-        $bindingState.Capture=-1;$bindingState.Status='Co-op: select the host Sinden / DolphinBar as P1. The guest mouse and shooting keys control P2; use P2 Coin / Start to join. Disable Exclusive Input in Parsec.'
+        $bindingState.Capture=-1;$bindingState.Status='Keyboard mode uses separate P1/P2 controls below. Shared Shoot / Reload / Grenade and Service apply to mouse/gun modes. Coin / Start and system keys are common.'
         & $refreshBindings;& $showPage 'BindingsPage'
     }
     $controls.BindingsOpen.Add_Click({& $openBindings})

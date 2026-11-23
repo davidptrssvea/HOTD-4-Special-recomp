@@ -254,6 +254,11 @@ void lindbergh_window_size(int *w, int *h)
 static HostInput g_inq[INQ];
 static unsigned  g_in_head, g_in_tail;
 static int       g_mouse_x, g_mouse_y, g_buttons;
+#ifdef HOTD4_DESKTOP_PAUSE
+#include "keyboard_aim.h"
+static KeyboardAim keyboard_aim;
+static Uint64 keyboard_clock;
+#endif
 
 static void in_push(int kind, int a, int b, int cc, int d)
 {
@@ -300,12 +305,14 @@ int host_hotd4_restart_key(int key){return !raw_suspended && hc_matches(HC_RESTA
 int host_hotd4_start_binding(void){return hc_get(ACT_START1);}
 #else
 #define input_active_mode 0
+#define input_keyboard_active 0
 #define raw_held 0u
 #define remote_held 0u
 #endif
 int host_solo_player(void)
 {
 #if defined(HOTD4_DESKTOP_PAUSE) && !defined(LINDBERGH_OPENXR)
+    if(input_keyboard_active)return 0;
     return solo_player_enabled(game_profile()->solo_characters,input_active_solo,input_active_mode);
 #else
     return 0;
@@ -322,7 +329,7 @@ int host_mouse_shake(int active)
 {
     pthread_mutex_lock(&g_mouse_shake_mutex);
     int pulse;
-    if (input_active_mode >= 2) {
+    if (input_active_mode >= 2 || input_keyboard_active) {
         g_mouse_shake_active = 0;
         mouse_shake_reset(&g_mouse_shake);
         pulse = -1;
@@ -488,7 +495,7 @@ static int cabinet_input(int bind, int down)
     actions=11;
 #endif
     for (int a = 0; a < actions; a++)
-        if (st->bind[a] == bind) { cabinet_action((HostAction)a, down); hit = 1; }
+        if (!(input_keyboard_active && ((a>=ACT_TRIGGER && a<=ACT_FIREMODE)||a==ACT_SERVICE)) && st->bind[a] == bind) { cabinet_action((HostAction)a, down); hit = 1; }
 #ifdef HOTD4_DESKTOP_PAUSE
     if(!hc_custom && !hit){
 #endif
@@ -501,6 +508,34 @@ static int cabinet_input(int bind, int down)
 #endif
     return hit;
 }
+
+#ifdef HOTD4_DESKTOP_PAUSE
+static void keyboard_publish(void)
+{
+ if(!input_keyboard_active||raw_suspended||g_scripted)return;
+ Uint64 now=SDL_GetPerformanceCounter();
+ float dt=keyboard_clock?(float)((double)(now-keyboard_clock)/SDL_GetPerformanceFrequency()):0;
+ keyboard_clock=now;keyboard_aim_step(&keyboard_aim,dt,g_win.w,g_win.h);
+ g_mouse_x=(int)lroundf(keyboard_aim.x[0]*(g_win.w-1));g_mouse_y=(int)lroundf(keyboard_aim.y[0]*(g_win.h-1));
+ g_gun2_px=(int)lroundf(keyboard_aim.x[1]*(g_win.w-1));g_gun2_py=(int)lroundf(keyboard_aim.y[1]*(g_win.h-1));g_gun2_on=1;
+}
+static int keyboard_event(int key,int down)
+{
+ if(!input_keyboard_active||raw_suspended)return 0;
+ for(int i=HC_KB1_UP;i<HC_COUNT;i++)if(hc_matches(i,key)){
+  if(i==HC_KB_SERVICE){cabinet_action(ACT_SERVICE,down);return 1;}
+  int player=(i-HC_KB1_UP)/8,action=(i-HC_KB1_UP)%8;
+  if(action<4)keyboard_aim_key(&keyboard_aim,player,1u<<action,down);
+  else{
+   const unsigned bits[]={CAB_P1_TRIGGER,CAB_P1_RELOAD,CAB_P1_ACTION,CAB_P1_FIREMODE};
+   unsigned bit=bits[action-4]<<(player?CAB_P2_SHIFT:0);
+   if(down){g_held|=bit;g_cab_latch|=bit;}else g_held&=~bit;
+  }
+  return 1;
+ }
+ return 0;
+}
+#endif
 
 /* ---- remapping and calibration, started from the menus ---- */
 void host_begin_capture(HostAction a)
@@ -962,6 +997,9 @@ static void pump(void)
             }
             if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
                 host_mouse_shake(0);
+#ifdef HOTD4_DESKTOP_PAUSE
+                if(input_keyboard_active){keyboard_aim_clear(&keyboard_aim);keyboard_clock=0;g_held=g_cab_latch=0;}
+#endif
                 fprintf(stderr, "[window] focus lost\n");
                 if (settings()->raw_mouse && g_relative_mode) {
                     SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -972,12 +1010,12 @@ static void pump(void)
                 fprintf(stderr, "[window] pointer left\n");
                 /* Pointing a real gun off the screen is the reload; the
                  * nearest thing a mouse can do is leave the window. */
-                if (input_active_mode < 2 && !g_relative_mode && g_pointer_in && settings()->leave_reload && !game_profile()->joystick && !g_capture_or_calib()) g_cab_latch |= CAB_P1_RELOAD;
+                if (!input_keyboard_active && input_active_mode < 2 && !g_relative_mode && g_pointer_in && settings()->leave_reload && !game_profile()->joystick && !g_capture_or_calib()) g_cab_latch |= CAB_P1_RELOAD;
                 g_pointer_in = 0;
             }
             break;
         case SDL_MOUSEMOTION:
-            if (input_active_mode >= 2) break;
+            if (input_active_mode >= 2 || input_keyboard_active) break;
             pthread_mutex_lock(&g_mouse_shake_mutex);
             if (g_mouse_shake_active)
                 mouse_shake_motion(&g_mouse_shake, e.motion.xrel, e.motion.yrel, SDL_GetTicks());
@@ -1012,7 +1050,7 @@ static void pump(void)
             break;
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP: {
-            if (input_active_mode >= 2) break;
+            if (input_active_mode >= 2 || input_keyboard_active) break;
             int b = button_of(e.button.button), down = e.type == SDL_MOUSEBUTTONDOWN;
             if (settings()->raw_mouse && g_relative_mode) {
                 /* g_mouse_x and g_mouse_y are already maintained in game coords */
@@ -1043,7 +1081,7 @@ static void pump(void)
                 break;
             }
             if (hc_matches(HC_MOUSELOCK,e.key.keysym.sym)) {
-                if (input_active_mode >= 2) break;
+                if (input_active_mode >= 2 || input_keyboard_active) break;
                 if (settings()->raw_mouse) {
                     g_relative_mode = !g_relative_mode;
                     SDL_SetRelativeMouseMode(g_relative_mode ? SDL_TRUE : SDL_FALSE);
@@ -1078,6 +1116,9 @@ static void pump(void)
                 fprintf(stderr, "[window] Escape pressed - quitting\n");
                 exit(0);
             }
+#ifdef HOTD4_DESKTOP_PAUSE
+            if(keyboard_event((int)e.key.keysym.sym,1))break;
+#endif
             cabinet_input((int)e.key.keysym.sym, 1);
             if (!vk) break;
             if (e.key.keysym.sym < 0x80)
@@ -1088,6 +1129,9 @@ static void pump(void)
         }
         case SDL_KEYUP: {
             int vk = vk_of(e.key.keysym.sym);
+#ifdef HOTD4_DESKTOP_PAUSE
+            if(keyboard_event((int)e.key.keysym.sym,0))break;
+#endif
             cabinet_input((int)e.key.keysym.sym, 0);
             if (!vk) break;
             in_push(HOST_IN_KEYUP, vk, 0, g_mouse_x, g_mouse_y);
@@ -1099,8 +1143,9 @@ static void pump(void)
     raw_mouse_publish();
     remote_mouse_drain();
     remote_mouse_publish();
+    keyboard_publish();
 #endif
-    pad_poll();
+    if(!input_keyboard_active)pad_poll();
 }
 
 
@@ -1138,6 +1183,9 @@ int host_window_open(const char *title)
         if (title && *title) SDL_SetWindowTitle(g_win.win, title);
         return 1;
     }
+#ifdef HOTD4_DESKTOP_PAUSE
+    if(input_keyboard_active){keyboard_aim_init(&keyboard_aim);keyboard_clock=0;fprintf(stderr,"[keyboard] Independent P1/P2 keyboard controls active\n");}
+#endif
 #ifdef LINDBERGH_VULKAN_OFFSCREEN
     SDL_SetMainReady();SDL_setenv("SDL_VIDEODRIVER","dummy",1);SDL_setenv("SDL_AUDIODRIVER","dummy",1);
 #endif
@@ -1851,7 +1899,7 @@ enum { PANEL_W = 600, PANEL_H = 554, ROW_TOP = 118, ROW_STEP = 54, ROW_HEIGHT = 
 
 typedef struct {
     int settings_page, selected;
-    int binding_capture;wchar_t binding_message[200];
+    int binding_capture,binding_page;wchar_t binding_message[200];
     int trophy_filter,trophy_scroll,trophy_drag;float trophy_drag_offset;
     GLuint frame, panel;
     int photo, photo_guide, photo_status, photo_ready, photo_drag, photo_help;
@@ -2030,7 +2078,7 @@ static int pause_panel(PauseMenu *menu)
                            selected ? RGB(116, 34, 39) : RGB(38, 38, 45));
                 if (selected) pause_fill(dc, 31, y, 3, menu_height(menu), RGB(245, 115, 93));
                 int available = menu->settings_page != 2 ||
-                    (i==1 ? input_pref_mode>=2 : i==2 ? input_pref_mode==2 :
+                    (i==1 ? (input_pref_mode>=2 && input_pref_mode<5) : i==2 ? input_pref_mode==2 :
                      (i==4 || i==5) ? (input_pref_mode==1 || input_pref_mode==4) : 1);
                 if(menu->settings_page==6 && i==2 && game_profile()->solo_characters && input_pref_mode>=3)available=0;
                 SelectObject(dc,item);
@@ -2039,7 +2087,7 @@ static int pause_panel(PauseMenu *menu)
                 DrawTextW(dc,items[i],-1,&text_box,DT_SINGLELINE|DT_VCENTER|DT_NOPREFIX|DT_END_ELLIPSIS);
             }
             pause_text(dc, hint, 32, 515, menu->settings_page == 2 ?
-                       input_pref_mode>=3 ? L"P1: gun buttons. P2: mouse / shooting keys. Restart to apply." :
+                       input_pref_mode==5 ? L"P1/P2 keyboard controls: Settings > Key Bindings. Restart to apply." : input_pref_mode>=3 ? L"P1: gun buttons. P2: mouse / shooting keys. Restart to apply." :
                        L"Mouse tuning is live. Restart to apply input mode, MSAA or V-sync." : menu->settings_page==6 && game_profile()->solo_characters?
                        L"Restart Arcade / Chapter to apply Solo Player. Co-op keeps its normal seats." : menu->settings_page ?
                        L"Arrow keys to adjust     Enter to select     Esc to go back" :

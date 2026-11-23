@@ -1,9 +1,24 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.4.zip** from the [v1.1.4 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.4), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.5.zip** from the [v1.1.5 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.5), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 
+
+## Keyboard aiming (v1.1.5)
+
+Choose **Settings > Graphics / Input > Input Mode > Keyboard (P1 + P2)**, save, and restart the game. Open **Settings > Key Bindings** to change either player's movement and action keys. The in-game pause menu also provides Key Bindings (PgUp/PgDn switches pages).
+
+| Action | Player 1 | Player 2 |
+| --- | --- | --- |
+| Aim | Arrow keys | WASD |
+| Shoot | Right Ctrl | Space |
+| Reload / shake | Right Shift | Q |
+| Grenade | Right Alt | E |
+| Fire mode | End | Tab |
+| Coin / Start | 5 / 1 | 6 / 2 |
+
+Keyboard mode keeps the two seats independent. Use P2's Coin and Start to play solo from P2, or join both players for co-op. Movement is frame-rate independent and stops when the game loses focus or opens the pause menu. The keyboard-specific Service key defaults to F10 so S remains available for P2 aiming. Mouse and lightgun modes retain their existing controls and profiles.
 
 ## Display options (v1.1.4)
 

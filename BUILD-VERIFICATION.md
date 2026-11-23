@@ -1,5 +1,15 @@
 # HOTD4 Special Windows builder verification
 
+## v1.1.5: keyboard aiming (2026-11-23)
+
+- Native Windows desktop and optional OpenXR targets build. Keyboard aiming is a desktop input mode; headset controls are unchanged.
+- Actual game runs completed 2,400 frames each with isolated NVRAM. SDL key events joined both players, moved each sight, fired independently and reloaded both magazines. Player states and ammo were read from the games; shot/ammo state was not injected.
+- Native tests covered independent directions/buttons, S/Service isolation, saved remaps, focus/pause release, repeated window-open calls, in-game Key Bindings pages and existing mouse input.
+- WPF tests covered all 33 actions, real key capture, Save/reopen, legacy profiles, duplicate rejection, help and the control summary. Display regressions passed; menu previews were visually inspected.
+- Pure C checks covered 10/60/144 Hz, opposing keys, clamping and normalized positions at multiple resolutions. Automated SDL tests do not measure physical keyboard rollover or constitute full playthroughs.
+
+- Release builder validation: the complete Windows builder used the verified local dump and existing private generation/object caches to build desktop, optional OpenXR and launcher components into a separate staged installation. All launcher code and updater version stamps matched the release source. Both staged menus passed keyboard-binding and display regression checks. Extracted full builder ZIPs passed Windows PowerShell 5.1 integrity and supported-dump validation. No original dump data was copied into the update stage or release package. This was not an empty-toolchain installation.
+
 ## v1.1.4: desktop display options
 
 Aspect Ratio is on the main Settings page next to HUD and saved by Settings > Save. WPF tests verify visibility, page placement, Save/Back behavior, reopening 4:3/16:9, Special framing state and reachable bottom buttons.
