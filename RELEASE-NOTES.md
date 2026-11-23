@@ -1,14 +1,30 @@
-# HOTD4 Special Local Builder v1.0.2
+# HOTD4 Special Local Builder v1.1.0
 
-Full Windows release with selectable desktop solo controls for **G (P1)** or **Kate (P2)**, all previous Special fixes and optional experimental OpenXR.
+This Windows desktop update adds optional Home rules and two ways to frame the 3D gameplay at 16:9.
 
-- Open **Settings > Gameplay > Solo Player**, choose your character and **Save**. Your primary mouse or Raw Input lightgun, crosshair, shooting, reload/shake and grenade controls automatically operate that seat. G/P1 remains the default.
-- The same option is available in **Pause > Settings > Gameplay**. Restart Arcade/Chapter to apply changes made during play.
-- Special's shared ride Start/credits and shared life remain intact. Default **5/C** and **1/Enter** still work. Both native player objects remain present; this is an input-seat choice, not a change to the story or native life rules. Mixed co-op/Parsec modes retain their normal P1/P2 assignments and disable the override. OpenXR controller assignments are unchanged.
-- Retains the shared HOTD4/Special menu, robust Setup download/dependency recovery, 16:9 and HUD/ammo fixes, path previews, supported cutscene skips, mouse-shake/Justice fixes, Sinden/crosshair settings, off-screen lightgun reload, optional enhanced blood and frame-time logging.
+## Home rules
 
-Download **HOTD4SP-Local-Builder-v1.0.2.zip**, extract it and run **Setup.cmd** with your own supported **Special** arcade dump. To update, choose the same dump and existing installation folder. Settings and cabinet saves are preserved; select Kate after updating if desired. Normal HOTD4 requires its separate builder/dump and offers James/P1 or Kate/P2 from v1.3.12.
+Choose **Settings > Gameplay > Rules > Home** and save before starting Arcade or Chapter Practice.
 
-No arcade ELF, textures, movies, audio, lifted game code, prebuilt game executable or cabinet save is distributed. Everything is built/processed locally from your own dump. See README for supported SHA-256 and Windows/system requirements, and BUILD-VERIFICATION.md for exact test coverage and hardware limits.
+- G and Kate start with **three lives each** when both are playing. Arcade damage events are assigned to one eligible player at a time. A surviving player can keep playing after their partner runs out of lives.
+- Releasing the trigger leaves your magazine as it is. Use your Reload binding or the optional off-screen lightgun reload.
+- The original ride camera changes use a short crossfade in Home mode.
 
-Tested: four native desktop input runs, Justice mouse-shake positive/negative checkpoint cases, saved/reopened launcher choice and co-op isolation, cached desktop/OpenXR update preservation, Windows PowerShell recovery/library tests, runtime regressions and source-only package validation. Physical lightgun/headset testing was not performed for this update.
+**Arcade** is still the default and uses the original shared life bar and trigger-release reload.
+
+## 16:9 gameplay framing
+
+Under **Settings > Graphics / Input > 16:9 Gameplay Framing**, choose:
+
+- **4:3 Expanded** (default) keeps the full vertical view from the arcade's 4:3 mode and shows more at the sides.
+- **5:3 Expanded** keeps the tighter vertical view from the arcade's 1280 x 768 mode and also shows more at the sides.
+
+Both presets apply to live 3D gameplay. Prerendered videos play at their original framing.
+
+## Download and update
+
+Download **HOTD4SP-Local-Builder-v1.1.0.zip**, extract it and run **Setup.cmd** with your own supported **HOTD4 Special** arcade dump. To update, select the same dump and your existing installation folder to keep your settings and cabinet saves.
+
+The ZIP contains builder tools and source only. Game assets are processed locally from your dump.
+
+Verified on Windows with both solo seats, simulated co-op, scripted on- and off-screen reload checks, both arcade FOV references, and frame captures of the new camera transitions. The desktop and optional OpenXR builds were compiled. See [BUILD-VERIFICATION.md](https://github.com/davidptrssvea/HOTD-4-Special-recomp/blob/v1.1.0/BUILD-VERIFICATION.md#desktop-home-rules-and-169-gameplay-framing) for coverage and hardware limits.

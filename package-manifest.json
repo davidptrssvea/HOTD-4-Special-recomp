@@ -7,11 +7,11 @@
     },
     {
       "path": "README.md",
-      "sha256": "e95826821937bdd3e10cbf818340b0a59e5d8c094a1f24542da937ac051f71f5"
+      "sha256": "1f638fdd0d681ef50daa629d72bcbce3b6c6960312377091ece7fa875b31df1d"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "4e39198a7d7d832e9cedd88d5a0320b6f99295d6a0edb2b0b85c66c5b50257ca"
+      "sha256": "5d2abe4e574b08c17b9c4e1260e796bcb016b56cc57e4efbb325a678e6365c87"
     },
     {
       "path": "Setup.cmd",

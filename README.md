@@ -1,6 +1,6 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.0.2.zip** from the [v1.0.2 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.0.2), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.0.zip** from the [v1.1.0 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.0), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 
@@ -16,11 +16,12 @@ Normal HOTD4 ELF files are not interchangeable with Special. The source dump is 
 
 - Solo gun-seat selection: **G (P1)** or **Kate (P2)** under **Settings > Gameplay > Solo Player**. Your primary mouse/lightgun, crosshair, shooting, reload/shake and grenade controls follow the chosen seat.
 - English launcher and settings, arcade/practice chapters and frame-time CSV logging.
-- 16:9 scene presentation, HUD/ammo anchoring, restored path previews and fixes for unwanted wipe rectangles. Special's own cutscene/ending and Start-skip logic is retained.
+- Optional **Home** rules with individual lives, manual reload and blended camera turns.
+- **4:3 Expanded** and **5:3 Expanded** framing for live 3D at 16:9, HUD/ammo anchoring, restored path previews and fixes for unwanted wipe rectangles. Special's own cutscene/ending and Start-skip logic is retained.
 - Mouse shaking to escape grabs, including Justice's first grab before firing a shot. Native resistance, timing and success/failure behavior are preserved.
 - Resolution selection including custom sizes, windowed/borderless output, MSAA, AF, HUD scale, configurable crosshairs and Sinden border thickness.
 - Raw relative mouse speed/smoothing, individual Raw Input lightgun selection, mixed co-op (host lightgun P1 plus injected/Parsec mouse P2), key bindings and visible control summary.
-- Independent off-screen trigger reload for lightguns and optional enhanced blood using original local effects. Special's original on-screen trigger-release reload remains.
+- Independent off-screen trigger reload for lightguns and optional enhanced blood using original local effects. Arcade rules retain Special's original on-screen trigger-release reload.
 - Updated optional OpenXR build, per-session logs and separate VR configuration/cabinet state. Shared stereo, reset, capture and interruption-safety fixes are included.
 - **Name Entry (Original)** animated crosshair with size/color controls and preview. Special does not include this normal-game resource: select your own **normal HOTD4 dump** when prompted. The original sprites and timelines are extracted locally; other crosshair styles need only the Special dump.
 
