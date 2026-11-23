@@ -1,6 +1,6 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.0.zip** from the [v1.1.0 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.0), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally; a compatible dump is required.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.1.zip** from the [v1.1.1 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.1), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 

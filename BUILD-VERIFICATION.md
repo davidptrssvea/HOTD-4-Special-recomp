@@ -77,3 +77,9 @@ These are automated native integration/checkpoint tests using the owner's dump a
 - Both settings were saved and reopened using the WPF click handlers. Windows Setup built and installed the desktop and OpenXR executables and generated the local menu image. A 4K desktop run from the installed launcher completed 600 frames.
 
 The checks used the supported local dump, scripted input and isolated saves. Physical lightgun and headset testing were outside this run.
+
+## v1.1.1 desktop performance
+
+- A hidden 3,650-frame Chapter 1 comparison at 1920 x 1080, with MSAA off and 16x anisotropic filtering, measured 33.25 seconds of process CPU time in v1.1.0 and 30.94 seconds in v1.1.1. Average present intervals from frame 2,200 through 3,649 were 16.82 ms and 16.97 ms, respectively. The test used Windows, a Core i5-13400F and an RTX 4070 Ti. Performance on older hardware remains to be measured.
+- A hidden Chapter 2 run with Home rules, 5:3 Expanded framing, 720p and MSAA off completed 4,070 frames and confirmed a ride-camera crossfade. The test used scripted input and an isolated cabinet save.
+- The Windows PowerShell 5.1 menu test applied the preset, reopened the saved settings and returned the selected chapter to the launcher. Home rules and 5:3 Expanded were selected throughout. The desktop executable was rebuilt, and the updated stereo source compiled with the existing Windows OpenXR configuration.

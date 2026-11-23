@@ -1,30 +1,13 @@
-# HOTD4 Special Local Builder v1.1.0
+# HOTD4 Special Local Builder v1.1.1
 
-This Windows desktop update adds optional Home rules and two ways to frame the 3D gameplay at 16:9.
+This Windows desktop update reduces rendering overhead and adds a one-click graphics preset for slower PCs.
 
-## Home rules
+- **Settings > Apply 720p Performance** saves a 1280 × 720 internal render resolution and turns off MSAA and anisotropic filtering. That is 56% fewer pixels per frame than 1080p. Borderless mode still fills the display. For a lower render resolution, choose **960 × 540** under **Render Resolution** and save.
+- The desktop runtime and OpenGL calls use optimized Release builds. With MSAA off, ordinary gameplay frames copy directly to the window. Home-mode ride crossfades still use their existing blend pass.
+- Home and Arcade rules, both 16:9 gameplay framing modes, and selectable solo controls are available in this build.
 
-Choose **Settings > Gameplay > Rules > Home** and save before starting Arcade or Chapter Practice.
+In one 3,650-frame 1080p comparison against v1.1.0, the updated desktop build used about **7% less process CPU time** on a Core i5-13400F and RTX 4070 Ti. Testing on older hardware remains open.
 
-- G and Kate start with **three lives each** when both are playing. Arcade damage events are assigned to one eligible player at a time. A surviving player can keep playing after their partner runs out of lives.
-- Releasing the trigger leaves your magazine as it is. Use your Reload binding or the optional off-screen lightgun reload.
-- The original ride camera changes use a short crossfade in Home mode.
+Download **HOTD4SP-Local-Builder-v1.1.1.zip**, extract it and run **Setup.cmd** with your supported HOTD4 Special arcade dump. For an update, select that dump and your existing installation folder to keep your settings and cabinet saves. After selecting the preset, start the game to use it.
 
-**Arcade** is still the default and uses the original shared life bar and trigger-release reload.
-
-## 16:9 gameplay framing
-
-Under **Settings > Graphics / Input > 16:9 Gameplay Framing**, choose:
-
-- **4:3 Expanded** (default) keeps the full vertical view from the arcade's 4:3 mode and shows more at the sides.
-- **5:3 Expanded** keeps the tighter vertical view from the arcade's 1280 x 768 mode and also shows more at the sides.
-
-Both presets apply to live 3D gameplay. Prerendered videos play at their original framing.
-
-## Download and update
-
-Download **HOTD4SP-Local-Builder-v1.1.0.zip**, extract it and run **Setup.cmd** with your own supported **HOTD4 Special** arcade dump. To update, select the same dump and your existing installation folder to keep your settings and cabinet saves.
-
-The ZIP contains builder tools and source only. Game assets are processed locally from your dump.
-
-Verified on Windows with both solo seats, simulated co-op, scripted on- and off-screen reload checks, both arcade FOV references, and frame captures of the new camera transitions. The desktop and optional OpenXR builds were compiled. See [BUILD-VERIFICATION.md](https://github.com/davidptrssvea/HOTD-4-Special-recomp/blob/v1.1.0/BUILD-VERIFICATION.md#desktop-home-rules-and-169-gameplay-framing) for coverage and hardware limits.
+The ZIP contains the local builder and source. Setup compiles the game from your own dump. The optional OpenXR build is experimental. [Build verification](https://github.com/davidptrssvea/HOTD-4-Special-recomp/blob/v1.1.1/BUILD-VERIFICATION.md#v111-desktop-performance)

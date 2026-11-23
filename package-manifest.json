@@ -3,15 +3,15 @@
   "files": [
     {
       "path": "BUILD-VERIFICATION.md",
-      "sha256": "f405d1a0a7ed5c11fabdc7d43c9b1b2fa5e41893f478343a7374d98a5cc94ef4"
+      "sha256": "4ce71497a23be0a1f2dd95b9a3ceb775c7634a6004ee9c5f33956cf22adbdd22"
     },
     {
       "path": "README.md",
-      "sha256": "c8eeade1361b34c5c40e9cb8ea5af2d5e95a0fdf95742f9903389a8b29bb107e"
+      "sha256": "c57ec7d42cd502c5cdd00f1c697bb5c0dffd170eff13a1b4530fbd1a75f305a0"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "5d2abe4e574b08c17b9c4e1260e796bcb016b56cc57e4efbb325a678e6365c87"
+      "sha256": "ca2603b3b0fc6279e31c32a20ec9458952351fca4102cb500803ec390b919ef8"
     },
     {
       "path": "Setup.cmd",
