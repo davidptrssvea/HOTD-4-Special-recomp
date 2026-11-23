@@ -26,6 +26,7 @@
 #include "render_queue.h"
 
 extern void host_use_guest_viewport_coords(void);
+extern int host_display_four_three(void);
 extern void host_viewport_unscale(int rect[4]);
 static HleHandler original_get_integer;
 static HleHandler original_fread;
@@ -603,7 +604,8 @@ int main(int argc, char **argv)
 #if defined(_WIN32) && !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
     /* The 5:3 cabinet view retains the horizontal 4:3 lens but crops its
      * vertical extent. Apply its lens separately from the 4:3 HUD canvas. */
-    stereo_wide_set_world_lens(gameplay_special_fov_5_3() ? 5.0f / 4.0f : 1.0f);
+    int four_three=host_display_four_three();
+    stereo_wide_set_world_lens(!four_three && gameplay_special_fov_5_3() ? 5.0f / 4.0f : 1.0f);
     const HostSettings *video = settings();
     int height = video->window_h > 0 ? video->window_h : 1080;
     int width = video->window_w > 0 ? video->window_w : 1920;
@@ -612,8 +614,10 @@ int main(int argc, char **argv)
     if(render_size && sscanf(render_size,"%dx%d%c",&rw,&rh,&extra)==2 && rw>=640 && rh>=360 && rw<=8192 && rh<=8192) {
         width=rw;height=rh;
     }
-    if ((int64_t)width * 9 < (int64_t)height * 16) height = (int)((int64_t)width * 9 / 16);
-    if (height > 0) stereo_wide_default((int)((int64_t)height * 16 / 9), height, k_profile.vr.hud_lens);
+    int ratio_w=four_three?4:16,ratio_h=four_three?3:9;
+    if ((int64_t)width * ratio_h < (int64_t)height * ratio_w) height=(int)((int64_t)width*ratio_h/ratio_w);
+    if(height>0)stereo_wide_default((int)((int64_t)height*ratio_w/ratio_h),height,k_profile.vr.hud_lens);
+    fprintf(stderr,"[hotd4sp] desktop aspect %s, full-height lens %s\n",four_three?"4:3":"16:9",four_three?"original":"selected");
 #endif
     hle_register_all();
 #ifdef _WIN32

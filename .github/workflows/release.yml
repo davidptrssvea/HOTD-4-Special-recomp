@@ -20,6 +20,9 @@ jobs:
       - name: Test Windows game discovery and handoff settings
         shell: powershell
         run: ./.release/test_game_library.ps1
+      - name: Test complete display menus and saved preferences
+        shell: powershell
+        run: ./.release/test_display_controls.ps1
       - name: Test remembered Setup folders and Browse controls
         shell: powershell
         run: ./.release/test_setup_paths.ps1

@@ -3,15 +3,15 @@
   "files": [
     {
       "path": "BUILD-VERIFICATION.md",
-      "sha256": "58073692983a4254c30c250e6ca99036ab7404958abbb5d79cc9fe87a0b96b3f"
+      "sha256": "7dab1c44edfd54f33f748f56d056606bf805928c43549586dd7ada88d202a225"
     },
     {
       "path": "README.md",
-      "sha256": "ae02843405f9cbb042d85e241c9d981bf0e8f85ba31917336e1c4be16e0fda00"
+      "sha256": "46aec1ad4a73296454f148e18430b04de63ae42f3cb12a2a74b2fa42a0709dc6"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "08815e576908f22ee56f26460553445cf551ddc8c798e2f5a10ef153afbf9094"
+      "sha256": "1f7a71b5c023d426d3431744eb164078aa993912f3b2fb03a22548f1a467368c"
     },
     {
       "path": "Setup.cmd",
@@ -39,7 +39,7 @@
     },
     {
       "path": "source/games/hotd4sp/src/host.c",
-      "sha256": "63772f22bc89d565dc886984a275ee0d490a123f9307e4474f334b3286cd373e"
+      "sha256": "a53b3a058977d52662e8d369953f241d2e19df17fdb63c84b3c4ab35fce679db"
     },
     {
       "path": "source/games/hotd4sp/src/special_home.h",
@@ -259,7 +259,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/host_sdl.c",
-      "sha256": "cfb9696035dc062d463f842e05a0c8b0b027ac8fb237068f98cb435275706730"
+      "sha256": "3ca55e62ebab60737e22429723db68f86f0c50aed672e4a03b812fdabbd89195"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/host_settings.c",
@@ -291,7 +291,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/input_options.h",
-      "sha256": "fa1dd3fe65a27eeaba6e247c6838970259c3b0003de878f2f989572ca1d2a5cd"
+      "sha256": "2a3357597232fe7b7bc751c5e94090edef2e9f2c5f098f5934ca4605ee2c6139"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/lindbergh_rt.h",
@@ -1467,7 +1467,7 @@
     },
     {
       "path": "ui/hotd-update-version.txt",
-      "sha256": "b8af634a66d091d1c124675fbe2208a3c4d69db36832f7dcc4a99c6c30404cf0"
+      "sha256": "d910b29f42acd3fdf17c8e6e8b3fc6d57a2959e7145502dbca1877e3368486dc"
     },
     {
       "path": "ui/hotd-update.ps1",
@@ -1479,7 +1479,7 @@
     },
     {
       "path": "ui/hotd4-display.ps1",
-      "sha256": "40638b83b99a8eca0526170b3172b97495a6bc051ae940066cb308f326216e10"
+      "sha256": "843f4e1730662181cf5dea834ca955d8be12460d6de1e3af4b057510a6ac85cb"
     },
     {
       "path": "ui/hotd4-game-library.ps1",
@@ -1499,11 +1499,11 @@
     },
     {
       "path": "ui/hotd4sp-launcher.ps1",
-      "sha256": "b33155079b4a44de7eb8ec13d6a71c3765a2481a00882dd5fe26c40dfafe3805"
+      "sha256": "4672e0e28baa67d656388a465b8fcd94c1e27148561de45a9ff188aadaf7fced"
     },
     {
       "path": "ui/hotd4sp-startmenu.ps1",
-      "sha256": "50af951b7b59b3e4172e5fc2d18ef5fc5af3959575c9e632ca3514e04a63a4a1"
+      "sha256": "6f69696f230ee14b5283d33264b8ef7edeb06133e3af57e11b0e2dc7e1588eb4"
     },
     {
       "path": "ui/launch_hotd4sp.ps1",

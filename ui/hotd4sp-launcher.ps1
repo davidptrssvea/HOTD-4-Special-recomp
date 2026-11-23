@@ -16,7 +16,7 @@ function Read-Profile([string]$Name,[string]$Default) {
 function Start-Special($Selection,[int]$DesktopWidth,[int]$DesktopHeight) {
     $width=$DesktopWidth;$height=$DesktopHeight
     if($Selection.Resolution -ne 'auto'){$width,$height=$Selection.Resolution.Split('x') | ForEach-Object {[int]$_}}
-    $rw,$rh=Get-Hotd4RenderSize $width $height
+    $rw,$rh=Get-Hotd4RenderSize $width $height (Get-Hotd4AspectRatio $recompDir)
     $windowed=$Selection.DisplayMode -eq 'Windowed'
     $outputW=if($windowed){$width}else{$DesktopWidth};$outputH=if($windowed){$height}else{$DesktopHeight}
     Write-Hotd4SPConfig $recompDir @{width=$rw;height=$rh;fullscreen=[int](!$windowed)}

@@ -1,8 +1,15 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.3.zip** from the [v1.1.3 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.3), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.4.zip** from the [v1.1.4 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.4), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
+
+
+## Display options (v1.1.4)
+
+In **Settings > Graphics / Input**, choose **V-Sync > On** to synchronize desktop presentation with the display. Save and restart the game to apply. Off remains the default. The desktop setting does not alter OpenXR headset timing.
+
+On the main **Settings** page, choose **Aspect Ratio > 4:3** (below Display Mode, next to HUD) for a 4:3 game canvas, including 640 x 480 and 800 x 600 outputs. Wider displays show side bars. The game, HUD and pointer use the same fitted picture area. 16:9 remains the default. Save, exit the game and relaunch to apply an aspect-ratio change. This is a desktop option; OpenXR keeps its headset view.
 
 ## Supported dump
 

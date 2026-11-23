@@ -162,7 +162,7 @@ function Show-Hotd4SPStartMenu {
                         <TextBlock Text="Lightgun Setup" FontSize="22" Margin="0,0,0,18"/>
                         <TextBlock Text="To escape a grab with a mouse, shake left/right or up/down. Reload does not break grabs. For Sinden, select Lightgun (Raw Input) and enable the white border in Settings. Start the Sinden software before playing." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2" Margin="0,0,0,16"/>
                         <TextBlock Text="For Parsec co-op, choose Gun P1 + Mouse P2 and select the host's Sinden or DolphinBar as P1. The guest's injected mouse controls P2 automatically. Disable Exclusive Input in Parsec and join with P2 Coin / Start. For two local guns, use Lightgun (Raw Input) and select both devices." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2" Margin="0,0,0,16"/>
-                        <TextBlock Name="AaGuide" Text="Restart the game to apply input and AA changes. If the GPU cannot create the selected MSAA mode, the game falls back to Off." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2"/>
+                        <TextBlock Name="AaGuide" Text="Restart the game to apply input, AA and V-sync changes. V-sync affects desktop output; VR uses headset timing. If the GPU cannot create the selected MSAA mode, the game falls back to Off." TextWrapping="Wrap" FontSize="17" Foreground="#D0C7C2"/>
                     </StackPanel>
                 </Border>
                 <Border Name="CrosshairPreview" Width="440" Height="324" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,268,0,0" Background="#F0101218" BorderBrush="#80585960" BorderThickness="1" Visibility="Collapsed" IsHitTestVisible="False">
@@ -212,8 +212,17 @@ function Show-Hotd4SPStartMenu {
                             </StackPanel>
                         </Grid>
                         <CheckBox Name="CrosshairEnabled" Content="Show Crosshair" Foreground="#F0EFEB" FontSize="15" Margin="0,0,0,5"/>
-                        <Label Content="Player HUD Scale" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Hud}"/>
-                        <ComboBox Height="36" Margin="0,4,0,6" Name="Hud" AutomationProperties.Name="HUD"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="156"/></Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,12,0">
+                                <Label Content="Player HUD Scale" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Hud}"/>
+                                <ComboBox Height="36" Margin="0,4,0,6" Name="Hud" AutomationProperties.Name="HUD"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <Label Content="Aspect Ratio" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Aspect}"/>
+                                <ComboBox Name="Aspect" Height="36" Margin="0,4,0,6" AutomationProperties.Name="Aspect Ratio" ToolTip="Save, exit and relaunch the game to apply. 4:3 uses side bars on wider displays. VR keeps its headset view."/>
+                            </StackPanel>
+                        </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="120"/></Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,12,0">
@@ -282,6 +291,8 @@ function Show-Hotd4SPStartMenu {
                         <ComboBox Height="36" Margin="0,4,0,6" Name="Gun2"/>
                         <Label Content="Anti-Aliasing" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=AntiAliasing}"/>
                         <ComboBox Height="36" Margin="0,4,0,8" Name="AntiAliasing"/>
+                        <Label Content="V-Sync" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=VSync}"/>
+                        <ComboBox Height="36" Margin="0,4,0,8" Name="VSync" ToolTip="Desktop display synchronization. Restart the game to apply. VR uses headset timing."/>
                         <Grid Margin="0,0,0,6"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,5,0">
                                 <Label Content="Mouse Speed" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=MouseSpeed}"/>
@@ -357,7 +368,7 @@ function Show-Hotd4SPStartMenu {
 
     $controls = @{}
     foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList','Performance720p',
-            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
+            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','Gun1','Gun2','AntiAliasing','VSync','Aspect','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
         $controls[$name] = $window.FindName($name)
     }
 
@@ -454,11 +465,13 @@ function Show-Hotd4SPStartMenu {
         InputMode = (Join-Path $RecompDir 'input-profile.txt')
         Gun1 = (Join-Path $RecompDir 'raw-gun1.txt')
         Gun2 = (Join-Path $RecompDir 'raw-gun2.txt')
+        Aspect = (Join-Path $RecompDir 'aspect-ratio.txt')
+        VSync = (Join-Path $RecompDir 'vsync-profile.txt')
         AntiAliasing = (Join-Path $RecompDir 'aa-profile.txt')
         MouseSpeed = (Join-Path $RecompDir 'mouse-speed.txt')
         MouseSmoothing = (Join-Path $RecompDir 'mouse-smoothing.txt')
     }
-    $inputDefaults = @{ Framing='0'; InputMode='1'; Gun1='auto'; Gun2='disabled'; AntiAliasing='4'; MouseSpeed='1.00'; MouseSmoothing='0' }
+    $inputDefaults = @{ Framing='0'; InputMode='1'; Gun1='auto'; Gun2='disabled'; AntiAliasing='4'; VSync='0'; Aspect='16:9'; MouseSpeed='1.00'; MouseSmoothing='0' }
     $inputDefaults.InputMode = if([int]$spIni.raw_mouse){'1'}else{'0'}
     $inputDefaults.AntiAliasing = [string]$spIni.aa
     $inputState = $inputDefaults.Clone()
@@ -467,6 +480,8 @@ function Show-Hotd4SPStartMenu {
         InputMode = [ordered]@{'0'='Mouse (Absolute)'; '1'='Mouse (Raw Relative)'; '2'='Lightgun (Raw Input)';'3'='Co-op: Gun P1 + Mouse P2';'4'='Co-op: Gun P1 + Mouse P2 (Relative)'}
         MouseSpeed = [ordered]@{}
         MouseSmoothing = [ordered]@{'0'='Off'; '1'='Low'; '2'='High'}
+        Aspect = [ordered]@{'16:9'='16:9'; '4:3'='4:3'}
+        VSync = [ordered]@{'0'='Off'; '1'='On (sync to display)'}
         AntiAliasing = [ordered]@{'0'='Off'; '2'='MSAA 2x'; '4'='MSAA 4x'; '8'='MSAA 8x'}
     }
     foreach($speed in '0.50','0.75','1.00','1.25','1.50','2.00','2.50','3.00','4.00','5.00','6.00','8.00') {
@@ -486,7 +501,7 @@ function Show-Hotd4SPStartMenu {
         }
     }
     $devices = @(Get-Hotd4RawDevices)
-    $inputFields = 'Framing','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing'
+    $inputFields = 'Framing','InputMode','Gun1','Gun2','AntiAliasing','VSync','Aspect','MouseSpeed','MouseSmoothing'
     foreach($field in $inputFields) {
         if([IO.File]::Exists($inputPaths[$field])) { $inputState[$field]=[IO.File]::ReadAllText($inputPaths[$field]).Trim() }
         if($field -in 'Gun1','Gun2') {
@@ -517,6 +532,8 @@ function Show-Hotd4SPStartMenu {
     $controls.LeaveReload.IsChecked=[int]$spIni.leave_reload -ne 0
     $controls.CrosshairEnabled.IsChecked=[int]$spIni.crosshair -ne 0
     $updateDeviceFields = {
+        $controls.Framing.IsEnabled=$controls.Aspect.SelectedItem.Tag -ne '4:3'
+        $controls.Framing.ToolTip=if(!$controls.Framing.IsEnabled){'4:3 uses the full-height original canvas.'}else{'Choose the vertical framing for widescreen output.'}
         $mode=if($controls.InputMode.SelectedItem){[string]$controls.InputMode.SelectedItem.Tag}else{'1'}
         $controls.Gun1.IsEnabled=$mode -in '2','3','4';$controls.Gun2.IsEnabled=$mode -eq '2'
         $controls.Gun2.Visibility=if($mode -in '3','4'){'Collapsed'}else{'Visible'}
@@ -528,6 +545,7 @@ function Show-Hotd4SPStartMenu {
         $controls.MouseSpeed.IsEnabled=$mode -in '1','4';$controls.MouseSmoothing.IsEnabled=$mode -in '1','4'
     }
     $controls.InputMode.Add_SelectionChanged({ & $updateDeviceFields })
+    $controls.Aspect.Add_SelectionChanged({ & $updateDeviceFields })
     & $updateDeviceFields
 
     . (Join-Path $RecompDir 'hotd4-controls.ps1')
@@ -609,6 +627,7 @@ function Show-Hotd4SPStartMenu {
                 [void] $controls.InputMode.Focus()
             }
             'OptionsPage' {
+                foreach($item in $controls.Aspect.Items){if($item.Tag -eq $inputState.Aspect){$controls.Aspect.SelectedItem=$item;break}}
                 $controls.Resolution.Text = if ($state.Resolution -eq 'auto') { 'Desktop' } else { $state.Resolution }
                 $controls.DisplayMode.SelectedItem = $state.DisplayMode
                 foreach ($item in $controls.Hud.Items) {
@@ -704,7 +723,7 @@ function Show-Hotd4SPStartMenu {
     $controls.InputOptions.Add_Click({ & $showPage 'InputPage' })
     $controls.InputBack.Add_Click({ & $showPage 'OptionsPage' })
     $controls.SaveInput.Add_Click({
-        foreach($field in $inputFields) {
+        foreach($field in @($inputFields | Where-Object { $_ -ne 'Aspect' })) {
             $selected = [string]$controls[$field].SelectedItem.Tag
             if ($field -in 'MouseSpeed','MouseSmoothing' -and $selected -eq $inputState[$field]) { continue }
             $inputState[$field] = $selected
@@ -735,6 +754,8 @@ function Show-Hotd4SPStartMenu {
             return
         }
         Write-Hotd4SPConfig $RecompDir @{crosshair=[int][bool]$controls.CrosshairEnabled.IsChecked}
+        $inputState.Aspect = [string]$controls.Aspect.SelectedItem.Tag
+        [IO.File]::WriteAllText($inputPaths.Aspect, $inputState.Aspect)
         $state.Resolution = $resolution
         $state.DisplayMode = [string]$controls.DisplayMode.SelectedItem
         $state.Hud = [string] $controls.Hud.SelectedItem.Tag
@@ -767,8 +788,8 @@ function Show-Hotd4SPStartMenu {
         }
         if ($eventArgs.Key -eq 'Escape') {
             if ($controls.HomeMode.IsDropDownOpen -or $controls.SoloPlayer.IsDropDownOpen -or $controls.OffscreenReload.IsDropDownOpen -or $controls.BloodSplatter.IsDropDownOpen) { return }
-            if ($controls.Framing.IsDropDownOpen -or $controls.InputMode.IsDropDownOpen -or $controls.Gun1.IsDropDownOpen -or $controls.Gun2.IsDropDownOpen -or $controls.AntiAliasing.IsDropDownOpen -or $controls.MouseSpeed.IsDropDownOpen -or $controls.MouseSmoothing.IsDropDownOpen) { return }
-            if ($controls.Anisotropy.IsDropDownOpen -or $controls.Volume.IsDropDownOpen -or $controls.Resolution.IsDropDownOpen -or $controls.DisplayMode.IsDropDownOpen -or $controls.Hud.IsDropDownOpen -or $controls.Sinden.IsDropDownOpen -or $controls.SindenWidth.IsDropDownOpen -or $controls.CrosshairStyle.IsDropDownOpen -or $controls.CrosshairSize.IsDropDownOpen -or $controls.CrosshairColor.IsDropDownOpen) { return }
+            if ($controls.Framing.IsDropDownOpen -or $controls.InputMode.IsDropDownOpen -or $controls.Gun1.IsDropDownOpen -or $controls.Gun2.IsDropDownOpen -or $controls.AntiAliasing.IsDropDownOpen -or $controls.VSync.IsDropDownOpen -or $controls.MouseSpeed.IsDropDownOpen -or $controls.MouseSmoothing.IsDropDownOpen) { return }
+            if ($controls.Aspect.IsDropDownOpen -or $controls.Anisotropy.IsDropDownOpen -or $controls.Volume.IsDropDownOpen -or $controls.Resolution.IsDropDownOpen -or $controls.DisplayMode.IsDropDownOpen -or $controls.Hud.IsDropDownOpen -or $controls.Sinden.IsDropDownOpen -or $controls.SindenWidth.IsDropDownOpen -or $controls.CrosshairStyle.IsDropDownOpen -or $controls.CrosshairSize.IsDropDownOpen -or $controls.CrosshairColor.IsDropDownOpen) { return }
             if ($controls.MainPage.IsVisible) { $window.Close() }
             elseif ($controls.BindingsPage.IsVisible) {$controls.BindingsBack.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))}
             elseif ($controls.GameplayPage.IsVisible) { & $showPage 'OptionsPage' }

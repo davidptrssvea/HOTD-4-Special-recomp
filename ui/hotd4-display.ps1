@@ -9,9 +9,14 @@
     }
 }
 
-function Get-Hotd4RenderSize([int] $Width, [int] $Height) {
-    # Keep the arcade viewport, camera and HUD on the same 16:9 canvas.
-    $unit = [int][Math]::Floor([Math]::Min(240, [Math]::Min($Width / 16.0, $Height / 9.0)))
-    if ($unit -lt 40) { throw 'Select a resolution of at least 640 × 360.' }
-    return (16 * $unit), (9 * $unit)
+function Get-Hotd4AspectRatio([string]$RecompDir) {
+    $file=Join-Path $RecompDir 'aspect-ratio.txt'
+    if([IO.File]::Exists($file) -and [IO.File]::ReadAllText($file).Trim() -eq '4:3'){return '4:3'}
+    return '16:9'
+}
+function Get-Hotd4RenderSize([int]$Width,[int]$Height,[ValidateSet('16:9','4:3')][string]$Aspect='16:9') {
+    $x,$y,$cap,$minimum=if($Aspect -eq '4:3'){@(4,3,960,160)}else{@(16,9,240,40)}
+    $unit=[int][Math]::Floor([Math]::Min($cap,[Math]::Min($Width/[double]$x,$Height/[double]$y)))
+    if($unit -lt $minimum){throw $(if($Aspect -eq '4:3'){'Select at least 640 x 480 for 4:3.'}else{'Select at least 640 x 360 for 16:9.'})}
+    return ($x*$unit),($y*$unit)
 }
