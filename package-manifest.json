@@ -7,11 +7,11 @@
     },
     {
       "path": "README.md",
-      "sha256": "c57ec7d42cd502c5cdd00f1c697bb5c0dffd170eff13a1b4530fbd1a75f305a0"
+      "sha256": "443c34d9e460e132d1f47e29dfb6f4e628e8c8c6bc72c330954139a897620938"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "ca2603b3b0fc6279e31c32a20ec9458952351fca4102cb500803ec390b919ef8"
+      "sha256": "cf0dc89263764f2dec2fa10a22f4624d12babafc441526f34e0eb6a3a55147c5"
     },
     {
       "path": "Setup.cmd",
@@ -19,7 +19,7 @@
     },
     {
       "path": "setup.ps1",
-      "sha256": "5f0cf55b1f4bdf81eb017670b732c3f80d7da91cd01017631aec509d39f0585d"
+      "sha256": "b5d87823b2ff09b54def572b6813322967601ea1b9e8e821b5aa649e36505772"
     },
     {
       "path": "source/CMakeLists.txt",
@@ -559,7 +559,7 @@
     },
     {
       "path": "tools/build.py",
-      "sha256": "1b3787ae1797f7fba19864445df49d9fefc2ce8b65d8e434bf965f748aaa6605"
+      "sha256": "f9eb4bb00c14e717bb03ba054a6010a68456e6ce5e09364baceb4f6891ec388c"
     },
     {
       "path": "tools/build_support.py",
@@ -588,6 +588,14 @@
     {
       "path": "tools/setup_support.ps1",
       "sha256": "2c42b211a08173056786b0214335af752be9765bf23b202bf3bcb951d7108cde"
+    },
+    {
+      "path": "ui/hotd-update-version.txt",
+      "sha256": "cf60e673ce0edcaca3188da9b6361ac27af0c2705f0fdc93529a0b95169fef97"
+    },
+    {
+      "path": "ui/hotd-update.ps1",
+      "sha256": "0823aaba3fb0097d197d43ab14617186c8a84323c439c23e1c0af6ee8def380f"
     },
     {
       "path": "ui/Launcher.cs",
@@ -1491,7 +1499,7 @@
     },
     {
       "path": "ui/hotd4sp-startmenu.ps1",
-      "sha256": "45715801b1c40561a94933a9570f4f9e573cb433694a7845b0ea3c723e18e26b"
+      "sha256": "50af951b7b59b3e4172e5fc2d18ef5fc5af3959575c9e632ca3514e04a63a4a1"
     },
     {
       "path": "ui/launch_hotd4sp.ps1",

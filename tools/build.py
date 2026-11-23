@@ -41,6 +41,7 @@ def main():
     ap.add_argument('--jobs', type=int, default=0)
     ap.add_argument('--openxr', action='store_true')
     ap.add_argument('--validate-only', action='store_true')
+    ap.add_argument('--stage-update', action='store_true')
     a = ap.parse_args()
     a.jobs = build_jobs(a.jobs)
     print(f'Compiler workers: {a.jobs} (use -Jobs N in Setup to override).', flush=True)
@@ -119,10 +120,11 @@ def main():
         run([bin / 'strip.exe', app / name])
     for name, file in dlls.items():
         shutil.copy2(file, app / name)
-    local = out / 'hotd4sp'
-    (local / 'elf').mkdir(parents=True, exist_ok=True)
-    shutil.copytree(dump / 'fs', local / 'fs', dirs_exist_ok=True)
-    shutil.copy2(dump / 'elf/hod4M.elf', local / 'elf/hod4M.elf')
+    if not a.stage_update:
+        local = out / 'hotd4sp'
+        (local / 'elf').mkdir(parents=True, exist_ok=True)
+        shutil.copytree(dump / 'fs', local / 'fs', dirs_exist_ok=True)
+        shutil.copy2(dump / 'elf/hod4M.elf', local / 'elf/hod4M.elf')
     # Never seed or overwrite cabinet state from the source dump.
     for file in (ROOT / 'ui').rglob('*'):
         if file.is_file():
@@ -139,11 +141,12 @@ def main():
          '/out:' + str(app / 'Play HOTD4 Special.exe').replace('/', '\\'),
          str(ROOT / 'ui/Launcher.cs').replace('/', '\\')])
     (out / 'Play HOTD4 Special.cmd').write_text('@echo off\r\nstart "" "%~dp0HOTD4SP_Recomp\\Play HOTD4 Special.exe"\r\n', newline='')
-    try:
-        run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', app / 'hotd4-game-library.ps1',
-             '-RegisterOnly', '-LibraryRecompDir', app, '-LibraryGame', 'Special'])
-    except subprocess.CalledProcessError:
-        print('The game was installed, but automatic library registration failed. Use Locate other game in the start menu.', flush=True)
+    if not a.stage_update:
+        try:
+            run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', app / 'hotd4-game-library.ps1',
+                 '-RegisterOnly', '-LibraryRecompDir', app, '-LibraryGame', 'Special'])
+        except subprocess.CalledProcessError:
+            print('The game was installed, but automatic library registration failed. Use Locate other game in the start menu.', flush=True)
     licenses = app / 'licenses'
     licenses.mkdir(exist_ok=True)
     for label, file in [('ports', source / 'LICENSE'), ('lindberghrecomp', source / 'lindberghrecomp/LICENSE'), ('pcrecomp', source / 'lindberghrecomp/pcrecomp/LICENSE')]:

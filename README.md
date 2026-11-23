@@ -71,3 +71,11 @@ Special uses **G** and **Kate**. The solo selector chooses which seat receives t
 - Under **Settings → Graphics / Input → 16:9 Gameplay Framing**, **4:3 Expanded** (default) retains the full 4:3 vertical field of view. **5:3 Expanded** retains the tighter height of the arcade's 1280×768 mode. Both extend the live 3D view horizontally to 16:9. Full-screen movies and the HUD retain their original framing.
 
 Save the selection in the launcher and start Arcade or Chapter Practice. These settings apply to the Windows desktop build.
+
+## Menu updates
+
+The main menu checks GitHub for the latest stable release in the background. Open **Updates** to read the release notes and choose whether to download and install a newer version. Setup verifies the package and builds the update locally from the arcade dump in your installation. The menu reopens after installation.
+
+The update replaces the launcher and runtime files. It keeps settings, cabinet saves, the existing game dump and installed OpenXR support. The update folder beside the installation holds the Setup log and the previous versions of replaced files. Internet access and free disk space for a local build are required.
+
+To add the updater to an installation from an earlier release, run this builder's Setup and select the existing installation folder. Update `ui/hotd-update-version.txt` to match the tag when preparing a release.

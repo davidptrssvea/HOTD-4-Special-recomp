@@ -787,6 +787,8 @@ function Show-Hotd4SPStartMenu {
         }
     } )
     Add-Hotd4GameSwitcher -Window $window -MainPage $controls.MainPage -RecompDir $RecompDir -CurrentGame Special
+    . (Join-Path $RecompDir 'hotd-update.ps1')
+    Add-HotdUpdater $window $controls.MainPage $RecompDir Special
     [void] $window.ShowDialog()
     if ($null -ne $state.Mode) { return $state }
 }
