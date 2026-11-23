@@ -114,6 +114,7 @@ static int g_wide_blackout_suppression;
 static int g_wide_bar;
 static GLuint g_wide_copy_fbo;
 static GLuint g_wide_msaa_fbo;
+static int g_wide_window_samples;
 static GLuint g_wide_workspace_copies[16];
 static unsigned g_wide_workspace_copy_frame[16];
 static unsigned g_wide_workspace_copy_count;
@@ -678,6 +679,7 @@ static void eye_targets(void)
         if (g_wide && g_wide_default_w) {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glGetIntegerv(GL_SAMPLES, &samples);
+            g_wide_window_samples = samples;
         }
         glGenTextures(1, &g_eye_tex[i]);
         glBindTexture(GL_TEXTURE_2D, g_eye_tex[i]);
@@ -3468,7 +3470,7 @@ static void wide_remember_picture(void)
 
 /* The output surface can be multisampled or a different size than the
  * image. Draw the resolved texture so both cases support scaling. */
-static void present_wide_texture(int x, int y, int w, int h)
+static void present_wide_texture(int x, int y, int w, int h, float previous_alpha, int remember_picture)
 {
     GLint mode, program, unit;
     glGetIntegerv(GL_MATRIX_MODE, &mode);
@@ -3513,8 +3515,6 @@ static void present_wide_texture(int x, int y, int w, int h)
     glLoadIdentity();
     glViewport(x, y, w, h);
     wide_picture_quad();
-    StereoRidePhase ride_phase = (StereoRidePhase)SDL_AtomicGet(&g_wide_ride_phase);
-    float previous_alpha = wide_ride_blend(ride_phase);
     if (previous_alpha > 0) {
         glBindTexture(GL_TEXTURE_2D, g_wide_previous_picture);
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -3523,7 +3523,7 @@ static void present_wide_texture(int x, int y, int w, int h)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glColor4f(1, 1, 1, previous_alpha);
         wide_picture_quad();
-    } else if (ride_phase == STEREO_RIDE_CLOSING && !g_flat) {
+    } else if (remember_picture) {
         wide_remember_picture();
     }
     glPopMatrix();
@@ -3537,19 +3537,49 @@ static void present_wide_texture(int x, int y, int w, int h)
     if (glUseProgram) glUseProgram((GLuint)program);
 }
 
+/* A single-sample window can take the resolved image directly. The host
+ * clears bars outside the output viewport, so only flat scenes need a clear here. */
+static void blit_wide_to_window(int x, int y, int w, int h, int inset)
+{
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, g_eye_fbo[0]);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    GLint read_buffer;
+    glGetIntegerv(GL_READ_BUFFER, &read_buffer);
+    if (read_buffer != GL_COLOR_ATTACHMENT0) glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+    glPushAttrib(GL_SCISSOR_BIT | (inset ? GL_COLOR_BUFFER_BIT : 0));
+    glDisable(GL_SCISSOR_TEST);
+    if (inset) {
+        glClearColor(0, 0, 0, 1);
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    glBlitFramebuffer(0, 0, g_ew, g_eh, x + inset, y, x + w - inset, y + h,
+                      GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glPopAttrib();
+    if (read_buffer != GL_COLOR_ATTACHMENT0) glReadBuffer((GLenum)read_buffer);
+}
+
 /* Desktop check: both eyes side by side in the window (widescreen: the one
  * image, filling it). */
 void stereo_present_desktop(int x, int y, int win_w, int win_h)
 {
     if (!g_on) return;
     if (g_wide && g_wide_default_w) {
-        glPushAttrib(GL_SCISSOR_BIT);
-        glDisable(GL_SCISSOR_TEST);
-        resolve_wide_screen();
-        glPopAttrib();
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         int inset = g_flat ? (int)(win_w * (1 - g_wide_k) / 2 + 0.5f) : 0;
-        present_wide_texture(x + inset, y, win_w - 2 * inset, win_h);
+        StereoRidePhase ride_phase = (StereoRidePhase)SDL_AtomicGet(&g_wide_ride_phase);
+        float previous_alpha = wide_ride_blend(ride_phase);
+        int remember_picture = ride_phase == STEREO_RIDE_CLOSING && !g_flat;
+        if (g_wide_window_samples == 0 && previous_alpha <= 0 && !remember_picture) {
+            blit_wide_to_window(x, y, win_w, win_h, inset);
+        } else {
+            glPushAttrib(GL_SCISSOR_BIT);
+            glDisable(GL_SCISSOR_TEST);
+            resolve_wide_screen();
+            glPopAttrib();
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            present_wide_texture(x + inset, y, win_w - 2 * inset, win_h, previous_alpha, remember_picture);
+        }
         glBindFramebuffer(GL_FRAMEBUFFER, g_wide_msaa_fbo ? g_wide_msaa_fbo : g_eye_fbo[0]);
         return;
     }

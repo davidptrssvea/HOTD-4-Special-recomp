@@ -90,6 +90,11 @@ function(lindbergh_game id)
         target_sources(${id} PRIVATE "${src}/hotd4_lighting.c" "${src}/hotd4_hd_textures.c")
     endif()
     if(id STREQUAL "hotd4sp" AND WIN32 AND CMAKE_C_COMPILER_ID STREQUAL "GNU")
+        if(NOT LINDBERGH_OPENXR)
+            # Setup leaves the global release flags empty for the large lifted units.
+            # Optimize the native desktop runtime and GL thunks without changing the lifted code.
+            target_compile_options(${id} PRIVATE "$<$<CONFIG:Release>:-O2>")
+        endif()
         set_source_files_properties(${lifted} PROPERTIES COMPILE_OPTIONS "-O1")
         # Special's CRI/MMX decoder unit; shared SSE2 helpers avoid scalar lane loops.
         set_source_files_properties("${gen}/recomp_funcs_0087.c" PROPERTIES COMPILE_OPTIONS "-O2" COMPILE_DEFINITIONS RECOMP_MMX_SSE2)

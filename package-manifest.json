@@ -7,7 +7,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "1f638fdd0d681ef50daa629d72bcbce3b6c6960312377091ece7fa875b31df1d"
+      "sha256": "c8eeade1361b34c5c40e9cb8ea5af2d5e95a0fdf95742f9903389a8b29bb107e"
     },
     {
       "path": "RELEASE-NOTES.md",
@@ -23,7 +23,7 @@
     },
     {
       "path": "source/CMakeLists.txt",
-      "sha256": "aa1e5604b81aa46e1deb0212f7848caca3768d52660cac08df4fa8a6f9aa4182"
+      "sha256": "cdaf4ebc2dc1f9289a7d7d65cffd1048542d453bc980efb3da23f8410236e474"
     },
     {
       "path": "source/LICENSE",
@@ -355,7 +355,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/stereo.c",
-      "sha256": "c208cd361e6a380f1ff21520a78ec25b00218f5b3c505e9bad113a2bd2b9f990"
+      "sha256": "e577ca722cbded8548951fa91ef17783d4cc38875144385d2d5d9277b478dfe3"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/stereo.h",
@@ -1491,7 +1491,7 @@
     },
     {
       "path": "ui/hotd4sp-startmenu.ps1",
-      "sha256": "191b94eaf315af73fb99825d10d91dc6b093f9e9c17ebc59685dd5a0cbfd967a"
+      "sha256": "45715801b1c40561a94933a9570f4f9e573cb433694a7845b0ea3c723e18e26b"
     },
     {
       "path": "ui/launch_hotd4sp.ps1",

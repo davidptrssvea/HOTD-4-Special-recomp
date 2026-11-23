@@ -25,6 +25,8 @@ Normal HOTD4 ELF files are not interchangeable with Special. The source dump is 
 - Updated optional OpenXR build, per-session logs and separate VR configuration/cabinet state. Shared stereo, reset, capture and interruption-safety fixes are included.
 - **Name Entry (Original)** animated crosshair with size/color controls and preview. Special does not include this normal-game resource: select your own **normal HOTD4 dump** when prompted. The original sprites and timelines are extracted locally; other crosshair styles need only the Special dump.
 
+On slower PCs, open **Settings > Apply 720p Performance** to save a 1280x720 internal render resolution and turn off MSAA and anisotropic filtering. Borderless still fills the display. For a lower GPU load, select 960x540 under **Render Resolution** and save. Adjust MSAA and anisotropic filtering under **Graphics / Input**.
+
 Pause with **Esc**, add a coin with **5/C**, start with **1/Enter**, shoot with left mouse, reload with right mouse, and throw a grenade with **Space**. Check Settings and the launcher summary for current bindings. Use **Start** for supported cutscene skips.
 
 Special's launcher currently does not expose Trophies, Photo Mode or Model Viewer. VR remains experimental: automated simulated-runtime tests passed, but physical headset/runtime testing is still needed. See BUILD-VERIFICATION.md for exact coverage and limits.

@@ -244,7 +244,12 @@ function Show-Hotd4SPStartMenu {
                             <Button Grid.Column="1" Name="BindingsOpen" Height="32" FontSize="14" Margin="0,0,0,6" Content="Key Bindings..."/>
                             <Button Grid.Column="2" Name="GameplayOpen" Height="32" FontSize="14" Padding="8,0" Margin="6,0,0,6" Content="Gameplay..."/>
                         </Grid>
-                        <Button Name="SaveOptions" Height="38" Margin="0,0,0,6" Content="Save"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Button Name="SaveOptions" Height="38" Margin="0,0,6,6" Content="Save"/>
+                            <Button Name="Performance720p" Grid.Column="1" Height="38" Margin="0,0,0,6" FontSize="15" Padding="10,0"
+                                    Content="Apply 720p Performance" ToolTip="Saves 1280x720 render resolution and turns off MSAA and anisotropic filtering."/>
+                        </Grid>
                         <Button Name="OptionsBack" Height="38" Content="Back"/>
                     </StackPanel>
                     <StackPanel Name="GameplayPage" Visibility="Collapsed">
@@ -351,7 +356,7 @@ function Show-Hotd4SPStartMenu {
     }
 
     $controls = @{}
-    foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList',
+    foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList','Performance720p',
             'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
         $controls[$name] = $window.FindName($name)
     }
@@ -711,6 +716,17 @@ function Show-Hotd4SPStartMenu {
     $controls.Quit.Add_Click( { $window.Close() } )
     $controls.ChapterBack.Add_Click( { & $showPage 'MainPage'; [void] $controls.Chapters.Focus() } )
     $controls.OptionsBack.Add_Click( { & $updateSindenBorder; & $showPage 'MainPage'; [void] $controls.Options.Focus() } )
+    $controls.Performance720p.Add_Click({
+        Write-Hotd4SPConfig $RecompDir @{aa='0';af='1'}
+        [IO.File]::WriteAllText($inputPaths.AntiAliasing, '0')
+        [IO.File]::WriteAllText($resolutionPath, '1280x720')
+        $inputState.AntiAliasing = '0'
+        $controls.AntiAliasing.SelectedIndex = 0
+        $controls.Anisotropy.SelectedIndex = 0
+        $state.Resolution = '1280x720'
+        $controls.Resolution.Text = $state.Resolution
+        $controls.Hint.Text = '720p Performance saved'
+    })
     $controls.SaveOptions.Add_Click( {
         $resolution = ConvertTo-Hotd4Resolution $controls.Resolution.Text
         if (!$resolution) {
