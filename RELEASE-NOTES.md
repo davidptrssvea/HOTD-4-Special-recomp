@@ -1,4 +1,4 @@
-# HOTD4 Special v1.1.7 - Updater progress and cancellation
+# HOTD4 Special v1.1.8 - Updater progress and cancellation
 
 - The launcher shows the current update step and elapsed time. You can Alt+Tab to another app while the update runs.
 - Follow the download, toolchain preparation, and local build. Compilation shows completed and total steps when available, including Arcade Test Menu and OpenXR on supported installations.
