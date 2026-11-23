@@ -5,6 +5,8 @@ void gameplay_options_set(int offscreen, int blood);
 void gameplay_options_save(void);
 int gameplay_offscreen_reload(void);
 int gameplay_blood_splatter(void);
+int gameplay_special_home_mode(void);
+int gameplay_special_fov_5_3(void);
 static inline unsigned gameplay_offscreen_buttons(unsigned buttons, int enabled,
     int x, int y, int p2, int x2, int y2, int w, int h)
 {

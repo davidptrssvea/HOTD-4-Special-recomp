@@ -249,12 +249,15 @@ function Show-Hotd4SPStartMenu {
                     </StackPanel>
                     <StackPanel Name="GameplayPage" Visibility="Collapsed">
                         <TextBlock Text="Gameplay" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                        <Label Content="Rules" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=HomeMode}"/>
+                        <ComboBox Name="HomeMode" Height="36" Margin="0,4,0,6"
+                                  ToolTip="Home uses individual lives, manual reload, and smooth ride transitions."/>
                         <Label Content="Solo Player" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
                         <ComboBox Name="SoloPlayer" Height="36" Margin="0,4,0,6"/>
-                        <TextBlock Name="SoloPlayerHint" Text="Primary mouse / gun follows your character. Start and credits remain shared. Restart the game to apply." TextWrapping="Wrap" FontSize="13" Foreground="#ADB4C2" Margin="0,0,0,6"/>
+                        <TextBlock Name="SoloPlayerHint" Text="Your mouse or lightgun follows your character." TextWrapping="Wrap" FontSize="13" Foreground="#ADB4C2" Margin="0,0,0,6"/>
                         <Label Content="Lightgun Off-Screen Reload" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
                         <ComboBox Height="36" Margin="0,4,0,8" Name="OffscreenReload"/>
-                        <TextBlock Text="Point outside the play area and pull the trigger to reload. Applies to both lightguns. Your gun software can also map its off-screen trigger to the Reload button." TextWrapping="Wrap" Foreground="#D0C7C2" FontSize="14" Margin="0,0,0,18"/>
+                        <TextBlock Text="Aim off-screen and pull the trigger. Applies to both lightguns." TextWrapping="Wrap" Foreground="#D0C7C2" FontSize="14" Margin="0,0,0,10"/>
                         <Label Content="Blood Splatter" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
                         <ComboBox Height="36" Margin="0,4,0,8" Name="BloodSplatter"/>
                         <Button Name="SaveGameplay" Height="38" Margin="0,0,0,6" Content="Save"/>
@@ -263,6 +266,9 @@ function Show-Hotd4SPStartMenu {
                     <StackPanel Name="InputPage" Visibility="Collapsed">
                         <TextBlock Text="Graphics, Audio &amp; Input" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12"/>
                         <ScrollViewer MaxHeight="350" VerticalScrollBarVisibility="Auto"><StackPanel>
+                        <Label Content="16:9 Gameplay Framing" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Framing}"/>
+                        <ComboBox Name="Framing" Height="36" Margin="0,4,0,6"
+                                  ToolTip="Choose the arcade view whose height stays visible. Both options extend the sides to 16:9."/>
                         <Label Content="Input Mode" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=InputMode}"/>
                         <ComboBox Height="36" Margin="0,4,0,6" Name="InputMode"/>
                         <Label Name="Gun1Label" Content="Player 1 Device" Foreground="#F0EFEB" FontSize="15" Padding="0" Target="{Binding ElementName=Gun1}"/>
@@ -346,7 +352,7 @@ function Show-Hotd4SPStartMenu {
 
     $controls = @{}
     foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList',
-            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
+            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
         $controls[$name] = $window.FindName($name)
     }
 
@@ -439,6 +445,7 @@ function Show-Hotd4SPStartMenu {
     if ($env:HOTD4_REMIX_LIVE -eq '1') { $controls.AaGuide.Text = 'MSAA applies to the original graphics. Configure ray-traced anti-aliasing in the Remix overlay. Restart the game to apply input changes.' }
     . (Join-Path $RecompDir 'raw-input-devices.ps1')
     $inputPaths = @{
+        Framing = (Join-Path $RecompDir 'special-fov.txt')
         InputMode = (Join-Path $RecompDir 'input-profile.txt')
         Gun1 = (Join-Path $RecompDir 'raw-gun1.txt')
         Gun2 = (Join-Path $RecompDir 'raw-gun2.txt')
@@ -446,11 +453,12 @@ function Show-Hotd4SPStartMenu {
         MouseSpeed = (Join-Path $RecompDir 'mouse-speed.txt')
         MouseSmoothing = (Join-Path $RecompDir 'mouse-smoothing.txt')
     }
-    $inputDefaults = @{ InputMode='1'; Gun1='auto'; Gun2='disabled'; AntiAliasing='4'; MouseSpeed='1.00'; MouseSmoothing='0' }
+    $inputDefaults = @{ Framing='0'; InputMode='1'; Gun1='auto'; Gun2='disabled'; AntiAliasing='4'; MouseSpeed='1.00'; MouseSmoothing='0' }
     $inputDefaults.InputMode = if([int]$spIni.raw_mouse){'1'}else{'0'}
     $inputDefaults.AntiAliasing = [string]$spIni.aa
     $inputState = $inputDefaults.Clone()
     $choices = @{
+        Framing = [ordered]@{'0'='4:3 Expanded'; '1'='5:3 Expanded'}
         InputMode = [ordered]@{'0'='Mouse (Absolute)'; '1'='Mouse (Raw Relative)'; '2'='Lightgun (Raw Input)';'3'='Co-op: Gun P1 + Mouse P2';'4'='Co-op: Gun P1 + Mouse P2 (Relative)'}
         MouseSpeed = [ordered]@{}
         MouseSmoothing = [ordered]@{'0'='Off'; '1'='Low'; '2'='High'}
@@ -473,7 +481,8 @@ function Show-Hotd4SPStartMenu {
         }
     }
     $devices = @(Get-Hotd4RawDevices)
-    foreach($field in 'InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing') {
+    $inputFields = 'Framing','InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing'
+    foreach($field in $inputFields) {
         if([IO.File]::Exists($inputPaths[$field])) { $inputState[$field]=[IO.File]::ReadAllText($inputPaths[$field]).Trim() }
         if($field -in 'Gun1','Gun2') {
             $choices[$field]=[ordered]@{auto='Auto - absolute gun';disabled='Disabled'}
@@ -510,7 +519,7 @@ function Show-Hotd4SPStartMenu {
         $controls.Gun1Label.Content=if($kate){'Primary Device: Kate (P2)'}else{'Player 1 Device'}
         $controls.Gun2Label.Content=if($mode -in '3','4'){'Player 2: Parsec / remote mouse (automatic)'}elseif($kate){'Second Device: G (P1)'}else{'Player 2 Device'}
         $controls.SoloPlayer.IsEnabled=$mode -notin '3','4'
-        $controls.SoloPlayerHint.Text=if($mode -in '3','4'){'Co-op modes use their normal P1/P2 assignments.'}else{'Primary mouse / gun follows your character. Start and credits remain shared. Restart the game to apply.'}
+        $controls.SoloPlayerHint.Text=if($mode -in '3','4'){'Co-op modes use their normal P1/P2 assignments.'}else{'Your mouse or lightgun follows your character.'}
         $controls.MouseSpeed.IsEnabled=$mode -in '1','4';$controls.MouseSmoothing.IsEnabled=$mode -in '1','4'
     }
     $controls.InputMode.Add_SelectionChanged({ & $updateDeviceFields })
@@ -577,7 +586,7 @@ function Show-Hotd4SPStartMenu {
         $controls.CrosshairPreview.Visibility = if ($Page -eq 'OptionsPage') { 'Visible' } else { 'Collapsed' }
         switch ($Page) {
 
-            'GameplayPage' {$controls.Hint.Text='Tab  Switch fields       Esc  Back';[void]$controls.OffscreenReload.Focus()}
+            'GameplayPage' {$controls.Hint.Text='Tab  Switch fields       Esc  Back';[void]$controls.HomeMode.Focus()}
 
             'BindingsPage' {$controls.Hint.Text='Esc  Back';[void]$bindingState.Buttons[0].Focus()}
             'MainPage' {
@@ -667,21 +676,30 @@ function Show-Hotd4SPStartMenu {
     $controls.SoloPlayer.SelectedIndex=$soloValue
     $controls.SoloPlayer.Add_SelectionChanged({ & $updateDeviceFields })
     & $updateDeviceFields
-    $gameplayPaths=@{OffscreenReload=(Join-Path $RecompDir 'offscreen-reload.txt');BloodSplatter=(Join-Path $RecompDir 'blood-effects.txt')}
-    foreach($field in 'OffscreenReload','BloodSplatter'){
+    $gameplayPaths = [ordered]@{
+        HomeMode = (Join-Path $RecompDir 'special-home-mode.txt')
+        OffscreenReload = (Join-Path $RecompDir 'offscreen-reload.txt')
+        BloodSplatter = (Join-Path $RecompDir 'blood-effects.txt')
+    }
+    $gameplayLabels = @{ HomeMode=@('Arcade','Home'); OffscreenReload=@('Off','On'); BloodSplatter=@('Original','Enhanced') }
+    foreach($field in $gameplayPaths.Keys){
         $value=if($field -eq 'OffscreenReload'){'1'}else{'0'}
         if([IO.File]::Exists($gameplayPaths[$field])){$read=[IO.File]::ReadAllText($gameplayPaths[$field]).Trim();if($read -in '0','1'){$value=$read}}
-        $labels=if($field -eq 'OffscreenReload'){@('Off','On')}else{@('Original','Enhanced')}
+        $labels=$gameplayLabels[$field]
         foreach($i in 0,1){$entry=[Windows.Controls.ComboBoxItem]::new();$entry.Tag=[string]$i;$entry.Content=$labels[$i];[void]$controls[$field].Items.Add($entry)}
         $controls[$field].SelectedIndex=[int]$value
     }
     $controls.GameplayOpen.Add_Click({& $showPage 'GameplayPage'})
     $controls.GameplayBack.Add_Click({& $showPage 'OptionsPage'})
-    $controls.SaveGameplay.Add_Click({if($controls.SoloPlayer.IsEnabled){[IO.File]::WriteAllText($soloPath,[string]$controls.SoloPlayer.SelectedItem.Tag)};foreach($field in 'OffscreenReload','BloodSplatter'){[IO.File]::WriteAllText($gameplayPaths[$field],[string]$controls[$field].SelectedItem.Tag)};& $showPage 'OptionsPage'})
+    $controls.SaveGameplay.Add_Click({
+        if($controls.SoloPlayer.IsEnabled){[IO.File]::WriteAllText($soloPath,[string]$controls.SoloPlayer.SelectedItem.Tag)}
+        foreach($field in $gameplayPaths.Keys){[IO.File]::WriteAllText($gameplayPaths[$field],[string]$controls[$field].SelectedItem.Tag)}
+        & $showPage 'OptionsPage'
+    })
     $controls.InputOptions.Add_Click({ & $showPage 'InputPage' })
     $controls.InputBack.Add_Click({ & $showPage 'OptionsPage' })
     $controls.SaveInput.Add_Click({
-        foreach($field in 'InputMode','Gun1','Gun2','AntiAliasing','MouseSpeed','MouseSmoothing') {
+        foreach($field in $inputFields) {
             $selected = [string]$controls[$field].SelectedItem.Tag
             if ($field -in 'MouseSpeed','MouseSmoothing' -and $selected -eq $inputState[$field]) { continue }
             $inputState[$field] = $selected
@@ -732,8 +750,8 @@ function Show-Hotd4SPStartMenu {
             $eventArgs.Handled=$true;return
         }
         if ($eventArgs.Key -eq 'Escape') {
-            if ($controls.OffscreenReload.IsDropDownOpen -or $controls.BloodSplatter.IsDropDownOpen) { return }
-            if ($controls.InputMode.IsDropDownOpen -or $controls.Gun1.IsDropDownOpen -or $controls.Gun2.IsDropDownOpen -or $controls.AntiAliasing.IsDropDownOpen -or $controls.MouseSpeed.IsDropDownOpen -or $controls.MouseSmoothing.IsDropDownOpen) { return }
+            if ($controls.HomeMode.IsDropDownOpen -or $controls.SoloPlayer.IsDropDownOpen -or $controls.OffscreenReload.IsDropDownOpen -or $controls.BloodSplatter.IsDropDownOpen) { return }
+            if ($controls.Framing.IsDropDownOpen -or $controls.InputMode.IsDropDownOpen -or $controls.Gun1.IsDropDownOpen -or $controls.Gun2.IsDropDownOpen -or $controls.AntiAliasing.IsDropDownOpen -or $controls.MouseSpeed.IsDropDownOpen -or $controls.MouseSmoothing.IsDropDownOpen) { return }
             if ($controls.Anisotropy.IsDropDownOpen -or $controls.Volume.IsDropDownOpen -or $controls.Resolution.IsDropDownOpen -or $controls.DisplayMode.IsDropDownOpen -or $controls.Hud.IsDropDownOpen -or $controls.Sinden.IsDropDownOpen -or $controls.SindenWidth.IsDropDownOpen -or $controls.CrosshairStyle.IsDropDownOpen -or $controls.CrosshairSize.IsDropDownOpen -or $controls.CrosshairColor.IsDropDownOpen) { return }
             if ($controls.MainPage.IsVisible) { $window.Close() }
             elseif ($controls.BindingsPage.IsVisible) {$controls.BindingsBack.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))}

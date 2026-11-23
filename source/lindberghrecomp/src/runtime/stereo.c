@@ -42,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <SDL.h>
 
 #include "gl_posix.h"
 #include "stereo.h"
@@ -96,6 +97,12 @@ static float    g_wide_s;               /* this 2D draw's shift to its edge (gam
 static int      g_wide_span;            /* this 2D draw spans the arcade screen: it spans the image */
 static int g_flat;                      /* this frame is drawn flat: the arcade's picture, on the screen */
 static float    g_wide_k = 1;
+static float    g_wide_world_lens = 1;
+static SDL_atomic_t g_wide_ride_phase;
+static StereoRidePhase g_wide_previous_phase;
+static GLuint g_wide_previous_picture, g_wide_previous_fbo;
+static Uint32 g_wide_turn_started;
+static int g_wide_previous_valid, g_wide_turn_active;
 static int g_wide_default_w, g_wide_default_h;
 static float g_wide_hud_lens;
 static int g_wide_preserve_frame;
@@ -116,6 +123,17 @@ void stereo_wide_default(int width, int height, float hud_lens)
     g_wide_default_w = width;
     g_wide_default_h = height;
     g_wide_hud_lens = hud_lens;
+}
+
+void stereo_wide_set_world_lens(float scale) { g_wide_world_lens = scale; }
+void stereo_wide_ride_view(StereoRidePhase phase) { SDL_AtomicSet(&g_wide_ride_phase, (int)phase); }
+
+int stereo_wide_world_lens(float *x, float *y)
+{
+    if (!g_wide || g_flat) return 0;
+    *x = g_wide_k * g_wide_world_lens;
+    *y = g_wide_world_lens;
+    return 1;
 }
 
 void stereo_wide_preserve_frame(int preserve) { g_wide_preserve_frame = preserve; }
@@ -311,8 +329,14 @@ static void effective_projection(const float *p, int hud, float *out)
         if (g_flat) return;                     /* the arcade's picture, shown 4:3 */
         int persp = is_perspective(p) && !(g_wide_default_w && is_2d_lens(p));
         if (persp && !hud) memcpy(g_last_persp, p, 64);
-        if (persp || (hud && !g_wide_span))     /* the world wider; the 2D in the middle */
-            for (int col = 0; col < 4; col++) out[col * 4] *= g_wide_k;
+        if (persp || (hud && !g_wide_span)) {
+            // Screen-space layers keep the same framing in both camera modes.
+            float lens = persp && !hud ? g_wide_world_lens : 1;
+            for (int col = 0; col < 4; col++) {
+                out[col * 4] *= g_wide_k * lens;
+                out[col * 4 + 1] *= lens;
+            }
+        }
         if (hud && !persp && g_wide_s != 0)     /* or out at its edge */
             for (int col = 0; col < 4; col++) out[col * 4] += g_wide_s * out[col * 4 + 3];
         return;
@@ -3379,6 +3403,69 @@ unsigned stereo_eye_array(void) { return 0; }
 #endif
 unsigned stereo_eye_framebuffer(int eye) { return g_eye_fbo[eye]; }
 
+static void wide_picture_quad(void)
+{
+    glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2f(0, 0); glVertex2f(-1, -1);
+    glTexCoord2f(1, 0); glVertex2f( 1, -1);
+    glTexCoord2f(0, 1); glVertex2f(-1,  1);
+    glTexCoord2f(1, 1); glVertex2f( 1,  1);
+    glEnd();
+}
+
+/* The cabinet wipe closes as the ride starts its turn and reopens when the
+ * view switches. Hold the outgoing scene and blend over the reopened view. */
+static float wide_ride_blend(StereoRidePhase phase)
+{
+    StereoRidePhase previous = g_wide_previous_phase;
+    g_wide_previous_phase = phase;
+    if (phase == STEREO_RIDE_IDLE || g_flat) {
+        g_wide_previous_valid = g_wide_turn_active = 0;
+        return 0;
+    }
+    Uint32 now = SDL_GetTicks();
+    if (g_wide_previous_valid && previous == STEREO_RIDE_CLOSING && phase == STEREO_RIDE_OPENING) {
+        g_wide_turn_started = now;
+        g_wide_turn_active = 1;
+        if (getenv("LINDBERGH_RIDE"))
+            fprintf(stderr, "[ride] blended camera turn at frame %u\n", g_frame);
+    }
+    if (!g_wide_turn_active) return 0;
+    Uint32 elapsed = now - g_wide_turn_started;
+    if (elapsed >= 200) {
+        g_wide_turn_active = 0;
+        return 0;
+    }
+    float t = elapsed / 200.0f;
+    return 1 - t * t * (3 - 2 * t);
+}
+
+static void wide_remember_picture(void)
+{
+    int width = g_ew / 2, height = g_eh / 2;
+    if (!g_wide_previous_fbo) {
+        glGenTextures(1, &g_wide_previous_picture);
+        glBindTexture(GL_TEXTURE_2D, g_wide_previous_picture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glGenFramebuffers(1, &g_wide_previous_fbo);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g_wide_previous_fbo);
+        glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, g_wide_previous_picture, 0);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    }
+    GLint read_fbo;
+    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &read_fbo);
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, g_eye_fbo[0]);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g_wide_previous_fbo);
+    glBlitFramebuffer(0, 0, g_ew, g_eh, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, (GLuint)read_fbo);
+    g_wide_previous_valid = 1;
+}
+
 /* The output surface can be multisampled or a different size than the
  * image. Draw the resolved texture so both cases support scaling. */
 static void present_wide_texture(int x, int y, int w, int h)
@@ -3425,12 +3512,20 @@ static void present_wide_texture(int x, int y, int w, int h)
     glPushMatrix();
     glLoadIdentity();
     glViewport(x, y, w, h);
-    glBegin(GL_TRIANGLE_STRIP);
-    glTexCoord2f(0, 0); glVertex2f(-1, -1);
-    glTexCoord2f(1, 0); glVertex2f( 1, -1);
-    glTexCoord2f(0, 1); glVertex2f(-1,  1);
-    glTexCoord2f(1, 1); glVertex2f( 1,  1);
-    glEnd();
+    wide_picture_quad();
+    StereoRidePhase ride_phase = (StereoRidePhase)SDL_AtomicGet(&g_wide_ride_phase);
+    float previous_alpha = wide_ride_blend(ride_phase);
+    if (previous_alpha > 0) {
+        glBindTexture(GL_TEXTURE_2D, g_wide_previous_picture);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glEnable(GL_BLEND);
+        glBlendEquation(GL_FUNC_ADD);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(1, 1, 1, previous_alpha);
+        wide_picture_quad();
+    } else if (ride_phase == STEREO_RIDE_CLOSING && !g_flat) {
+        wide_remember_picture();
+    }
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

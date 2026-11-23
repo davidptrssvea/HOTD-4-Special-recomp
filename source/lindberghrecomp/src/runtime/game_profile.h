@@ -38,6 +38,7 @@ typedef struct {
     double aim[4];              /* sight = aim[0] * pointer + aim[1] across, aim[2] * pointer + aim[3] down; all 0: 1, 0, 1, 0 */
     void (*gun_map)(int *x, int *y);    /* the sight's position -> the gun reading that puts it there */
     int   desktop_wide;         /* the desktop build draws 16:9 with the HUD at the edges (Ghost Squad) */
+    void (*desktop_overlay)(int x, int y, int width, int height);
     unsigned char reload_switch[2]; /* the player's switch byte and bit the reload input sets (0: byte 0, bit 0) */
     unsigned char action_switch[2][3]; /* each host player's {JVS player, byte, mask}; mask 0: same player, byte 1, bit 7 */
     int   sysdata_region;       /* the game reads its region (and language) from the EEPROM's system data */

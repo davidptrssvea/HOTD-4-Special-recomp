@@ -74,6 +74,7 @@ static void h_get_integer(CPU *c)
 #define STAGE_TWO_BEGIN   0x084a2440u
 #define STAGE_TWO_INTRO_END 0x084a4b20u
 #define PLAYER_MANAGER    0x0a69f92cu
+#define GAME_MANAGER      0x0a69f8d4u
 #define SOFDEC_MANAGER    0x0a69f944u
 #define STORY_EVENTS_END  0x084b8d68u
 #define BOSS_RIDE_CHANGE  0x084b402cu
@@ -84,6 +85,10 @@ static void h_get_integer(CPU *c)
 void L_0813B58C(CPU *c);
 void L_082F7494(CPU *c);
 void L_0817210A(CPU *c);
+
+#if !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
+#include "special_home.h"
+#endif
 
 /* Each player owns its label and grenade sprite groups.
  * Translate their native draw matrices before CellSprite builds its queued
@@ -264,6 +269,13 @@ static void h_event_main(CPU *c)
     stereo_wide_blackout_suppression(story_command(command) ||
                                     (command >= OPENING_BEGIN && command < STORY_EVENTS_END));
     stereo_wide_path_choice(player && rd32(player + 0x5c));
+#if !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
+    if (gameplay_special_home_mode()) {
+        int playing = home_update(player);
+        int show_lives = playing && !movie && !story_bars && !rd32(player + 0x5c);
+        SDL_AtomicSet(&home_hud, show_lives ? home_hud_snapshot() : 0);
+    }
+#endif
 #if !defined(LINDBERGH_OPENXR)
     if(selected_chapter || getenv("HOTD4SP_MENU")) {
         static int watching;
@@ -279,11 +291,12 @@ static void h_event_main(CPU *c)
 static void h_aim_normalize(CPU *c)
 {
     uint32_t ret = rd32(c->esp - 4);
-    float k;
+    float sx, sy;
     if ((ret == 0x0806a5afu || ret == 0x0806a5f0u || ret == 0x0806a631u) &&
-        stereo_wide(NULL, NULL, &k) && !stereo_flat_frame()) {
+        stereo_wide_world_lens(&sx, &sy)) {
         float *camera_ray = APTR(1);
-        camera_ray[0] /= k;
+        camera_ray[0] /= sx;
+        camera_ray[1] /= sy;
     }
     push32(c, ret);
     L_082F7494(c);
@@ -316,6 +329,17 @@ static void h_gun_input(CPU *c)
     uint32_t input=c->edx,player=c->ecx&0xff;
     push32(c,rd32(c->esp-4));L_0817984A(c);
     if(player<2){
+#if !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
+        if (gameplay_special_home_mode() && home_active && !home_lives[player]) {
+            /* Leave its native object in the scene, but end that seat's
+             * trigger, shake, grenade and contribution to grab selection. */
+            memset(GP(input + 8), 0, 6 * sizeof(uint32_t));
+            uint32_t manager = rd32(PLAYER_MANAGER);
+            uint32_t seat = manager ? rd32(manager + 0x34 + 4 * player) : 0;
+            if (seat) wr32(seat + 0x270, 0);
+            return;
+        }
+#endif
         unsigned b=host_cabinet_buttons();
         int reload=(b & (player?CAB_P2_RELOAD:CAB_P1_RELOAD))!=0;
         int shake=(b & (player?(CAB_P2_RELOAD|CAB_P2_FIREMODE):(CAB_P1_RELOAD|CAB_P1_FIREMODE)))!=0;
@@ -328,7 +352,7 @@ static void h_gun_input(CPU *c)
          * pressed, leaving SwingProc unreachable even with valid gyro input.
          * Treat an actual shake during a grab as that player's first input.
          * Native SwingProc still applies its timing, strength and resistance. */
-        uint32_t mgr=rd32(PLAYER_MANAGER),game=rd32(0x0a69f8d4u);
+        uint32_t mgr=rd32(PLAYER_MANAGER),game=rd32(GAME_MANAGER);
         if(shake && mgr && game && rd32(game+0x34)==9 &&
            (rd32(mgr+0x68)||rd32(mgr+0x88)||rd32(mgr+0x90))){
             uint32_t pl=rd32(mgr+0x34+4*player);
@@ -342,11 +366,11 @@ static void h_reload(CPU *c)
     int mx,my,w,h;host_mouse_state(&mx,&my,NULL);
     if((pl^host_solo_player())==1 && !host_gun2_state(&mx,&my))mx=my=-100000;
     lindbergh_window_size(&w,&h);
-    if(pl<2 && manager && (mx<0 || my<0 || mx>=w || my>=h)){
+    if(pl<2 && manager && (gameplay_special_home_mode() || mx<0 || my<0 || mx>=w || my>=h)){
         trigger=manager+0x3c+pl*36;saved=rd32(trigger);wr32(trigger,1);
     }
-    /* Special normally auto-reloads on trigger release. Preserve that on
-     * screen; off screen, require the chosen trigger/reload policy. */
+    /* Native reload treats a released trigger as a reload request. Mask that
+     * inference in Home mode and off screen, keeping Reload and shake live. */
     push32(c,rd32(c->esp-4));L_08193C9C(c);
     if(trigger)wr32(trigger,saved);
 }
@@ -515,6 +539,7 @@ static const LgGameProfile k_profile = {
 #if defined(_WIN32) && !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
     // The ride prompts, gameplay HUD and video fades share a 1024x768 canvas.
     .width = 1024, .height = 768,
+    .desktop_overlay = home_draw_lives,
 #else
     .width = 1360, .height = 768,
 #endif
@@ -561,7 +586,11 @@ int main(int argc, char **argv)
     if (guest_load(argv[1], argc - 1, argv + 1) != 0)
         return 1;
     game_profile_apply(&k_profile);
+    gameplay_options_load();
 #if defined(_WIN32) && !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
+    /* The 5:3 cabinet view retains the horizontal 4:3 lens but crops its
+     * vertical extent. Apply its lens separately from the 4:3 HUD canvas. */
+    stereo_wide_set_world_lens(gameplay_special_fov_5_3() ? 5.0f / 4.0f : 1.0f);
     const HostSettings *video = settings();
     int height = video->window_h > 0 ? video->window_h : 1080;
     int width = video->window_w > 0 ? video->window_w : 1920;
@@ -573,13 +602,18 @@ int main(int argc, char **argv)
     if ((int64_t)width * 9 < (int64_t)height * 16) height = (int)((int64_t)width * 9 / 16);
     if (height > 0) stereo_wide_default((int)((int64_t)height * 16 / 9), height, k_profile.vr.hud_lens);
 #endif
-    gameplay_options_load();
     hle_register_all();
 #ifdef _WIN32
     install_shared_hooks();
 #endif
 #if defined(_WIN32) && !defined(LINDBERGH_OPENXR) && !defined(LINDBERGH_VULKAN)
     install_desktop_hooks();
+    if (gameplay_special_home_mode()) {
+        guest_override_va("Special individual lives", 0x080c1396u, h_home_damage);
+        guest_override_va("Special shared life display", 0x0819b506u, h_home_life_sprite);
+        guest_override_va("Special ride turn update", 0x08088afcu, h_home_ride_turn);
+        guest_override_va("Special ride wipe draw", 0x08088efeu, h_home_ride_wipe);
+    }
     const char *chapter=getenv("HOTD4SP_CHAPTER");
     if(chapter && (chapter[0]=='1'||chapter[0]=='2') && !chapter[1]) {
         selected_chapter=(unsigned)(chapter[0]-'0');

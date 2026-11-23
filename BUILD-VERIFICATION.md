@@ -67,3 +67,13 @@ This release includes the shared game selector and installer recovery changes do
 - Production desktop and optional OpenXR compiled. Cached Setup with desktop/OpenXR preserves 16 preference/cache/cabinet files, including solo-player.txt. The final source/executables contain no private QA hooks. Portable button tests additionally cover Special's shared Start behavior, plus existing off-screen reload, co-op isolation, interruption-safe saves and OpenXR capture regressions. Windows PowerShell 5.1 setup/library checks and Python release tests pass.
 
 These are automated native integration/checkpoint tests using the owner's dump and cloned saves, not a new full human playthrough. No physical lightgun, Parsec session or headset was available for this update. OpenXR controller assignments are unchanged and remain experimental. Source-only ZIP integrity and extracted Setup validation are checked before publication; GitHub release CI gates publication and the published ZIP is downloaded and compared to its manifest/source.
+
+## Desktop Home rules and 16:9 gameplay framing
+
+- Solo G and solo Kate each went from three lives to zero under native damage and reached the arcade Game Over state. Simulated two-player input verified independent life loss, P2 firing after P1 was out, and Game Over after the final life.
+- A scripted trigger burst and release restored the arcade magazine from 14 to 30 rounds. Home held at 14 until Reload and then refilled to 30. Home's off-screen reload was checked with the option enabled for G and disabled for Kate.
+- The original 5:3 cabinet projection had the same horizontal scale as 4:3 and a vertical scale 1.25 times higher. The 16:9 presets were rendered against those references. The same off-center screen input produced camera-ray slopes 0.8 times as large on each axis in 5:3 Expanded, matching the projection change.
+- A Chapter 2 desktop session with 4x MSAA completed 11,500 frames and recorded four ride-camera blends. The installed executable captured 49 frames around a subsequent turn, showing the outgoing view, a blend, and the incoming view. Arcade uses the existing transition handling.
+- Both settings were saved and reopened using the WPF click handlers. Windows Setup built and installed the desktop and OpenXR executables and generated the local menu image. A 4K desktop run from the installed launcher completed 600 frames.
+
+The checks used the supported local dump, scripted input and isolated saves. Physical lightgun and headset testing were outside this run.

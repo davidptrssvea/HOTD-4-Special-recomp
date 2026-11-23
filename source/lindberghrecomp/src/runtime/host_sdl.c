@@ -2723,6 +2723,8 @@ static void frame_gl(void *arg)
 #endif
 
         /* Draw crosshair overlay on top of frame */
+        if (game_profile()->desktop_overlay)
+            game_profile()->desktop_overlay(g_vp_x, g_vp_y, g_vp_w, g_vp_h);
         draw_crosshair_overlay(win_w, win_h);
 #ifdef HOTD4_DESKTOP_PAUSE
         if(!hotd4_special_menu())high_scores_hud_draw(win_w,win_h);

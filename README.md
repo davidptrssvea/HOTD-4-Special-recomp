@@ -60,4 +60,11 @@ Both start menus include **HOTD4** and **HOTD4 SPECIAL** buttons. Select the oth
 
 In **Settings > Gameplay > Solo Player**, choose **G (P1)** (default) or **Kate (P2)** and **Save**, then start Arcade normally. The same selector is available under **Pause > Settings > Gameplay**; restart Arcade/Chapter to apply a change made during play. It supports absolute mouse, Raw Relative mouse and Raw Input lightguns. Your primary gun device remains the same physical device.
 
-Special uses **G**, not James. Unlike normal HOTD4, its original ride uses a shared Start/credit flow and shared life bar, and creates both native player objects. These native rules are preserved: the selector changes which seat your primary controls operate; it does not add an AI companion or change the story. Default **5/C** still adds credits and **1/Enter** still starts the ride/skips supported cutscenes. The other seat receives no shooting input unless a second gun is enabled. Dedicated mixed co-op/Parsec modes keep their normal assignments and disable the solo override. This setting applies to desktop; experimental OpenXR keeps its existing controller/dual-wield mapping.
+Special uses **G** and **Kate**. The solo selector chooses which seat receives the primary input. Default **5/C** adds shared credits and **1/Enter** starts the ride or skips supported cutscenes. The other seat can shoot when a second gun is enabled. Mixed co-op and Parsec modes use their normal assignments. Experimental OpenXR uses its existing controller mapping.
+
+## Desktop rules and gameplay framing
+
+- Under **Settings → Gameplay → Rules**, choose **Home** for three lives per participating player, manual reload and a short blend when the arcade ride switches camera views. The original arcade sends damage to the cabinet, so Home assigns each hit to one eligible player and alternates in co-op. A player who runs out of lives stops shooting while their partner can finish the run. Off-screen lightgun reload follows its own setting. **Arcade** is the default.
+- Under **Settings → Graphics / Input → 16:9 Gameplay Framing**, **4:3 Expanded** (default) retains the full 4:3 vertical field of view. **5:3 Expanded** retains the tighter height of the arcade's 1280×768 mode. Both extend the live 3D view horizontally to 16:9. Full-screen movies and the HUD retain their original framing.
+
+Save the selection in the launcher and start Arcade or Chapter Practice. These settings apply to the Windows desktop build.

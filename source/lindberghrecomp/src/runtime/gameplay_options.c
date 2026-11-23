@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdatomic.h>
 static atomic_int offscreen_reload=1,blood_splatter=0;
+static int special_home_mode, special_fov_5_3;
 static void path_for(char *path,size_t size,const char *name)
 {
     const char *dir=getenv("HOTD4_SETTINGS_DIR");
@@ -23,14 +24,18 @@ void gameplay_options_set(int offscreen,int blood)
 { atomic_store(&offscreen_reload,!!offscreen);atomic_store(&blood_splatter,!!blood); }
 int gameplay_offscreen_reload(void){return atomic_load(&offscreen_reload);}
 int gameplay_blood_splatter(void){return atomic_load(&blood_splatter);}
+int gameplay_special_home_mode(void){return special_home_mode;}
+int gameplay_special_fov_5_3(void){return special_fov_5_3;}
 void gameplay_options_load(void)
 {
 #ifndef LINDBERGH_OPENXR
-    const char *names[]={"offscreen-reload.txt","blood-effects.txt"};
-    int values[]={1,0};
-    for(int i=0;i<2;i++){char path[2048],value[8];path_for(path,sizeof path,names[i]);FILE *f=fopen(path,"rb");
+    const char *names[]={"offscreen-reload.txt","blood-effects.txt","special-home-mode.txt","special-fov.txt"};
+    int values[]={1,0,0,0};
+    for(size_t i=0;i<sizeof values/sizeof *values;i++){char path[2048],value[8];path_for(path,sizeof path,names[i]);FILE *f=fopen(path,"rb");
         if(f){if(fgets(value,sizeof value,f) && (value[0]=='0'||value[0]=='1'))values[i]=value[0]-'0';fclose(f);}}
     gameplay_options_set(values[0],values[1]);
+    special_home_mode=values[2];
+    special_fov_5_3=values[3];
 #endif
 }
 void gameplay_options_save(void)
