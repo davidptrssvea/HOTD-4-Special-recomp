@@ -1,6 +1,6 @@
 # HOTD4 Special Local Builder
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.2.zip** from the [v1.1.2 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.2), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.3.zip** from the [v1.1.3 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.3), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 
@@ -79,3 +79,11 @@ The main menu checks GitHub for the latest stable release in the background. Ope
 The update replaces the launcher and runtime files. It keeps settings, cabinet saves, the existing game dump and installed OpenXR support. The update folder beside the installation holds the Setup log and the previous versions of replaced files. Internet access and free disk space for a local build are required.
 
 To add the updater to an installation from an earlier release, run this builder's Setup and select the existing installation folder. Update `ui/hotd-update-version.txt` to match the tag when preparing a release.
+
+## Remembered Setup folders
+
+Manual Setup remembers your last successfully used **arcade dump** and **installation** folders, separately for HOTD4, Special and EX. Both paths are shown in the opening dialog; edit them or use **Browse** beside either field. Cancelled/failed builds and validation-only runs do not replace the last successful choices. Explicit command-line paths still take precedence, and the launcher updater remains automatic and does not change this history.
+
+Folder history is stored locally in `%LOCALAPPDATA%\HOTD-Setup\Normal.json`, `Special.json` or `EX.json`. It contains paths only. A deleted/moved dump can be replaced using Browse; a corrupt history file falls back to the usual defaults. Settings and cabinet saves remain in your installed game folder.
+
+Press **Start** (default **1 / Enter**) to skip **Gameplay Advice**. A single press is retained if native loading is still busy; the game performs its original script/resource cleanup. Existing story, boss and ending skips are retained.

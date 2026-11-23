@@ -67,6 +67,8 @@ static void h_get_integer(CPU *c)
  * in many scripted Hold Your Fire scenes. */
 #define EVENT_MAIN       0x0813b58cu
 #define EVENT_SKIP       0x081953acu
+#define ADVICE_BEGIN      0x084a4c2cu
+#define ADVICE_END        0x084a4ff8u
 #define OPENING_BEGIN     0x084a4ff8u
 #define OPENING_FIRST_WAIT 0x084a5090u
 #define OPENING_MOVIE_END 0x084a5268u
@@ -228,14 +230,16 @@ static void h_event_main(CPU *c)
 {
     static int previous_start;
     static uint32_t pending_boss_state;
+    static uint32_t pending_advice_state;
     uint32_t self = A32(0);
-    int start = (host_cabinet_buttons() & CAB_P1_START) != 0;
+    int start = (host_cabinet_buttons() & (CAB_P1_START | CAB_P2_START)) != 0;
     uint32_t command = event_command(self);
     uint32_t ret = rd32(c->esp - 4);
     uint32_t player = rd32(PLAYER_MANAGER);
     int hold = player && rd32(player + 0x54);
     int native_skip = player && rd32(player + 0x58);
     int intro = command >= OPENING_FIRST_WAIT && command < OPENING_MOVIE_END;
+    int advice = command >= ADVICE_BEGIN && command < ADVICE_END;
     int story = story_command(command);
     uint32_t state = rd32(self + 0x34);
     if (pending_boss_state != state || !hold || command < BOSS_RIDE_CHANGE || command >= BOSS_SCENE_END)
@@ -244,14 +248,23 @@ static void h_event_main(CPU *c)
      * that command, then finish the same Hold Your Fire scene. */
     int resume_boss_skip = pending_boss_state && command > BOSS_RIDE_CHANGE;
     int pressed = start && !previous_start;
-    if ((pressed || resume_boss_skip) && !native_skip && (intro || (story && hold)) && has_cutscene_exit(command)) {
+    /* Gameplay Advice has its own script before the opening and no Hold
+     * Your Fire flag. Retain one Start edge while native loading guards
+     * are busy, then use EventSkip's normal resource/timer cleanup. */
+    if (pending_advice_state != state || !advice) pending_advice_state = 0;
+    if (pressed && advice) pending_advice_state = state;
+    if ((pressed || resume_boss_skip || pending_advice_state) && !native_skip &&
+        (advice || intro || (story && hold)) && has_cutscene_exit(command)) {
         CPU event = *c;
         event.eax = self;
         event.edx = 3;  /* same argument as the cabinet's Start handler */
         if (guest_call(&event, EVENT_SKIP, NULL, 0)) {
             uint32_t next = event_command(self);
             pending_boss_state = next == BOSS_RIDE_CHANGE ? state : 0;
-            fprintf(stderr, "[hotd4sp] cutscene skipped (%08x -> %08x)\n", command, next);
+            if (next != command)
+                fprintf(stderr, "[hotd4sp] %s skipped (%08x -> %08x)\n",
+                        advice ? "Gameplay Advice" : "cutscene", command, next);
+            if (next < ADVICE_BEGIN || next >= ADVICE_END) pending_advice_state = 0;
         }
     }
     previous_start = start;

@@ -59,7 +59,7 @@ Both cached Setup runs passed automatic library registration and preserved their
 
 This release includes the shared game selector and installer recovery changes documented above. Earlier local follow-up notes record pre-publication tests. The release workflow now gates publication on Windows PowerShell 5.1 installer/library tests on windows-latest, plus Python dependency/build/publisher tests and portable runtime checks on Linux. Packages are generated only from the SHA-256 manifest and reject generated game code, executables and arcade asset formats.
 
-## v1.0.2 — G/P1 or Kate/P2 primary controls
+## v1.0.2 â€” G/P1 or Kate/P2 primary controls
 
 - Native assisted desktop runs: 5,053 frames each for default G with absolute mouse and Kate with absolute mouse, Raw Relative mouse, and synthesized Raw Input absolute-lightgun packets. Shared ride Start/coins boot correctly, the selected seat fires 30 rounds, reload restores its magazine and grenade count changes 3 -> 2. The other seat does not consume ammunition. Native P2 HUD/crosshair was visually checked. Special creates both native player objects; the test does not assume the normal game's independent join/state rules.
 - Justice checkpoint tests, using actual SDL mouse motion and the native SwingProc/InputSwing: G/absolute succeeds in 33 frames, Kate/absolute in 36 and Kate/Raw Relative in 27. Kate with Reload alone receives no resistance decrease and takes the original 276-frame timeout. Private checkpoint fixtures do not force the success outcome or alter native resistance/timing. They are not shipped.
@@ -83,3 +83,19 @@ The checks used the supported local dump, scripted input and isolated saves. Phy
 - A hidden 3,650-frame Chapter 1 comparison at 1920 x 1080, with MSAA off and 16x anisotropic filtering, measured 33.25 seconds of process CPU time in v1.1.0 and 30.94 seconds in v1.1.1. Average present intervals from frame 2,200 through 3,649 were 16.82 ms and 16.97 ms, respectively. The test used Windows, a Core i5-13400F and an RTX 4070 Ti. Performance on older hardware remains to be measured.
 - A hidden Chapter 2 run with Home rules, 5:3 Expanded framing, 720p and MSAA off completed 4,070 frames and confirmed a ride-camera crossfade. The test used scripted input and an isolated cabinet save.
 - The Windows PowerShell 5.1 menu test applied the preset, reopened the saved settings and returned the selected chapter to the launcher. Home rules and 5:3 Expanded were selected throughout. The desktop executable was rebuilt, and the updated stereo source compiled with the existing Windows OpenXR configuration.
+
+## v1.1.3: remembered manual Setup folders
+
+Windows PowerShell 5.1 checks cover separate Normal/Special/EX histories, spaces and Unicode in paths, atomic replacement, corrupt/wrong-edition/relative history fallback, saved prefill, explicit installation overrides, cancellation and preserving the last successful choices. Real WinForms control tests cover both Browse handlers, editing, input validation, Continue and control bounds. Only the OS folder picker is substituted for unattended tests. The same tests run in GitHub's Windows release checks.
+
+Real EX Setup was also run with the shared helper: a staged build created no history; a successful ordinary installation recorded the verified dump/install paths; a failed installation, ValidateOnly and a subsequent StageUpdate left that history byte-identical. Existing INI, cabinet save, local background and profile data remained byte-identical. Normal/Special package and supported-dump validation and existing Windows installer recovery checks passed. This tests the shared helper's real Setup integration without claiming a fresh native recompilation of unchanged Normal game code.
+
+All release packages retain the existing verified launcher updater. Only paths are remembered; no game assets are included.
+
+## Gameplay Advice Start skip
+
+Built both desktop and OpenXR targets from the updated production Special source. The new input scope is bounded to the original instruction script before the opening; it queues a single Start edge while native loading is busy and uses EventSkip's original resource/timer handling. Previous story/boss/ending handling remains in place.
+
+Five real native runs completed 3,500 frames each: a no-skip baseline, an early single 1 press during the safety/advice prelude, Enter on the first Gameplay Advice panel, 1 on the grenade-advice panel, and 1 near the end of the instruction sequence. A private observation-only build logged the native commands; it contains the production logic plus diagnostic logging, not scripted state changes. The baseline waited through the instructions. All four single-press cases exited the instruction script and continued through the opening into gameplay, exit 0. Captures confirmed the original advice screens and subsequent rendered street/enemies. The early request was retained across two native skip steps. Private probes/captures/ELFs are excluded from the release.
+
+This is not a fresh full playthrough of every route/boss/ending, nor a physical headset test. OpenXR compilation passed; headset behavior still needs hardware testing.

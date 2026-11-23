@@ -20,6 +20,9 @@ jobs:
       - name: Test Windows game discovery and handoff settings
         shell: powershell
         run: ./.release/test_game_library.ps1
+      - name: Test remembered Setup folders and Browse controls
+        shell: powershell
+        run: ./.release/test_setup_paths.ps1
       - name: Test build progress and memory limits
         run: python .release/test_build_support.py -v
   publish:

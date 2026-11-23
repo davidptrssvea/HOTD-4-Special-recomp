@@ -3,15 +3,15 @@
   "files": [
     {
       "path": "BUILD-VERIFICATION.md",
-      "sha256": "4ce71497a23be0a1f2dd95b9a3ceb775c7634a6004ee9c5f33956cf22adbdd22"
+      "sha256": "8e5cd9393892b0248b40fe6e12d744515e8be5af701b56dc5a7fde61106ba51b"
     },
     {
       "path": "README.md",
-      "sha256": "7c99ddfcffc3ee33cc0a22ff9e1659e1f863b85b5ec2a151422352ab6f9e3a86"
+      "sha256": "ae02843405f9cbb042d85e241c9d981bf0e8f85ba31917336e1c4be16e0fda00"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "cf0dc89263764f2dec2fa10a22f4624d12babafc441526f34e0eb6a3a55147c5"
+      "sha256": "08815e576908f22ee56f26460553445cf551ddc8c798e2f5a10ef153afbf9094"
     },
     {
       "path": "Setup.cmd",
@@ -19,7 +19,7 @@
     },
     {
       "path": "setup.ps1",
-      "sha256": "b5d87823b2ff09b54def572b6813322967601ea1b9e8e821b5aa649e36505772"
+      "sha256": "0e13cb708cc657e363564ea2d8251e0f9166e345db2bde17c7d99d6a414fb89d"
     },
     {
       "path": "source/CMakeLists.txt",
@@ -39,7 +39,7 @@
     },
     {
       "path": "source/games/hotd4sp/src/host.c",
-      "sha256": "996be1652eb0622396897148568194fdac4c93a4aec4e9d56a1d352a13acfed7"
+      "sha256": "63772f22bc89d565dc886984a275ee0d490a123f9307e4474f334b3286cd373e"
     },
     {
       "path": "source/games/hotd4sp/src/special_home.h",
@@ -586,16 +586,12 @@
       "sha256": "a9dc03d9fabb4130d52ffe06968e5d21477f32a350c3e4cc0bc41ca262edb405"
     },
     {
+      "path": "tools/setup_paths.ps1",
+      "sha256": "a8d65f8257a4bb2ae69c5a800a1b91f4121e0c23338feab7ebf8bb2ce583b137"
+    },
+    {
       "path": "tools/setup_support.ps1",
       "sha256": "2c42b211a08173056786b0214335af752be9765bf23b202bf3bcb951d7108cde"
-    },
-    {
-      "path": "ui/hotd-update-version.txt",
-      "sha256": "cf60e673ce0edcaca3188da9b6361ac27af0c2705f0fdc93529a0b95169fef97"
-    },
-    {
-      "path": "ui/hotd-update.ps1",
-      "sha256": "0823aaba3fb0097d197d43ab14617186c8a84323c439c23e1c0af6ee8def380f"
     },
     {
       "path": "ui/Launcher.cs",
@@ -1468,6 +1464,14 @@
     {
       "path": "ui/crosshair-previews/2-75.png",
       "sha256": "9b250942ff775adc75a907dcc6a63ba7958c6640f85c8a0f453f31bcb7bd246a"
+    },
+    {
+      "path": "ui/hotd-update-version.txt",
+      "sha256": "b8af634a66d091d1c124675fbe2208a3c4d69db36832f7dcc4a99c6c30404cf0"
+    },
+    {
+      "path": "ui/hotd-update.ps1",
+      "sha256": "0823aaba3fb0097d197d43ab14617186c8a84323c439c23e1c0af6ee8def380f"
     },
     {
       "path": "ui/hotd4-controls.ps1",
