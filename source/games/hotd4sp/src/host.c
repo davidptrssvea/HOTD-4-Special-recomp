@@ -584,6 +584,9 @@ static const LgGameProfile k_profile = {
     },
 };
 
+void sega_credit_options(uint32_t init, uint32_t config, uint32_t sound, uint32_t free_play_flag,
+                         uint32_t text, uint32_t first, uint32_t last);
+
 int main(int argc, char **argv)
 {
     if (argc < 2) {
@@ -620,6 +623,8 @@ int main(int argc, char **argv)
     fprintf(stderr,"[hotd4sp] desktop aspect %s, full-height lens %s\n",four_three?"4:3":"16:9",four_three?"original":"selected");
 #endif
     hle_register_all();
+    sega_credit_options(0x0835fb90u, 0x08360cc2u, 0x08360950u, 0x0a6c2e27u,
+                        0x08360b7fu, 0x082024f9u, 0x08202626u);
 #ifdef _WIN32
     install_shared_hooks();
 #endif

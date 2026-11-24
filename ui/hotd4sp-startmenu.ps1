@@ -274,6 +274,8 @@ function Show-Hotd4SPStartMenu {
                         <TextBlock Text="Aim off-screen and pull the trigger. Applies to both lightguns." TextWrapping="Wrap" Foreground="#D0C7C2" FontSize="14" Margin="0,0,0,10"/>
                         <Label Content="Blood Splatter" Foreground="#F0EFEB" FontSize="15" Padding="0"/>
                         <ComboBox Height="36" Margin="0,4,0,8" Name="BloodSplatter"/>
+                        <CheckBox Name="FreePlay" Content="Free Play (unlimited credits)" Foreground="#F0EFEB" FontSize="15" Margin="0,4,0,8" ToolTip="Use Start and Continue without coins. Applies when the game starts."/>
+                        <CheckBox Name="MuteCreditSounds" Content="Mute Start and coin sounds" Foreground="#F0EFEB" FontSize="15" Margin="0,0,0,12" ToolTip="Applies when the game starts."/>
                         <Button Name="SaveGameplay" Height="38" Margin="0,0,0,6" Content="Save"/>
                         <Button Name="GameplayBack" Height="38" Content="Back"/>
                     </StackPanel>
@@ -369,7 +371,7 @@ function Show-Hotd4SPStartMenu {
 
     $controls = @{}
     foreach ($name in 'MainPage','ChapterPage','OptionsPage','Arcade','Chapters','Options','Quit','ChapterList','Performance720p',
-            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','GeneralInputHelp','KeyboardHelp','CoopGuide','Gun1','Gun2','AntiAliasing','VSync','Aspect','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
+            'Gun1Label','SoloPlayer','SoloPlayerHint','GameplayPage','GameplayOpen','HomeMode','OffscreenReload','BloodSplatter','FreePlay','MuteCreditSounds','SaveGameplay','GameplayBack','Gun2Label','BindingsPage','BindingsOpen','BindingsList','BindingsStatus','SaveBindings','BindingsBack','ResetBindings','CancelBinding','ControlSummary','ControlSummaryList','ChapterHelp','AaGuide','PlayLogged','CrosshairEnabled','Anisotropy','Volume','MouseGrab','LeaveReload','InputGuide','InputPage','InputOptions','Framing','InputMode','GeneralInputHelp','KeyboardHelp','CoopGuide','Gun1','Gun2','AntiAliasing','VSync','Aspect','MouseSpeed','MouseSmoothing','SaveInput','InputBack','ChapterBack','OptionsBack','SaveOptions','Resolution','DisplayMode','Hud','CrosshairStyle','CrosshairSize','CrosshairColor','CrosshairPreview','CrosshairPreviewImage','CrosshairPreviewLabel','Sinden','SindenWidth','SindenFrame','SindenInner','Hint') {
         $controls[$name] = $window.FindName($name)
     }
 
@@ -725,9 +727,19 @@ function Show-Hotd4SPStartMenu {
         foreach($i in 0,1){$entry=[Windows.Controls.ComboBoxItem]::new();$entry.Tag=[string]$i;$entry.Content=$labels[$i];[void]$controls[$field].Items.Add($entry)}
         $controls[$field].SelectedIndex=[int]$value
     }
-    $controls.GameplayOpen.Add_Click({& $showPage 'GameplayPage'})
+    $arcadeProfiles=[ordered]@{FreePlay='arcade-free-play.txt';MuteCreditSounds='arcade-mute-credit-sounds.txt'}
+    $controls.GameplayOpen.Add_Click({
+        foreach($name in $arcadeProfiles.Keys){
+            $path=Join-Path $RecompDir $arcadeProfiles[$name]
+            $controls[$name].IsChecked=[IO.File]::Exists($path) -and [IO.File]::ReadAllText($path).Trim() -eq '1'
+        }
+        & $showPage 'GameplayPage'
+    })
     $controls.GameplayBack.Add_Click({& $showPage 'OptionsPage'})
     $controls.SaveGameplay.Add_Click({
+        foreach($name in $arcadeProfiles.Keys){
+            [IO.File]::WriteAllText((Join-Path $RecompDir $arcadeProfiles[$name]),[string][int][bool]$controls[$name].IsChecked)
+        }
         if($controls.SoloPlayer.IsEnabled){[IO.File]::WriteAllText($soloPath,[string]$controls.SoloPlayer.SelectedItem.Tag)}
         foreach($field in $gameplayPaths.Keys){[IO.File]::WriteAllText($gameplayPaths[$field],[string]$controls[$field].SelectedItem.Tag)}
         & $showPage 'OptionsPage'

@@ -11,7 +11,7 @@
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "7dd6a31b622c9b9c6fea11cc604714ff6f78d478d51a7f93b00c5ea08d910ea6"
+      "sha256": "848763f241aa5c868ba2e3816597af1cdf996066298bb5908909028c85d7a834"
     },
     {
       "path": "Setup.cmd",
@@ -39,7 +39,7 @@
     },
     {
       "path": "source/games/hotd4sp/src/host.c",
-      "sha256": "a53b3a058977d52662e8d369953f241d2e19df17fdb63c84b3c4ab35fce679db"
+      "sha256": "e278d845d53b3a85f54237197bd318a18b5f26d55645820f1f94b06624b58f40"
     },
     {
       "path": "source/games/hotd4sp/src/special_home.h",
@@ -135,11 +135,11 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/gameplay_options.c",
-      "sha256": "19141ebfec7d837f60c3ff84d85cfcd868f4e047ae635d1ba37776b09aaefc87"
+      "sha256": "7ba07fe9501ca36ff8e835611988b83fd8b71117de1932e7dbeab110bf7ff1f4"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/gameplay_options.h",
-      "sha256": "91e3f79d27ed8e778ab6779afd866b1b1424fa0ea7f65fcc0f8786e2ed5dd994"
+      "sha256": "9661c94936c67a473fdd8499385e7f6d896c2854e0c0fac6da1ceb6f1453478e"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/gl_posix.h",
@@ -235,7 +235,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/hle_sega.c",
-      "sha256": "1554af5519c062d45a9350b86afe2e17d91b6945fa69b6bc6e0e0bdb0701a4ee"
+      "sha256": "1ed11ee2b568fd84026638b326780be5ed60857546b75823a45b696c0d13b768"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/hle_segaapi.c",
@@ -259,7 +259,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/host_sdl.c",
-      "sha256": "680709eca4f67a6c251ca66b29318bc5e6f5aa2dc092f42ecce2d99c37ff7b0c"
+      "sha256": "68a9791521975534b4e03a8c7ba3ba13f251ca93926b8dbcba3c25df3c114790"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/host_settings.c",
@@ -1471,7 +1471,7 @@
     },
     {
       "path": "ui/hotd-update-version.txt",
-      "sha256": "c982f9de633e527ed41044f1fe7e24f7a00df4923b223f100054dd0106cc95d6"
+      "sha256": "61aa87e6a4aaeb34d36d339452a3f22e721ab85bbf55adc98edcf8311809e0b8"
     },
     {
       "path": "ui/hotd-update.ps1",
@@ -1507,7 +1507,7 @@
     },
     {
       "path": "ui/hotd4sp-startmenu.ps1",
-      "sha256": "0ae883ee71d1dfc65f32e86004f8f8b718b387bcb17434bffbdfd8549b9c87f1"
+      "sha256": "18dc7103f104602fe1b1d52bdeeefe150877e0512c08bbe6a9b2b2cf6d92165c"
     },
     {
       "path": "ui/launch_hotd4sp.ps1",

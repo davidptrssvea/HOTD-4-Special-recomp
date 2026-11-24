@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdatomic.h>
 static atomic_int offscreen_reload=1,blood_splatter=0;
+static int free_play, mute_credit_sounds, arcade_options_loaded;
 static int special_home_mode, special_fov_5_3;
 static void path_for(char *path,size_t size,const char *name)
 {
@@ -26,8 +27,27 @@ int gameplay_offscreen_reload(void){return atomic_load(&offscreen_reload);}
 int gameplay_blood_splatter(void){return atomic_load(&blood_splatter);}
 int gameplay_special_home_mode(void){return special_home_mode;}
 int gameplay_special_fov_5_3(void){return special_fov_5_3;}
+static int read_arcade_toggle(const char *name)
+{
+    char path[2048];
+    path_for(path,sizeof path,name);
+    FILE *f=fopen(path,"rb");
+    if (!f) return 0;
+    int value=fgetc(f);
+    fclose(f);
+    return value=='1';
+}
+
+int gameplay_free_play(void) { return free_play; }
+int gameplay_mute_credit_sounds(void) { return mute_credit_sounds; }
+
 void gameplay_options_load(void)
 {
+    if (!arcade_options_loaded) {
+        free_play=read_arcade_toggle("arcade-free-play.txt");
+        mute_credit_sounds=read_arcade_toggle("arcade-mute-credit-sounds.txt");
+        arcade_options_loaded=1;
+    }
 #ifndef LINDBERGH_OPENXR
     const char *names[]={"offscreen-reload.txt","blood-effects.txt","special-home-mode.txt","special-fov.txt"};
     int values[]={1,0,0,0};
