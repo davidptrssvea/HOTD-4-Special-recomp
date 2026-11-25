@@ -3,6 +3,8 @@
 /* Windows desktop preferences and per-device lightgun input. Included by host_sdl. */
 #include <SDL_syswm.h>
 #include "coop_mouse.h"
+enum { INPUT_GAMEPAD = 6 };
+static int input_gamepad_active;
 static int input_keyboard_active;
 static int input_pref_mode, input_active_mode, input_pref_aa, input_pref_vsync, input_prefs_loaded;
 static int input_pref_solo,input_active_solo;
@@ -27,7 +29,7 @@ static char raw_active_guns[2][1024];
 static HANDLE raw_assigned[2];
 static WNDPROC raw_previous_proc;
 static HWND raw_window;
-static const wchar_t *input_mode_names[] = {L"Mouse (Absolute)", L"Mouse (Raw Relative)", L"Lightgun (Raw Input)", L"Co-op: Gun P1 + Mouse P2", L"Co-op: Gun P1 + Mouse P2 (Relative)",L"Keyboard (P1 + P2)"};
+static const wchar_t *input_mode_names[] = {L"Mouse (Absolute)", L"Mouse (Raw Relative)", L"Lightgun (Raw Input)", L"Co-op: Gun P1 + Mouse P2", L"Co-op: Gun P1 + Mouse P2 (Relative)",L"Keyboard (P1 + P2)", L"Gamepad (P1 + P2)"};
 static void input_path(char *out, size_t cap, const char *file)
 {
     const char *dir = getenv("HOTD4_SETTINGS_DIR");
@@ -71,7 +73,7 @@ static void input_options_load(void)
     if (input_read("mouse-smoothing.txt", value, sizeof value) &&
         strlen(value) == 1 && value[0] >= '0' && value[0] <= '2')
         input_mouse_smoothing = value[0] - '0';
-    if(input_read("input-profile.txt",value,sizeof value) && strlen(value)==1 && value[0]>='0' && value[0]<='5')input_pref_mode=atoi(value);
+    if(input_read("input-profile.txt",value,sizeof value) && strlen(value)==1 && value[0]>='0' && value[0]<='0'+INPUT_GAMEPAD)input_pref_mode=atoi(value);
     if(input_read("aa-profile.txt",value,sizeof value)){
         int n=atoi(value); if(n==0 || n==2 || n==4 || n==8)input_pref_aa=n;
     }
@@ -83,15 +85,16 @@ static void input_options_load(void)
     if(input_read("solo-player.txt",value,sizeof value) && !strcmp(value,"1"))input_pref_solo=1;
     input_active_solo=input_pref_solo;
     input_keyboard_active=input_pref_mode==5;
-    input_active_mode=input_keyboard_active?0:input_pref_mode;
+    input_gamepad_active=input_pref_mode==INPUT_GAMEPAD;
+    input_active_mode=(input_keyboard_active || input_gamepad_active)?0:input_pref_mode;
     settings()->raw_mouse=input_active_mode==1;
-    if(input_active_mode>=2 || input_keyboard_active)settings()->mouse_grab=0;
+    if(input_active_mode>=2 || input_keyboard_active || input_gamepad_active)settings()->mouse_grab=0;
     settings()->aa=input_pref_aa;
 }
 static void input_option_cycle(int row, int delta)
 {
     char value[32]; delta=delta<0?-1:1;
-    if(row==0){input_pref_mode=(input_pref_mode+6+delta)%6;snprintf(value,sizeof value,"%d",input_pref_mode);input_write("input-profile.txt",value);}
+    if(row==0){input_pref_mode=(input_pref_mode+INPUT_GAMEPAD+1+delta)%(INPUT_GAMEPAD+1);snprintf(value,sizeof value,"%d",input_pref_mode);input_write("input-profile.txt",value);}
     if (row == 4 && (input_pref_mode == 1 || input_pref_mode == 4)) {
         int count = sizeof mouse_speeds / sizeof *mouse_speeds;
         int at = 0;
@@ -113,7 +116,7 @@ static void input_option_cycle(int row, int delta)
         input_pref_aa=samples[(at+4+delta)%4];snprintf(value,sizeof value,"%d",input_pref_aa);input_write("aa-profile.txt",value);
     }
     if(row==1 || row==2){
-        if(input_pref_mode==5 || input_pref_mode<2 || (row==2 && input_pref_mode>=3))return;
+        if(input_pref_mode<2 || input_pref_mode>4 || (row==2 && input_pref_mode>=3))return;
         int pl=row-1; UINT count=0;
         if(GetRawInputDeviceList(NULL,&count,sizeof(RAWINPUTDEVICELIST))==(UINT)-1)return;
         RAWINPUTDEVICELIST *list=calloc(count?count:1,sizeof *list);
@@ -132,6 +135,7 @@ static void input_option_cycle(int row, int delta)
 }
 static void input_gun_label(int pl, wchar_t *out, size_t cap)
 {
+    if(input_pref_mode==INPUT_GAMEPAD){swprintf(out,cap,L"P%d Device  < Gamepad >",pl+1);return;}
     int logical=pl ^ solo_player_enabled(game_profile()->solo_characters,input_pref_solo,input_pref_mode);
     if(input_pref_mode==5){swprintf(out,cap,L"P%d Device  < Keyboard >",pl+1);return;}
     if(pl==1 && input_pref_mode>=3){swprintf(out,cap,L"P2 Device  < Parsec / injected mouse >");return;}

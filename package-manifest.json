@@ -7,11 +7,11 @@
     },
     {
       "path": "README.md",
-      "sha256": "6d8928bd43f74da2a189e705960aa3b15606e8e5c41b053bb08451c40bdd758b"
+      "sha256": "109914da2a18e1e0e766ed6f2eb671ab8463719a01c7c460e24ac3bd9fdf48cc"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "sha256": "2fc21d6d19739e37c67143b54e0438dc9a8085e2e7d3e6fbf43cf8424e3f5d72"
+      "sha256": "c4e2bf9f2831471ea1e4c1aa98f56064af1be4354d5aece87c39947de04900aa"
     },
     {
       "path": "Setup.cmd",
@@ -203,7 +203,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/hle_gl_posix.c",
-      "sha256": "0f3c93516367ab6d83f394e9365979f2ffe200bab64a671c6d2996983bddb527"
+      "sha256": "e6a2adcc7af143f4facae8e5a5767aa4b217d12aee8d11780f9e574fad71d308"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/hle_glut.c",
@@ -259,7 +259,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/host_sdl.c",
-      "sha256": "68a9791521975534b4e03a8c7ba3ba13f251ca93926b8dbcba3c25df3c114790"
+      "sha256": "d1d12a0d71b8060aaaeb5124ebb779a7905781ee624a6aa99603920f963720fa"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/host_settings.c",
@@ -291,7 +291,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/input_options.h",
-      "sha256": "416415dee2c0fb53822a22d5a25d143f8b587e8a7ff46b7815c114d336779a6d"
+      "sha256": "0e91d1fa37b0143a091981672023eac1e72c86c75a93796a14a61eabdb057e91"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/keyboard_aim.h",
@@ -1471,7 +1471,7 @@
     },
     {
       "path": "ui/hotd-update-version.txt",
-      "sha256": "9b5fb32fd63a520f01e1ff924f50c58a6568db85c65dc26f003fcbdc16c4905a"
+      "sha256": "9395b5790d467c344bc59a358d728c141cb6da055b4a53c6adf4cd4170b91f81"
     },
     {
       "path": "ui/hotd-update.ps1",
@@ -1487,7 +1487,7 @@
     },
     {
       "path": "ui/hotd-game-library.ps1",
-      "sha256": "f155a81cc7c465d5bf90b72b38642c94d936edde1eb01ab51f2c1761f6c22f31"
+      "sha256": "752eb02a1aa941c0282d70c4dbe6ce1a1526a60c349d8f0c0b132777df2cfab2"
     },
     {
       "path": "ui/hotd4-native-crosshair.cs",
@@ -1507,7 +1507,7 @@
     },
     {
       "path": "ui/hotd4sp-startmenu.ps1",
-      "sha256": "07f42157b5e548db38cc100ab7238328951dd0d218b9b85719953bfaa93c7fec"
+      "sha256": "540a3d216fc5c9ee46537a1919debd40417083ca8dfafbfe2d92261ebf5fd02d"
     },
     {
       "path": "ui/launch_hotd4sp.ps1",

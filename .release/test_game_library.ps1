@@ -95,31 +95,30 @@ Assert ($env:HOTD4_SETTINGS_DIR -eq $normal -and $env:LINDBERGH_NVRAM -eq 'wrong
 
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 $inspect={
-    param($window,$gameCards)
+    param($window,$games)
     $window.ShowActivated=$false
     $window.WindowStartupLocation='Manual'
     $window.Left=-20000
     $window.Top=-20000
     $window.Show()
     $window.UpdateLayout()
-    Assert ($gameCards.Children.Count -eq 4) 'A complete installation did not get a card'
-    foreach ($card in $gameCards.Children) {
-        $actions=$card.Child.Children[0]
-        Assert (@($actions.Children | Where-Object Content -eq 'Play').Count -eq 1) 'Missing Play action'
-        Assert (@($actions.Children | Where-Object Content -eq 'Settings').Count -eq 1) 'Missing Settings action'
-        Assert ($card.ActualHeight -gt 0 -and $card.ActualWidth -gt 0) 'Card did not lay out'
+    Assert ($games.Items.Count -eq 4) 'A complete installation is missing from the list'
+    foreach ($entry in $games.Items) {
+        $games.SelectedItem=$entry
+        $window.UpdateLayout()
+        Assert ($window.FindName('Play').IsVisible -and $window.FindName('Settings').IsVisible) 'Missing direct actions'
+        Assert ($window.FindName('GameTitle').Text -and $entry.ActualHeight -gt 0 -and $entry.ActualWidth -gt 0) 'Selection did not lay out'
     }
     Assert ($window.FindName('Locate').IsVisible -and $window.FindName('Back').IsVisible) 'Footer actions are clipped'
     if ($PreviewDir) {
         [void][IO.Directory]::CreateDirectory($PreviewDir)
         $grid=$window.Content
-        $bounds=[Windows.Rect]::new(0,0,$grid.ActualWidth+48,$grid.ActualHeight+38)
+        $bounds=[Windows.Rect]::new(0,0,$grid.ActualWidth,$grid.ActualHeight)
         $visual=[Windows.Media.DrawingVisual]::new()
         $drawing=$visual.RenderOpen()
         $drawing.DrawRectangle($window.Background,$null,$bounds)
         $brush=[Windows.Media.VisualBrush]::new($grid)
-        $content=[Windows.Rect]::new(24,19,$grid.ActualWidth,$grid.ActualHeight)
-        $drawing.DrawRectangle($brush,$null,$content)
+        $drawing.DrawRectangle($brush,$null,$bounds)
         $drawing.Close()
         $bitmap=[Windows.Media.Imaging.RenderTargetBitmap]::new([int][Math]::Ceiling($bounds.Width),[int][Math]::Ceiling($bounds.Height),96,96,[Windows.Media.PixelFormats]::Pbgra32)
         $bitmap.Render($visual)
@@ -128,7 +127,8 @@ $inspect={
         $stream=[IO.File]::Create((Join-Path $PreviewDir 'HOTD Game Library.png'))
         try { $encoder.Save($stream) } finally { $stream.Dispose() }
     }
-    $settings=$gameCards.Children[3].Child.Children[0].Children | Where-Object Content -eq 'Settings'
+    $games.SelectedItem=$games.Items | Where-Object { $_.Tag.Game -eq 'Scarlet' } | Select-Object -First 1
+    $settings=$window.FindName('Settings')
     $settings.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
 }
 $selected=Show-HotdGameLibrary -RecompDir $normal -CurrentGame Normal -Inspect $inspect

@@ -1,8 +1,10 @@
-# HOTD4 Special v1.1.10 - Updater and launcher fixes
+# HOTD4 Special v1.1.11 – Gamepad support
 
-- Retry temporary Windows file replacement errors during updates. If a file still cannot be replaced, the updater preserves the existing installation where possible and logs the affected path and Windows error code in `update-error.log`.
-- Show the installed builder version directly in the main menu.
-- Fix **Free Play (unlimited credits)** and **Mute Start and coin sounds** when a Windows settings path contains non-ASCII characters.
-- Fix two OpenGL shader errors that can cause a white 3D scene on NVIDIA drivers.
+- Added two-player gamepad support to Windows desktop play, including stick aiming, shooting, reload, grenades, and pause-menu navigation.
+- The system mouse pointer is hidden during gamepad play.
+- Added a targeted OpenGL retry for NVIDIA's C7507 integer vertex attribute error, which can contribute to the white 3D scene in Chapter 1. The compiler fix was reproduced and verified locally. Confirmation on the reporter's RTX 5080 is pending.
+- Updated Game Library with installed versions, display and input summaries, per-game release checks, and a mouse and lightgun input test.
 
-If the previous updater failed, close the game and launcher, extract this release's Local Builder ZIP into a separate folder, and run `Setup.cmd` against your existing installation folder. Use the same arcade dump to keep your settings and saves. You can also use **Updates > Download and install** from a working launcher.
+Enable **Gamepad (P1 + P2)** under **Settings > Graphics / Input** and save. Press **Menu / Start** to join.
+
+Update from **Updates > Download and install**. For a manual update, extract the Local Builder ZIP, run `Setup.cmd`, and select your existing installation and game files.

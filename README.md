@@ -1,5 +1,9 @@
 # HOTD4 Special Local Builder
 
+## Gamepad
+
+In the Windows desktop launcher, choose **Gamepad (P1 + P2)** in **Settings → Graphics / Input** and save. The first controller is assigned to P1 and the second to P2. Either stick aims. **RT / A** shoots, **X / LB** reloads, **LT / B** throws a grenade, **Y / RB** changes fire mode and **Menu / Start** joins. Click the left stick to insert a credit. **View / Back** opens the pause menu, where the D-pad navigates and **A** selects.
+
 Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.5.zip** from the [v1.1.5 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.5), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).

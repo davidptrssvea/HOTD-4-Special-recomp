@@ -406,12 +406,62 @@ static void h_glLinkProgramARB(CPU *c)
         fprintf(stderr, "[gl] program %u failed to link: %s\n", p, log);
     }
 }
+#if defined(HOTD4SP_SHADER_COMPAT) && defined(_WIN32) && !defined(LINDBERGH_VULKAN)
+/* Some Special vertex shaders need the legacy integer attribute extension.
+ * Retry only when NVIDIA rejects that attribute in the original source. */
+static int retry_special_integer_attributes(GLuint shader)
+{
+    static const char version[] = "#version 120";
+    static const char extension[] = "#extension GL_EXT_gpu_shader4 : enable\n";
+    GLint type = 0, len = 0;
+    if (!GLEW_EXT_gpu_shader4) return 0;
+    glGetShaderiv(shader, GL_SHADER_TYPE, &type);
+    if (type != GL_VERTEX_SHADER) return 0;
+
+    glGetShaderiv(shader, GL_SHADER_SOURCE_LENGTH, &len);
+    if (len <= 0) return 0;
+    char *source = malloc((size_t)len);
+    if (!source) return 0;
+    glGetShaderSource(shader, len, NULL, source);
+    char *body = strchr(source, '\n');
+    GLint ok = 0;
+    if (body && !strncmp(source, version, sizeof version - 1) &&
+        strspn(source + sizeof version - 1, " \t\r") ==
+            (size_t)(body - (source + sizeof version - 1)) &&
+        !strstr(source, "GL_EXT_gpu_shader4")) {
+        body++;
+        const GLchar *parts[] = { source, extension, body };
+        const GLint lengths[] = { (GLint)(body - source), sizeof extension - 1, (GLint)strlen(body) };
+        glShaderSource(shader, 3, parts, lengths);
+        glCompileShader(shader);
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &ok);
+        if (ok) {
+            static int logged;
+            if (!logged) {
+                fprintf(stderr, "[gl] HOTD4 Special integer vertex attribute shader retry succeeded\n");
+                logged = 1;
+            }
+        }
+    }
+    free(source);
+    return ok;
+}
+#endif
+
 static void h_glCompileShaderARB(CPU *c)
 {
     GLuint sh = A32(0);
     glCompileShader(sh);
     GLint ok = 0;
     glGetShaderiv(sh, GL_COMPILE_STATUS, &ok);
+#if defined(HOTD4SP_SHADER_COMPAT) && defined(_WIN32) && !defined(LINDBERGH_VULKAN)
+    if (!ok) {
+        char log[2048] = "";
+        glGetShaderInfoLog(sh, sizeof log, NULL, log);
+        if (strstr(log, "C7507: OpenGL does not allow attributes of type ivec4"))
+            ok = retry_special_integer_attributes(sh);
+    }
+#endif
     {   /* LINDBERGH_SHADER_DUMP_ALL=<dir>: every shader's source, as compiled */
         const char *dir = getenv("LINDBERGH_SHADER_DUMP_ALL");
         GLint len = 0;
