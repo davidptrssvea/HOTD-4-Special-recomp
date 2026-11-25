@@ -3,4 +3,9 @@
 /* NVIDIA's legacy scalar/vector and half syntax -> portable GLSL.
  * The caller owns the returned string. No game-specific substitutions. */
 char *glsl_compat(const char *source);
+
+#ifdef HOTD4SP_SHADER_COMPAT
+/* Returns a corrected fragment shader, or NULL if no correction is needed. */
+char *glsl_compat_hotd4sp(const char *source);
+#endif
 #endif

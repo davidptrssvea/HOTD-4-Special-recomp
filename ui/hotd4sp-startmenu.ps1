@@ -346,6 +346,8 @@ function Show-Hotd4SPStartMenu {
                     </Grid>
                 </Border>
 
+                <TextBlock Name="InstalledVersion" FontSize="15" Foreground="#D0C7C2" HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom" Margin="74,0,0,26" Visibility="Collapsed"/>
                 <TextBlock Name="Hint" FontSize="15" Foreground="#D0C7C2" HorizontalAlignment="Right"
                            VerticalAlignment="Bottom" Margin="0,0,74,26"/>
             </Grid>

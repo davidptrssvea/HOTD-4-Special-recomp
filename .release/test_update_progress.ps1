@@ -42,6 +42,46 @@ function Start-TestWorker([string]$Fixture,[string]$Url) {
 $base=Join-Path ([IO.Path]::GetTempPath()) ('HOTD updater check '+[guid]::NewGuid().ToString('N'))
 [void][IO.Directory]::CreateDirectory($base)
 
+Add-Type -TypeDefinition @"
+using System.IO;
+using System.Threading;
+public static class HotdUpdateTestLock {
+    public static void ReleaseSoon(FileStream stream) {
+        ThreadPool.QueueUserWorkItem(_ => { Thread.Sleep(600); stream.Dispose(); });
+    }
+}
+"@
+$status=Join-Path $base 'status.txt'
+Set-HotdUpdateStatus $status 'Preparing'
+$held=[IO.File]::Open($status,'Open','Read','Read')
+try {
+    [HotdUpdateTestLock]::ReleaseSoon($held)
+    Set-HotdUpdateStatus $status 'Ready'
+    Assert ((Read-HotdUpdateStatus $status) -eq 'Ready') 'A temporary lock lost the status update.'
+} finally { $held.Dispose() }
+
+$installed=Join-Path $base 'installed'
+$staged=Join-Path $base 'staged'
+$backup=Join-Path $base 'backup'
+[void][IO.Directory]::CreateDirectory($installed)
+[void][IO.Directory]::CreateDirectory($staged)
+$locked=Join-Path $installed 'game.dll'
+foreach ($name in 'launcher.ps1','game.dll') {
+    [IO.File]::WriteAllText((Join-Path $installed $name),'original')
+    [IO.File]::WriteAllText((Join-Path $staged $name),'updated')
+}
+$held=[IO.File]::Open($locked,'Open','Read','Read')
+try {
+    $failure=$null
+    try { Install-HotdManagedFiles $staged $installed $backup @('launcher.ps1','game.dll') }
+    catch { $failure=$_.Exception.Message }
+    Assert ($failure -and $failure.Contains($locked)) 'A persistent lock did not identify the file that failed.'
+    foreach ($name in 'launcher.ps1','game.dll') {
+        Assert ([IO.File]::ReadAllText((Join-Path $installed $name)) -eq 'original') "Rollback did not preserve $name."
+    }
+} finally { $held.Dispose() }
+Write-Host 'PASS: a transient status lock is retried and a persistent program file lock reports the path and rolls back.'
+
 Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
 foreach ($mode in 'Button','Close','Ready') {
     $fixture=Join-Path $base $mode

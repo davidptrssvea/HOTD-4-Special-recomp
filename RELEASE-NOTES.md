@@ -1,6 +1,8 @@
-# HOTD4 Special v1.1.9 - Free Play and arcade sound controls
+# HOTD4 Special v1.1.10 - Updater and launcher fixes
 
-- Enable **Free Play (unlimited credits)** in **Settings > Gameplay** to start and continue without inserting coins.
-- Enable **Mute Start and coin sounds** to silence the arcade credit cues while keeping music and gameplay audio.
+- Retry temporary Windows file replacement errors during updates. If a file still cannot be replaced, the updater preserves the existing installation where possible and logs the affected path and Windows error code in `update-error.log`.
+- Show the installed builder version directly in the main menu.
+- Fix **Free Play (unlimited credits)** and **Mute Start and coin sounds** when a Windows settings path contains non-ASCII characters.
+- Fix two OpenGL shader errors that can cause a white 3D scene on NVIDIA drivers.
 
-Save your settings and start or restart the game to apply. Update through **Updates > Download and install** or run **Setup.cmd** from the new builder ZIP.
+If the previous updater failed, close the game and launcher, extract this release's Local Builder ZIP into a separate folder, and run `Setup.cmd` against your existing installation folder. Use the same arcade dump to keep your settings and saves. You can also use **Updates > Download and install** from a working launcher.

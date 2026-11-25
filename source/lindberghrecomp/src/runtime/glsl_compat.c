@@ -148,3 +148,90 @@ char *glsl_compat(const char *source)
     }
     *w = 0; free(half); return result;
 }
+
+#ifdef HOTD4SP_SHADER_COMPAT
+/* The original depth-of-field shader calls shadow2D with a regular sampler. */
+static char *special_depth_shader(const char *source)
+{
+    if (!strstr(source, "OrigPic") || !strstr(source, "BlurPic") || !strstr(source, "shadow2D"))
+        return NULL;
+
+    const char *decl = source;
+    while ((decl = strstr(decl, "uniform")) != NULL) {
+        decl += sizeof "uniform" - 1;
+        const char *type = space(decl);
+        if (type == decl || strncmp(type, "sampler2D", sizeof "sampler2D" - 1)) continue;
+
+        const char *end = type + sizeof "sampler2D" - 1;
+        const char *name = space(end);
+        if (name == end || strncmp(name, "OrigDepth", sizeof "OrigDepth" - 1) ||
+            *space(name + sizeof "OrigDepth" - 1) != ';') continue;
+
+        char *fixed = malloc(strlen(source) + sizeof "Shadow");
+        if (!fixed) return NULL;
+        char *out = fixed;
+        copy(&out, source, (size_t)(end - source));
+        copy(&out, "Shadow", sizeof "Shadow" - 1);
+        strcpy(out, end);
+        return fixed;
+    }
+    return NULL;
+}
+
+/* Some fragment shaders offset texture coordinates. Keep the varying inputs
+ * read-only and have the engine's coordinate macros use writable copies. */
+static char *special_coord_shader(const char *source)
+{
+    static const char *const inputs[] = {
+        "nnglvTexCoord01.xy", "nnglvTexCoord01.zw", "nnglvTexCoord23.xy", "nnglvTexCoord23.zw",
+        "nnglvTexCoord45.xy", "nnglvTexCoord45.zw", "nnglvTexCoord67.xy", "nnglvTexCoord67.zw"
+    };
+    static const char copies[] =
+        "vec4 g_nnglvTexCoord01 = nnglvTexCoord01;\n"
+        "vec4 g_nnglvTexCoord23 = nnglvTexCoord23;\n"
+        "vec4 g_nnglvTexCoord45 = nnglvTexCoord45;\n"
+        "vec4 g_nnglvTexCoord67 = nnglvTexCoord67;\n";
+    if (!strstr(source, "varying vec4 nnglvTexCoord01;")) return NULL;
+
+    char macro[] = "#define nnglvTexCoord0";
+    const char *first = strstr(source, macro);
+    if (!first) return NULL;
+
+    const char *at = first;
+    const char *values[sizeof inputs / sizeof inputs[0]];
+    for (size_t i = 0; i < sizeof inputs / sizeof inputs[0]; i++) {
+        macro[sizeof macro - 2] = (char)('0' + i);
+        if (strncmp(at, macro, sizeof macro - 1)) return NULL;
+        const char *start = at + sizeof macro - 1;
+        const char *value = space(start);
+        size_t len = strlen(inputs[i]);
+        if (value == start || strncmp(value, inputs[i], len)) return NULL;
+        const char *next = value + len;
+        if (*next != ' ' && *next != '\t' && *next != '\r' && *next != '\n') return NULL;
+        at = strchr(next, '\n');
+        if (!at) return NULL;
+        at = space(at + 1);
+        values[i] = value;
+    }
+
+    char *fixed = malloc(strlen(source) + sizeof copies + 2 * (sizeof inputs / sizeof inputs[0]));
+    if (!fixed) return NULL;
+    char *out = fixed;
+    copy(&out, source, (size_t)(first - source));
+    copy(&out, copies, sizeof copies - 1);
+    const char *rest = first;
+    for (size_t i = 0; i < sizeof inputs / sizeof inputs[0]; i++) {
+        copy(&out, rest, (size_t)(values[i] - rest));
+        copy(&out, "g_", 2);
+        rest = values[i];
+    }
+    strcpy(out, rest);
+    return fixed;
+}
+
+char *glsl_compat_hotd4sp(const char *source)
+{
+    char *fixed = special_coord_shader(source);
+    return fixed ? fixed : special_depth_shader(source);
+}
+#endif

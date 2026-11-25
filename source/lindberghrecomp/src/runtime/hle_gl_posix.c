@@ -638,6 +638,22 @@ static void h_glShaderSourceARB(CPU *c)
     *cursor = 0;
     char *portable = glsl_compat(joined);
     if (portable) { free(joined); joined = portable; }
+#ifdef HOTD4SP_SHADER_COMPAT
+    GLint shader_type = 0;
+    glGetShaderiv(sh, GL_SHADER_TYPE, &shader_type);
+    if (shader_type == GL_FRAGMENT_SHADER) {
+        char *fixed = glsl_compat_hotd4sp(joined);
+        if (fixed) {
+            static int logged;
+            if (!logged) {
+                fprintf(stderr, "[gl] HOTD4 Special shader compatibility applied\n");
+                logged = 1;
+            }
+            free(joined);
+            joined = fixed;
+        }
+    }
+#endif
 #ifdef LINDBERGH_GL4ES
     /* GLSL ES rejects an #if on a name that is not a macro, which desktop
      * GLSL reads as 0: the conditionals are decided here (glsl_pp.c) */
