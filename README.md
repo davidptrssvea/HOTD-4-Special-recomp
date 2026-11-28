@@ -4,7 +4,7 @@
 
 In the Windows desktop launcher, choose **Gamepad (P1 + P2)** in **Settings → Graphics / Input** and save. The first controller is assigned to P1 and the second to P2. Either stick aims. **RT / A** shoots, **X / LB** reloads, **LT / B** throws a grenade, **Y / RB** changes fire mode and **Menu / Start** joins. Click the left stick to insert a credit. **View / Back** opens the pause menu, where the D-pad navigates and **A** selects.
 
-Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.5.zip** from the [v1.1.5 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.5), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
+Full Windows builder for **The House of the Dead 4 Special**. Download **HOTD4SP-Local-Builder-v1.1.12.zip** from the [v1.1.12 release](https://github.com/davidptrssvea/HOTD-4-Special-recomp/releases/tag/v1.1.12), extract it, run **Setup.cmd**, and select your own extracted Special arcade dump. The installer builds the game locally from a compatible dump.
 
 Open **HOTD4SP-PC/Play HOTD4 Special.cmd**, or **HOTD4SP-PC/HOTD4SP_Recomp/Play HOTD4 Special.exe** for the console-free English launcher. The optional OpenXR launcher is inside HOTD4SP_Recomp. This is the separate Special game, not an add-on to the [normal HOTD4 builder](https://github.com/davidptrssvea/HOTD4-recomp).
 
@@ -30,11 +30,11 @@ In **Settings > Graphics / Input**, choose **V-Sync > On** to synchronize deskto
 
 On the main **Settings** page, choose **Aspect Ratio > 4:3** (below Display Mode, next to HUD) for a 4:3 game canvas, including 640 x 480 and 800 x 600 outputs. Wider displays show side bars. The game, HUD and pointer use the same fitted picture area. 16:9 remains the default. Save, exit the game and relaunch to apply an aspect-ratio change. This is a desktop option; OpenXR keeps its headset view.
 
-## Shader compatibility in current source
+## Shader compatibility (v1.1.12)
 
-The matrix-index correction confirmed with HOTD4SP-Matrix-Index-Shader-Test is integrated into the regular OpenGL runtime, including builds made by Setup. It keeps character animation indices compatible with the game's legacy vertex input and preserves the earlier white-screen shader fixes. No separate test executable is needed in future releases built from this source.
+The matrix-index correction confirmed with HOTD4SP-Matrix-Index-Shader-Test is integrated into the regular OpenGL runtime, including builds made by Setup. It keeps character animation indices compatible with the game's legacy vertex input and preserves the earlier white-screen shader fixes. The correction ships in v1.1.12 and later builds; no separate test executable is needed.
 
-The currently published v1.1.11 installer predates this correction. Do not replace a working test executable with an older build expecting the correction to be retained.
+After updating, launch the game normally with **Play HOTD4 Special**. You no longer need the separate **Start Shader Test.cmd** launcher. Updates retain the fix because it is part of the regular source.
 
 ## Supported dump
 
