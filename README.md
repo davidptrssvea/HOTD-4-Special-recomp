@@ -30,6 +30,12 @@ In **Settings > Graphics / Input**, choose **V-Sync > On** to synchronize deskto
 
 On the main **Settings** page, choose **Aspect Ratio > 4:3** (below Display Mode, next to HUD) for a 4:3 game canvas, including 640 x 480 and 800 x 600 outputs. Wider displays show side bars. The game, HUD and pointer use the same fitted picture area. 16:9 remains the default. Save, exit the game and relaunch to apply an aspect-ratio change. This is a desktop option; OpenXR keeps its headset view.
 
+## Shader compatibility in current source
+
+The matrix-index correction confirmed with HOTD4SP-Matrix-Index-Shader-Test is integrated into the regular OpenGL runtime, including builds made by Setup. It keeps character animation indices compatible with the game's legacy vertex input and preserves the earlier white-screen shader fixes. No separate test executable is needed in future releases built from this source.
+
+The currently published v1.1.11 installer predates this correction. Do not replace a working test executable with an older build expecting the correction to be retained.
+
 ## Supported dump
 
 Select a folder containing `elf/hod4M.elf` and a populated `fs` folder. You can also select its `elf` folder, a parent containing `hotd4sp`, or a parent containing `disk0`. The installer verifies the Special ELF SHA-256:

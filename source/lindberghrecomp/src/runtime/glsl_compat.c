@@ -150,6 +150,46 @@ char *glsl_compat(const char *source)
 }
 
 #ifdef HOTD4SP_SHADER_COMPAT
+/* Special supplies matrix indices through the legacy floating-point vertex
+ * attribute API. Keep the original attribute name for binding and expose
+ * integer components to the shader's matrix-palette calculations. */
+char *glsl_compat_hotd4sp_vertex(const char *source)
+{
+    static const char alias[] = "\n#define nnglaMtxIdx (ivec4(nnglaMtxIdx))\n";
+    if (!strstr(source, "NNGLD_OPT_VERTEX_BLEND")) return NULL;
+
+    for (const char *p = source; *p;) {
+        const char *token_end = opaque(p);
+        if (token_end != p) { p = token_end; continue; }
+        if (!ident((unsigned char)*p)) { p++; continue; }
+        token_end = p + 1;
+        while (ident((unsigned char)*token_end)) token_end++;
+        const int attribute = equal(p, (size_t)(token_end - p), "attribute");
+        p = token_end;
+        if (!attribute) continue;
+
+        const char *type = space(token_end);
+        if (type == token_end || strncmp(type, "ivec4", 5)) continue;
+        const char *name = space(type + 5);
+        if (name == type + 5 || strncmp(name, "nnglaMtxIdx", 11)) continue;
+        const char *end = space(name + 11);
+        if (*end != ';') continue;
+        end++;
+
+        char *fixed = malloc(strlen(source) + sizeof alias);
+        if (!fixed) return NULL;
+        char *out = fixed;
+        copy(&out, source, (size_t)(type - source));
+        copy(&out, type + 1, (size_t)(end - type - 1));
+        /* GLSL, like C, suppresses expansion of a macro's own name in its
+         * replacement list. The constructor reads the attribute declared above. */
+        copy(&out, alias, sizeof alias - 1);
+        strcpy(out, end);
+        return fixed;
+    }
+    return NULL;
+}
+
 /* The original depth-of-field shader calls shadow2D with a regular sampler. */
 static char *special_depth_shader(const char *source)
 {

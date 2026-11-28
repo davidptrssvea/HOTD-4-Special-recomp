@@ -129,3 +129,9 @@ Five real native runs completed 3,500 frames each: a no-skip baseline, an early 
 This is not a fresh full playthrough of every route/boss/ending, nor a physical headset test. OpenXR compilation passed; headset behavior still needs hardware testing.
 
 Browse callbacks are tested in both direct -File and dot-sourced Windows PowerShell invocation; the picker delegate is captured explicitly so it remains available across UI event scopes.
+
+## Integrated matrix-index shader correction
+
+The source correction is identical to the runtime source used for HOTD4SP-Matrix-Index-Shader-Test (game executable SHA-256 6f96d08c2aa626b882b2e8200b4d5aaf0e393b3a4c2f8748f08db5d49cda18de). The issue reporter confirmed the test file worked. It is now part of the shared regular OpenGL shader submission path; both desktop and OpenXR OpenGL targets already enable HOTD4SP_SHADER_COMPAT. The previous fragment fixes and integer-extension fallback remain intact.
+
+The source regression test covers matching scope, original attribute binding name, whitespace, comments and idempotence. An additional local OpenGL test on RTX 4070 Ti renders a synthetic palette-blended vertex with four weights, through constant float, byte-array and float-array legacy attributes, and verifies the resulting pixels. No game shader, model or texture is used by that test. The portable test runs in shader CI and before release publication. This integration does not modify an existing release or automatically change a user's working test installation.

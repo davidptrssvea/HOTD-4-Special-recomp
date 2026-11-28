@@ -1,0 +1,30 @@
+name: Shader compatibility
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'source/lindberghrecomp/src/runtime/glsl_compat.*'
+      - 'source/lindberghrecomp/src/runtime/hle_gl_posix.c'
+      - '.release/test_special_matrix_shader.c'
+      - '.github/workflows/shader-compat.yml'
+  pull_request:
+    paths:
+      - 'source/lindberghrecomp/src/runtime/glsl_compat.*'
+      - 'source/lindberghrecomp/src/runtime/hle_gl_posix.c'
+      - '.release/test_special_matrix_shader.c'
+      - '.github/workflows/shader-compat.yml'
+permissions:
+  contents: read
+jobs:
+  shader-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Special matrix-index shader compatibility
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -DHOTD4SP_SHADER_COMPAT \
+            .release/test_special_matrix_shader.c \
+            source/lindberghrecomp/src/runtime/glsl_compat.c -o /tmp/special-shader-test
+          /tmp/special-shader-test
+      - name: Verify source package checksums and asset exclusions
+        run: python3 .release/publish.py --package-only

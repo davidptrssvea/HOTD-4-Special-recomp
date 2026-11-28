@@ -702,6 +702,17 @@ static void h_glShaderSourceARB(CPU *c)
             free(joined);
             joined = fixed;
         }
+    } else if (shader_type == GL_VERTEX_SHADER) {
+        char *fixed = glsl_compat_hotd4sp_vertex(joined);
+        if (fixed) {
+            static int logged;
+            if (!logged) {
+                fprintf(stderr, "[gl] HOTD4 Special legacy matrix-index attribute compatibility applied\n");
+                logged = 1;
+            }
+            free(joined);
+            joined = fixed;
+        }
     }
 #endif
 #ifdef LINDBERGH_GL4ES

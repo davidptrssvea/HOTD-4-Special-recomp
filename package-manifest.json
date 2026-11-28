@@ -3,11 +3,11 @@
   "files": [
     {
       "path": "BUILD-VERIFICATION.md",
-      "sha256": "016de250bf9a567675f18175be60dc7fdd01fa7fba48da3671d96b6e238ae75f"
+      "sha256": "0599dc667c4f01b189bd9fe8b56dc7c865c150519f16dc5ec63e6ea91810e031"
     },
     {
       "path": "README.md",
-      "sha256": "109914da2a18e1e0e766ed6f2eb671ab8463719a01c7c460e24ac3bd9fdf48cc"
+      "sha256": "3ec339e508dde98d465e4c6af09e751d2afe61b38c333d411a3930a8140b8da5"
     },
     {
       "path": "RELEASE-NOTES.md",
@@ -151,11 +151,11 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/glsl_compat.c",
-      "sha256": "79c982cd605d1b2bdf3c82809b541fdd7f5bef82706112ab046157a19e3f51a1"
+      "sha256": "bab1a45515190834a63ed295b5e0fd7d8ecb4c58476a11defae8586fce0b2b32"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/glsl_compat.h",
-      "sha256": "2600f390f88e28bc08def143a6c5d103051bd2e89e8b064025af3da32acb4f2a"
+      "sha256": "69e3c4cbbe68f5c854de47e690cd317ef11f2f21e636f268599bec48568fb464"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/glsl_pp.c",
@@ -203,7 +203,7 @@
     },
     {
       "path": "source/lindberghrecomp/src/runtime/hle_gl_posix.c",
-      "sha256": "e6a2adcc7af143f4facae8e5a5767aa4b217d12aee8d11780f9e574fad71d308"
+      "sha256": "f9735c2ef74d9c458e3ba2bf74b8c7b2728d3bcf2aad543cf44c8f44696c281f"
     },
     {
       "path": "source/lindberghrecomp/src/runtime/hle_glut.c",

@@ -52,6 +52,10 @@ jobs:
         run: |
           cc -std=c11 -Wall -Wextra -Werror .release/test_keyboard_aim.c -lm -o /tmp/hotd4-keyboard-test
           /tmp/hotd4-keyboard-test
+      - name: Test Special matrix-index shader compatibility
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -DHOTD4SP_SHADER_COMPAT .release/test_special_matrix_shader.c source/lindberghrecomp/src/runtime/glsl_compat.c -o /tmp/hotd4sp-shader-test
+          /tmp/hotd4sp-shader-test
       - name: Test mouse shake gestures
         run: |
           cc -std=c11 -Wall -Wextra -Werror .release/test_mouse_shake.c -o /tmp/hotd4-mouse-shake-test
